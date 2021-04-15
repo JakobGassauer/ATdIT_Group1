@@ -5,7 +5,7 @@
 //
 //procedure.txt with all the information of the status so far and the infos for the project
 //
-//
+//documentation.txt with the dates and the contents of our meetings along the emergence of our project 
 //
 //
 //
