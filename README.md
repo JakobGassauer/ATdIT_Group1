@@ -7,7 +7,7 @@
 //
 //documentation.txt with the dates and the contents of our meetings along the emergence of our project 
 //
-//
+//in *Projects* we opened a Kanban Board for our SCRUM based work on the program
 //
 //
 //
