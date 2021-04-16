@@ -1,0 +1,123 @@
+﻿Ziel bis zum Zwischenreview
+Programmieren
+* Schichtübergabe ausprogrammieren
+   * Architektur
+   * Klassen
+   * Vererbung, Abstraktion
+* [Datenbankanbindung (Sample)]
+* Aussehen Benutzeroberfläche
+(verschiedene Fenster, Funktionen)
+
+
+Designen
+* Klare Beschreibung des Umfangs
+* Abgrenzung des Scopes (was wird
+entwickelt, was wird gemockt)
+* Eindeutige Rollenbeschreibung mit
+entsprechender Abgrenzung
+* Vorteile aufzeigen
+
+
+Aussehen UX
+* Infos zu Ereignissen während der Schicht                
+-->Textfeld zum eintragen
+* Infos von vorherigen Schichten abrufen können
+* Erstellung von Mockups (Smartphone, Smartwatch etc)
+* Tabelle mit allen Infos
+* Programm wählt sich aus wer gerade Schicht hat
+
+
+Commits
+* Sprache: Englisch
+* immer Kommentare in Commits
+* soft revisions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Aufbau Schichtenübergabe
+
+
+Ziele Funktionen des Programms:
+
+
+-Daten eingeben und speichern
+-Daten aufrufen 
+-Schichtensystem darstellen
+-->Infos zuweisen
+-Plus-Button -->neue infos dazufügen
+
+
+
+
+Methoden:
+
+
+patientenspezifische Ansicht (colourcoding für dringliche Ereignisse)
+
+
+insertInformationPatient() / getInformationPatient()
+-Besonderheiten Patient, wie geht es ihm, besondere Beschwerden, Befinden
+
+
+insertInformationRoom() / getInformationRoom()
+-irgendwas fehlt im Raum, irgendwas ist kaputt (Stuhl fehlt, Fenster schließt nicht richtig)
+
+
+insertInformationMedication() / getInformationMedication()
+-welcher Tabletten sollte er bekommen, Besonderheiten bei der Medikation, durch neue Ereignisse brauch er dies und das
+
+
+insertInformationOther() / getInformationOther()
+-Patient auf Station verstorben, Änderungen des Mittagplans, Mikrowelle geht nicht mehr
+
+
+
+
+allgemeine Ansicht
+
+
+showSchedule()
+-dropdown Menü mit den geordneten vergangen Schichten
+
+
+roomNumber
+namePatient
