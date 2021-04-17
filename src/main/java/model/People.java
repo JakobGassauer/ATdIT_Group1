@@ -1,20 +1,20 @@
 package model;
 
 public abstract class People {
-    String name;
-    String surname;
-    int age;
+    public String name;
+    public String surname;
+    public int age;
 
     public int getAge() {
-        return age;
+        return this.age;
     }
 
     public String getSurname() {
-        return surname;
+        return this.surname;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setAge(int age) {
@@ -35,6 +35,6 @@ public abstract class People {
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", age=" + age +
-                '}';
+                 '}';
     }
 }
