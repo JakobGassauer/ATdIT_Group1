@@ -2,8 +2,8 @@
 //
 //14.04.2021 - team call, discussion about procedure, architecture, goals, work method, design 
 //15.04.2021 - team call, creating the basic architecture of the program and its core function
-//
-//
+//16.04.2021 - team call, finalizing the basic structure (visual as well as in IntelliJ), filling up Kanban Board, creating specific working teams and tasks for everyone
+//                        set up timeplan describing when to meet
 //
 //
 //
