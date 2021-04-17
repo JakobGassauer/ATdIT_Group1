@@ -1,4 +1,9 @@
-﻿Ziel bis zum Zwischenreview
+meeting schedule:
+wednesday: 10-11
+friday: 14.30-16.30
+ 
+ 
+ Ziel bis zum Zwischenreview
 Programmieren
 * Schichtübergabe ausprogrammieren
    * Architektur
