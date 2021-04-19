@@ -22,20 +22,35 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
 
     public void setEmployeeID(int employeeID) { this.employeeID = employeeID; }
 
-    public void setCategory(int category) { this.category = category }
+    public void setCategory(int category) { this.category = category; }
 
     public ShiftSchedule(int shiftID, int employeeID) {
         this.shiftID = shiftID;
         this.employeeID = employeeID;
     }
 
-    //Override
+    @Override
+    public void add(ShiftSchedule object) {
+        // todo implement add logic
+    }
 
+    @Override
+    public void remove(ShiftSchedule object) {
+        // todo implement remove logic
+    }
 
+    @Override
+    public ShiftSchedule get() {
+        // todo implement get logic
+        return null;
+    }
 
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "ShiftSchedule{" +
+                "shiftID=" + shiftID +
+                ", employeeID=" + employeeID +
+                ", category=" + category +
+                '}';
+    }
 }

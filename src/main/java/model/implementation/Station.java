@@ -17,6 +17,11 @@ public class Station {
         this.name = name;
     }
 
-    //Override
-
+    @Override
+    public String toString() {
+        return "Station{" +
+                "stationID=" + stationID +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

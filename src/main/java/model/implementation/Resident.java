@@ -28,5 +28,15 @@ public class Resident extends People {
         this.room = room;
     }
 
-    //Override
+    @Override
+    public String toString() {
+        return "Resident{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", resID=" + resID +
+                ", room=" + room +
+                ", stationID=" + stationID +
+                '}';
+    }
 }
