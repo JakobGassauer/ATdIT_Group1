@@ -16,7 +16,6 @@ public class DBConnect {
         }
         return conn;
     }
-
     public static void main(String[] args) {
         Connection conn = connect();
 
