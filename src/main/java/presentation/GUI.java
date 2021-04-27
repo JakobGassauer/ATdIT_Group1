@@ -181,14 +181,14 @@ public class GUI extends JFrame {
 
                 } else {
 
-                    //TODO Fehlermeldung, die den weiteren Programvorgang blockiert(Hauptfenster)
+                    // Fehlermeldung, die den weiteren Programvorgang blockiert(Hauptfenster)
                 }
             } else {
                 if (istgespeichert == false) {
 
                     taBewohner[index].setEditable(false);
                     btnBearbeitenBewohner[index].setIcon(editicon);
-                    //TODO Sachen abspeichern Mehode
+                    //Sachen abspeichern Mehode
                     istgespeichert = true;
                     wirdbearbeitet = false;
                 }
