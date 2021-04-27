@@ -1,4 +1,4 @@
-package model.implementation;
+package library.model.implementation;
 
 public class Medication {
     private int medID;

@@ -1,9 +1,9 @@
-package presentation;
+package library.presentation;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-//import model.images.*;
+//import library.model.images.*;
 
 public class GUI extends JFrame {
 

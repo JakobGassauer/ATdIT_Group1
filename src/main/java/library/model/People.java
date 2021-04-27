@@ -1,4 +1,4 @@
-package model;
+package library.model;
 
 public abstract class People {
     public String name;

@@ -1,6 +1,6 @@
-package model.implementation;
+package library.model.implementation;
 
-import model.Edit;
+import library.model.Edit;
 
 public class ShiftSchedule implements Edit<ShiftSchedule> {
     private int shiftID;
