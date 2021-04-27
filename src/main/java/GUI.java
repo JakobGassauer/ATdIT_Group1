@@ -1,12 +1,22 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+//import model.images.*;
 
 public class GUI extends JFrame {
 
+    static boolean wirdbearbeitet = false;  //Klassenvariable zum vergeben der Berechtigung zum Bearbeiten der Textfelder,
+    // damit immer nur eins gleichzeitig bearbeitet weren darf. Eventuell Fehlermeldungsfenster zum erinnern...
+
+
+    ImageIcon saveicon;
+
+
     Container c;
 
-    JPanel jpBewohnerRaum, jpFilterTextAlle, jpFilter, jpTextBewohner, jpBewohner, jpRaum;
+    CardLayout cl= new CardLayout();
+
+    JPanel jpBewohnerRaum, jpFilterTextAlle, jpFilter, jpTextBewohner, jpBewohner, jpRaum, jpSpezifisch, jpBearbeitenBewohner, cards;
 
     JButton btnBewohner[];
     JButton btnBearbeitenBewohner[];
@@ -27,22 +37,35 @@ public class GUI extends JFrame {
 
     public GUI() {
 
+        saveicon = new ImageIcon("C:\\Users\\arkin\\OneDrive\\Desktop\\saveicon.png");
+
         c = getContentPane();
 
         jpBewohnerRaum = new JPanel(new GridBagLayout());
         jpFilterTextAlle = new JPanel(new BorderLayout());
         jpFilter = new JPanel(new GridLayout(2, 1));
-//        jpTextBewohner = new JPanel(new GridLayout(10, 1));
+        jpTextBewohner = new JPanel(new GridLayout(10, 1));
         jpBewohner = new JPanel(new GridLayout(10, 1));
         jpRaum = new JPanel(new GridLayout(10, 1));
+        jpBearbeitenBewohner = new JPanel(new GridLayout(10,1));
+        jpSpezifisch = new JPanel(new GridLayout());
+        cards = new JPanel(cl);
 
-        erschaffePanelBewohnerText();
+        //Platzhalter bis sich über das Design der zweiten Seite beraten wurde :
+        JLabel platzhalter = new JLabel();
+        platzhalter.setOpaque(true);
+        platzhalter.setBackground(Color.DARK_GRAY);
+        jpSpezifisch.add(platzhalter);
+
 
         c.add(jpBewohnerRaum, BorderLayout.WEST);
         c.add(jpFilterTextAlle, BorderLayout.NORTH);
-        c.add(jpTextBewohner, BorderLayout.CENTER);
+        c.add(cards, BorderLayout.CENTER);
+        c.add(jpBearbeitenBewohner, BorderLayout.EAST);
         jpFilterTextAlle.add(jpFilter, BorderLayout.WEST);
-
+        cards.add(jpTextBewohner,"Bewohner");
+        cards.add(jpSpezifisch,"Spezifisch");
+        cl.show(cards,"Bewohner");
 
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
@@ -72,7 +95,6 @@ public class GUI extends JFrame {
             jpBewohner.add(btnBewohner[i]);
         }
 
-
         for (int i = 0; i < 10; i++) {
             lblRaum[i] = new JLabel("Raum " + (i + 1), SwingConstants.CENTER);
             lblRaum[i].setBackground(lightgrey);
@@ -81,15 +103,26 @@ public class GUI extends JFrame {
             lblRaum[i].setPreferredSize(new Dimension(132, 51));
             jpRaum.add(lblRaum[i]);
         }
-/*        for (int i = 0; i < 10; i++) {
+
+        for (int i = 0; i < 10; i++) {
             taBewohner[i] = new JTextArea("TEST " + (i + 1));
             taBewohner[i].setLineWrap(true);
             taBewohner[i].setWrapStyleWord(true);
             taBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            taBewohner[i].setEditable(false);
             spBewohner[i] = new JScrollPane(taBewohner[i]);
             jpTextBewohner.add(spBewohner[i]);
        }
- */
+
+        for (int i = 0; i < 10; i++) {
+            btnBearbeitenBewohner[i] = new JButton();
+            btnBearbeitenBewohner[i].setBackground(lightgrey);
+            btnBearbeitenBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            btnBearbeitenBewohner[i].setPreferredSize(new Dimension(30, 51));
+            jpBearbeitenBewohner.add(btnBearbeitenBewohner[i]);
+            btnBearbeitenBewohner[i].setIcon(saveicon);
+        }
+
 
         jcbSchicht = new JComboBox(schichten);
         jpFilter.add(jcbSchicht);
@@ -112,30 +145,12 @@ public class GUI extends JFrame {
         btnBewohner[0].addActionListener(bL);
     }
 
-    public void erschaffePanelBewohnerText() {
-        jpTextBewohner = new JPanel(new GridLayout(10, 1));
-
-        for (int i = 0; i < 10; i++) {
-            taBewohner[i] = new JTextArea("TEST " + (i + 1));
-            taBewohner[i].setLineWrap(true);
-            taBewohner[i].setWrapStyleWord(true);
-            taBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            spBewohner[i] = new JScrollPane(taBewohner[i]);
-            jpTextBewohner.add(spBewohner[i]);
-        }
-    }
-
-    public void updateFrame() {
-
-    }
-
 
     class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
         }
     }
-
 
     public static void main(String[] args) {
         GUI frame = new GUI();
