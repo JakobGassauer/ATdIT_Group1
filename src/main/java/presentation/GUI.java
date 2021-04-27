@@ -1,3 +1,5 @@
+package presentation;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -37,7 +39,7 @@ public class GUI extends JFrame {
 
     public GUI() {
 
-        saveicon = new ImageIcon("C:\\Users\\arkin\\OneDrive\\Desktop\\saveicon.png");
+        saveicon = new ImageIcon("Saveicon.png");
 
         c = getContentPane();
 
