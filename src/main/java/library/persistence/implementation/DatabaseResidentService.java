@@ -22,6 +22,8 @@ public class DatabaseResidentService implements Service {
             ResultSet result = statement.executeQuery(sql);
             System.out.println(result.getString("name"));
 
+
+
             //PreparedStatement preparedStatement = connection.prepareStatement(sql);
             /*while(result.next()){
                 Resident resident = new Resident(
@@ -37,6 +39,7 @@ public class DatabaseResidentService implements Service {
 
         return residentArrayList;
     }
+
 
     public static void main(String[] args){
         List<Resident> residents = new ArrayList<Resident>();

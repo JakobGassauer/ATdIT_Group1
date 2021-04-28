@@ -4,7 +4,7 @@ import java.sql.*;
 
 
 public class DBConnect {
-    public static final String location="jdbc:sqlite:src/database/group1_database.sql";
+    public static final String location="jdbc:sqlite:src/database/group1_database.db";
 
     public static Connection connect() {
 
@@ -18,6 +18,7 @@ public class DBConnect {
         }
         return conn;
     }
+
     public static void main(String[] args) {
         Connection conn = connect();
 
