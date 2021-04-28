@@ -12,6 +12,8 @@ public class GUI extends JFrame {
     static boolean istgespeichert = true;
     static boolean hatgeswitcht = false;
     static int knopfidentifikation = -1;
+    static int indexabgleich = -1;
+    static int letzterknopf = -1;
 
     ImageIcon saveicon;
     ImageIcon editicon;
@@ -22,17 +24,20 @@ public class GUI extends JFrame {
 
     JPanel jpBewohnerRaum, jpFilterTextAlle, jpFilter, jpTextBewohner, jpBewohner, jpRaum, jpSpezifisch, jpBearbeitenBewohner, jpTextBewohnerUndBearbeiten, cards;
 
-    JButton btnBewohner[];
-    JButton btnBearbeitenBewohner[];
+    JScrollPane spStammdaten, spMedikation, spDiagnoseblatt, spAngehoeriger, spBesuch, spSonstiges;
+    JTextArea taStammdaten, taMedikation, taDiagnoseblatt, taAngehoeriger, taBesuch, taSonstiges;
+
+    JButton[] btnBewohner;
+    JButton[] btnBearbeitenBewohner;
     JButton btnAlle;
-    JLabel lblRaum[];
+    JLabel[] lblRaum;
     String[] schichten;
     String[] zeiten;
     JComboBox jcbSchicht;
     JComboBox jcbZeit;
 
-    JTextArea taBewohner[] = new JTextArea[10];
-    JScrollPane spBewohner[] = new JScrollPane[10];
+    JTextArea[] taBewohner = new JTextArea[10];
+    JScrollPane[] spBewohner = new JScrollPane[10];
 
     GridBagConstraints gbc = new GridBagConstraints();
 
@@ -56,17 +61,57 @@ public class GUI extends JFrame {
         jpBewohner = new JPanel(new GridLayout(10, 1));
         jpRaum = new JPanel(new GridLayout(10, 1));
         jpBearbeitenBewohner = new JPanel(new GridLayout(10, 1));
-        jpSpezifisch = new JPanel(new GridLayout());
+        jpSpezifisch = new JPanel(new GridBagLayout());
         jpTextBewohnerUndBearbeiten = new JPanel(new GridBagLayout());
         cards = new JPanel(cl);
 
-//Platzhalter bis sich über das Design der zweiten Seite beraten wurde :
-        platzhalter.setOpaque(true);
+        taStammdaten = new JTextArea("Stammdaten");
+        taMedikation = new JTextArea("Medikation");
+        taDiagnoseblatt = new JTextArea("Diagnoseblatt");
+        taAngehoeriger = new JTextArea("Angehöriger");
+        taBesuch = new JTextArea("Besuch");
+        taSonstiges = new JTextArea("Sonstiges");
+
+        spStammdaten = new JScrollPane(taStammdaten);
+        spMedikation = new JScrollPane(taMedikation);
+        spDiagnoseblatt = new JScrollPane(taDiagnoseblatt);
+        spAngehoeriger = new JScrollPane(taAngehoeriger);
+        spBesuch = new JScrollPane(taBesuch);
+        spSonstiges = new JScrollPane(taSonstiges);
+
+
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(5,5,5,5);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 2;
+        gbc.weighty = 1;
+        gbc.weightx = 1;
+        jpSpezifisch.add(spStammdaten,gbc);
+        gbc.gridx = 1;
+        jpSpezifisch.add(spMedikation,gbc);
+        gbc.gridx = 2;
+        jpSpezifisch.add(spDiagnoseblatt,gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridheight = 1;
+        jpSpezifisch.add(spAngehoeriger,gbc);
+        gbc.gridx = 1;
+        jpSpezifisch.add(spBesuch,gbc);
+        gbc.gridx = 2;
+        jpSpezifisch.add(spSonstiges,gbc);
+
+
+
+
+
+/*        platzhalter.setOpaque(true);
         platzhalter.setBackground(Color.DARK_GRAY);
         platzhalter.setForeground(Color.WHITE);
         platzhalter.setFont(new Font("TimesNewRoman", Font.BOLD, 15));
         jpSpezifisch.add(platzhalter);
-
+*/
 
         c.add(jpBewohnerRaum, BorderLayout.WEST);
         c.add(jpFilterTextAlle, BorderLayout.NORTH);
@@ -77,7 +122,7 @@ public class GUI extends JFrame {
         cl.show(cards, "Bewohner");
 
 
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(0,0,0,0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -172,11 +217,9 @@ public class GUI extends JFrame {
         btnAlle.setBackground(lightgrey);
         btnAlle.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         btnAlle.setPreferredSize(new Dimension(30, 51));
-        jpFilterTextAlle.add(btnAlle,BorderLayout.EAST);
+        jpFilterTextAlle.add(btnAlle, BorderLayout.EAST);
         btnAlle.setIcon(editicon);
         btnAlle.addActionListener(bl2);
-
-
     }
 
 
@@ -194,18 +237,20 @@ public class GUI extends JFrame {
                     taBewohner[index].setEditable(true);
                     btnBearbeitenBewohner[index].setIcon(saveicon);
                     istgespeichert = false;
+                    indexabgleich = index;
 
-                } else {
-                    //                   JDialog fehlermeldung = new JDialog(frame,true);
                 }
             } else {
                 if (istgespeichert == false) {
+                    if (indexabgleich == index) {
 
-                    taBewohner[index].setEditable(false);
-                    btnBearbeitenBewohner[index].setIcon(editicon);
-                    //Sachen abspeichern Mehode
-                    istgespeichert = true;
-                    wirdbearbeitet = false;
+                        taBewohner[index].setEditable(false);
+                        btnBearbeitenBewohner[index].setIcon(editicon);
+                        //Sachen abspeichern Mehode
+                        istgespeichert = true;
+                        wirdbearbeitet = false;
+
+                    }
                 }
             }
         }
@@ -218,28 +263,41 @@ public class GUI extends JFrame {
 
             int index = Arrays.asList(btnBewohner).indexOf(e.getSource());
 
-            if (istgespeichert==true){
+            if (istgespeichert == true) {
                 if (knopfidentifikation == index) {
 
                     cl.show(cards, "Bewohner");
                     knopfidentifikation = -1;
                     hatgeswitcht = false;
+                    btnBewohner[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    lblRaum[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 } else {
                     if (hatgeswitcht == false) {
 
                         knopfidentifikation = index;
-                        //Aufspielen der Daten au die Bewohnerübersicht
+                        //Aufspielen der Daten auf die Bewohnerübersicht
+                        cl.show(cards, "Spezifisch");
+                        platzhalter.setText("Knopfidentifikation: " + knopfidentifikation + "   Index: " + index);
+                        btnBewohner[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
+                        lblRaum[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
+                        hatgeswitcht = true;
+                        letzterknopf = index;
+
+                    } else {
+                        knopfidentifikation = index;
+                        //Aufspielen der Daten auf die Bewohnerübersicht
                         cl.show(cards, "Spezifisch");
                         platzhalter.setText("Knopfidentifikation: " + knopfidentifikation + "   Index: " + index);
                         hatgeswitcht = true;
 
-                    } else {
-                        knopfidentifikation = index;
-                        //Aufspielen der Daten au die Bewohnerübersicht
-                        cl.show(cards, "Spezifisch");
-                        platzhalter.setText("Knopfidentifikation: " + knopfidentifikation + "   Index: " + index);
-                        hatgeswitcht = true;
+                        btnBewohner[letzterknopf].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                        lblRaum[letzterknopf].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+                        btnBewohner[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
+                        lblRaum[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
+
+                        letzterknopf = index;
                     }
                 }
             }
