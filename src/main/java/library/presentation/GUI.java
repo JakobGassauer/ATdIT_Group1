@@ -1,27 +1,30 @@
-package presentation;
+package library.presentation;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-//import model.images.*;
+import java.util.Arrays;
+
 
 public class GUI extends JFrame {
 
-    static boolean wirdbearbeitet = false;  //Klassenvariable zum vergeben der Berechtigung zum Bearbeiten der Textfelder,
-    // damit immer nur eins gleichzeitig bearbeitet weren darf. Eventuell Fehlermeldungsfenster zum erinnern...
-
+    static boolean wirdbearbeitet = false;
+    static boolean istgespeichert = true;
+    static boolean hatgeswitcht = false;
+    static int knopfidentifikation = -1;
 
     ImageIcon saveicon;
-
+    ImageIcon editicon;
 
     Container c;
 
-    CardLayout cl= new CardLayout();
+    CardLayout cl = new CardLayout();
 
-    JPanel jpBewohnerRaum, jpFilterTextAlle, jpFilter, jpTextBewohner, jpBewohner, jpRaum, jpSpezifisch, jpBearbeitenBewohner, cards;
+    JPanel jpBewohnerRaum, jpFilterTextAlle, jpFilter, jpTextBewohner, jpBewohner, jpRaum, jpSpezifisch, jpBearbeitenBewohner, jpTextBewohnerUndBearbeiten, cards;
 
     JButton btnBewohner[];
     JButton btnBearbeitenBewohner[];
+    JButton btnAlle;
     JLabel lblRaum[];
     String[] schichten;
     String[] zeiten;
@@ -36,10 +39,13 @@ public class GUI extends JFrame {
     Color lightgrey = new Color(245, 245, 245);
     Color lightyellow = new Color(255, 255, 202);
 
+    JLabel platzhalter = new JLabel(); //Platzhalter
+
 
     public GUI() {
 
         saveicon = new ImageIcon("Saveicon.png");
+        editicon = new ImageIcon("Editicon.png");
 
         c = getContentPane();
 
@@ -49,25 +55,27 @@ public class GUI extends JFrame {
         jpTextBewohner = new JPanel(new GridLayout(10, 1));
         jpBewohner = new JPanel(new GridLayout(10, 1));
         jpRaum = new JPanel(new GridLayout(10, 1));
-        jpBearbeitenBewohner = new JPanel(new GridLayout(10,1));
+        jpBearbeitenBewohner = new JPanel(new GridLayout(10, 1));
         jpSpezifisch = new JPanel(new GridLayout());
+        jpTextBewohnerUndBearbeiten = new JPanel(new GridBagLayout());
         cards = new JPanel(cl);
 
-        //Platzhalter bis sich über das Design der zweiten Seite beraten wurde :
-        JLabel platzhalter = new JLabel();
+//Platzhalter bis sich über das Design der zweiten Seite beraten wurde :
         platzhalter.setOpaque(true);
         platzhalter.setBackground(Color.DARK_GRAY);
+        platzhalter.setForeground(Color.WHITE);
+        platzhalter.setFont(new Font("TimesNewRoman", Font.BOLD, 15));
         jpSpezifisch.add(platzhalter);
 
 
         c.add(jpBewohnerRaum, BorderLayout.WEST);
         c.add(jpFilterTextAlle, BorderLayout.NORTH);
         c.add(cards, BorderLayout.CENTER);
-        c.add(jpBearbeitenBewohner, BorderLayout.EAST);
         jpFilterTextAlle.add(jpFilter, BorderLayout.WEST);
-        cards.add(jpTextBewohner,"Bewohner");
-        cards.add(jpSpezifisch,"Spezifisch");
-        cl.show(cards,"Bewohner");
+        cards.add(jpTextBewohnerUndBearbeiten, "Bewohner");
+        cards.add(jpSpezifisch, "Spezifisch");
+        cl.show(cards, "Bewohner");
+
 
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
@@ -82,6 +90,13 @@ public class GUI extends JFrame {
         jpBewohnerRaum.add(jpRaum, gbc);
 
 
+        gbc.gridx = 0;
+        jpTextBewohnerUndBearbeiten.add(jpTextBewohner, gbc);
+        gbc.weightx = 0;
+        gbc.gridx = 1;
+        jpTextBewohnerUndBearbeiten.add(jpBearbeitenBewohner, gbc);
+
+
         btnBewohner = new JButton[10];
         btnBearbeitenBewohner = new JButton[10];
         lblRaum = new JLabel[10];
@@ -89,12 +104,18 @@ public class GUI extends JFrame {
         zeiten = new String[]{"25.04.2021", "26.04.2021", "27.04.2021", "28.04.2021", "29.04.2021", "30.04.2021"};
 
 
+        GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
+        GUI.Buttonlistener2 bl2 = new GUI.Buttonlistener2();
+
+
         for (int i = 0; i < 10; i++) {
             btnBewohner[i] = new JButton("Bewohner " + (i + 1));
             btnBewohner[i].setBackground(lightgrey);
             btnBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnBewohner[i].setPreferredSize(new Dimension(302, 51));
+            btnBewohner[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
             jpBewohner.add(btnBewohner[i]);
+            btnBewohner[i].addActionListener(bL1);
         }
 
         for (int i = 0; i < 10; i++) {
@@ -103,6 +124,7 @@ public class GUI extends JFrame {
             lblRaum[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             lblRaum[i].setOpaque(true);
             lblRaum[i].setPreferredSize(new Dimension(132, 51));
+            lblRaum[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
             jpRaum.add(lblRaum[i]);
         }
 
@@ -111,10 +133,11 @@ public class GUI extends JFrame {
             taBewohner[i].setLineWrap(true);
             taBewohner[i].setWrapStyleWord(true);
             taBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            taBewohner[i].setFont(new Font("TimesNewRoman", Font.PLAIN, 15));
             taBewohner[i].setEditable(false);
             spBewohner[i] = new JScrollPane(taBewohner[i]);
             jpTextBewohner.add(spBewohner[i]);
-       }
+        }
 
         for (int i = 0; i < 10; i++) {
             btnBearbeitenBewohner[i] = new JButton();
@@ -122,7 +145,8 @@ public class GUI extends JFrame {
             btnBearbeitenBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnBearbeitenBewohner[i].setPreferredSize(new Dimension(30, 51));
             jpBearbeitenBewohner.add(btnBearbeitenBewohner[i]);
-            btnBearbeitenBewohner[i].setIcon(saveicon);
+            btnBearbeitenBewohner[i].setIcon(editicon);
+            btnBearbeitenBewohner[i].addActionListener(bl2);
         }
 
 
@@ -141,16 +165,84 @@ public class GUI extends JFrame {
         jpFilterTextAlle.add(taAlle, BorderLayout.CENTER);
         taAlle.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         taAlle.setBackground(lightyellow);
+        taAlle.setFont(new Font("TimesNewRoman", Font.BOLD, 15));
 
 
-        GUI.ButtonListener bL = new GUI.ButtonListener();
-        btnBewohner[0].addActionListener(bL);
+        btnAlle = new JButton();
+        btnAlle.setBackground(lightgrey);
+        btnAlle.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        btnAlle.setPreferredSize(new Dimension(30, 51));
+        jpFilterTextAlle.add(btnAlle,BorderLayout.EAST);
+        btnAlle.setIcon(editicon);
+        btnAlle.addActionListener(bl2);
+
+
     }
 
 
-    class ButtonListener implements ActionListener {
+    class Buttonlistener2 implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
 
+            int index = Arrays.asList(btnBearbeitenBewohner).indexOf(e.getSource());
+
+            if (wirdbearbeitet == false) {
+
+                if (istgespeichert == true) {
+
+                    wirdbearbeitet = true;
+                    taBewohner[index].setEditable(true);
+                    btnBearbeitenBewohner[index].setIcon(saveicon);
+                    istgespeichert = false;
+
+                } else {
+                    //                   JDialog fehlermeldung = new JDialog(frame,true);
+                }
+            } else {
+                if (istgespeichert == false) {
+
+                    taBewohner[index].setEditable(false);
+                    btnBearbeitenBewohner[index].setIcon(editicon);
+                    //Sachen abspeichern Mehode
+                    istgespeichert = true;
+                    wirdbearbeitet = false;
+                }
+            }
+        }
+    }
+
+
+    class ButtonListener1 implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            int index = Arrays.asList(btnBewohner).indexOf(e.getSource());
+
+            if (istgespeichert==true){
+                if (knopfidentifikation == index) {
+
+                    cl.show(cards, "Bewohner");
+                    knopfidentifikation = -1;
+                    hatgeswitcht = false;
+
+                } else {
+                    if (hatgeswitcht == false) {
+
+                        knopfidentifikation = index;
+                        //Aufspielen der Daten au die Bewohnerübersicht
+                        cl.show(cards, "Spezifisch");
+                        platzhalter.setText("Knopfidentifikation: " + knopfidentifikation + "   Index: " + index);
+                        hatgeswitcht = true;
+
+                    } else {
+                        knopfidentifikation = index;
+                        //Aufspielen der Daten au die Bewohnerübersicht
+                        cl.show(cards, "Spezifisch");
+                        platzhalter.setText("Knopfidentifikation: " + knopfidentifikation + "   Index: " + index);
+                        hatgeswitcht = true;
+                    }
+                }
+            }
         }
     }
 
