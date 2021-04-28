@@ -1,4 +1,4 @@
-package model;
+package library.model;
 
 public interface Edit<T> {
     void add(T object);

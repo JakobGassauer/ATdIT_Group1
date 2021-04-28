@@ -3,25 +3,22 @@ package presentation;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-
+//import model.images.*;
 
 public class GUI extends JFrame {
 
-    static boolean wirdbearbeitet = false;
-    static boolean istgespeichert = true;
-    static boolean hatgeswitcht = false;
+    static boolean wirdbearbeitet = false;  //Klassenvariable zum vergeben der Berechtigung zum Bearbeiten der Textfelder,
+    // damit immer nur eins gleichzeitig bearbeitet weren darf. Eventuell Fehlermeldungsfenster zum erinnern...
 
 
     ImageIcon saveicon;
-    ImageIcon editicon;
 
 
     Container c;
 
-    CardLayout cl = new CardLayout();
+    CardLayout cl= new CardLayout();
 
-    JPanel jpBewohnerRaum, jpFilterTextAlle, jpFilter, jpTextBewohner, jpBewohner, jpRaum, jpSpezifisch, jpBearbeitenBewohner, jpTextBewohnerUndBearbeiten, cards;
+    JPanel jpBewohnerRaum, jpFilterTextAlle, jpFilter, jpTextBewohner, jpBewohner, jpRaum, jpSpezifisch, jpBearbeitenBewohner, cards;
 
     JButton btnBewohner[];
     JButton btnBearbeitenBewohner[];
@@ -43,7 +40,6 @@ public class GUI extends JFrame {
     public GUI() {
 
         saveicon = new ImageIcon("Saveicon.png");
-        editicon = new ImageIcon("Editicon.png");
 
         c = getContentPane();
 
@@ -53,9 +49,8 @@ public class GUI extends JFrame {
         jpTextBewohner = new JPanel(new GridLayout(10, 1));
         jpBewohner = new JPanel(new GridLayout(10, 1));
         jpRaum = new JPanel(new GridLayout(10, 1));
-        jpBearbeitenBewohner = new JPanel(new GridLayout(10, 1));
+        jpBearbeitenBewohner = new JPanel(new GridLayout(10,1));
         jpSpezifisch = new JPanel(new GridLayout());
-        jpTextBewohnerUndBearbeiten = new JPanel(new GridBagLayout());
         cards = new JPanel(cl);
 
         //Platzhalter bis sich über das Design der zweiten Seite beraten wurde :
@@ -68,11 +63,11 @@ public class GUI extends JFrame {
         c.add(jpBewohnerRaum, BorderLayout.WEST);
         c.add(jpFilterTextAlle, BorderLayout.NORTH);
         c.add(cards, BorderLayout.CENTER);
+        c.add(jpBearbeitenBewohner, BorderLayout.EAST);
         jpFilterTextAlle.add(jpFilter, BorderLayout.WEST);
-        cards.add(jpTextBewohnerUndBearbeiten, "Bewohner");
-        cards.add(jpSpezifisch, "Spezifisch");
-        cl.show(cards, "Bewohner");
-
+        cards.add(jpTextBewohner,"Bewohner");
+        cards.add(jpSpezifisch,"Spezifisch");
+        cl.show(cards,"Bewohner");
 
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
@@ -87,22 +82,11 @@ public class GUI extends JFrame {
         jpBewohnerRaum.add(jpRaum, gbc);
 
 
-        gbc.gridx = 0;
-        jpTextBewohnerUndBearbeiten.add(jpTextBewohner, gbc);
-        gbc.weightx = 0;
-        gbc.gridx = 1;
-        jpTextBewohnerUndBearbeiten.add(jpBearbeitenBewohner, gbc);
-
-
         btnBewohner = new JButton[10];
         btnBearbeitenBewohner = new JButton[10];
         lblRaum = new JLabel[10];
         schichten = new String[]{"Frühschicht", "Spätschicht", "Nachtschicht"};
         zeiten = new String[]{"25.04.2021", "26.04.2021", "27.04.2021", "28.04.2021", "29.04.2021", "30.04.2021"};
-
-
-        GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
-        GUI.Buttonlistener2 bl2 = new GUI.Buttonlistener2();
 
 
         for (int i = 0; i < 10; i++) {
@@ -111,7 +95,6 @@ public class GUI extends JFrame {
             btnBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnBewohner[i].setPreferredSize(new Dimension(302, 51));
             jpBewohner.add(btnBewohner[i]);
-            btnBewohner[i].addActionListener(bL1);
         }
 
         for (int i = 0; i < 10; i++) {
@@ -131,7 +114,7 @@ public class GUI extends JFrame {
             taBewohner[i].setEditable(false);
             spBewohner[i] = new JScrollPane(taBewohner[i]);
             jpTextBewohner.add(spBewohner[i]);
-        }
+       }
 
         for (int i = 0; i < 10; i++) {
             btnBearbeitenBewohner[i] = new JButton();
@@ -139,8 +122,7 @@ public class GUI extends JFrame {
             btnBearbeitenBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnBearbeitenBewohner[i].setPreferredSize(new Dimension(30, 51));
             jpBearbeitenBewohner.add(btnBearbeitenBewohner[i]);
-            btnBearbeitenBewohner[i].setIcon(editicon);
-            btnBearbeitenBewohner[i].addActionListener(bl2);
+            btnBearbeitenBewohner[i].setIcon(saveicon);
         }
 
 
@@ -161,48 +143,13 @@ public class GUI extends JFrame {
         taAlle.setBackground(lightyellow);
 
 
+        GUI.ButtonListener bL = new GUI.ButtonListener();
+        btnBewohner[0].addActionListener(bL);
     }
 
 
-    class Buttonlistener2 implements ActionListener {
-        @Override
+    class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
-            int index = Arrays.asList(btnBearbeitenBewohner).indexOf(e.getSource());
-
-            if (wirdbearbeitet == false) {
-
-                if (istgespeichert == true) {
-
-                    wirdbearbeitet = true;
-                    taBewohner[index].setEditable(true);
-                    btnBearbeitenBewohner[index].setIcon(saveicon);
-                    istgespeichert = false;
-
-                } else {
-
-                    // Fehlermeldung, die den weiteren Programvorgang blockiert(Hauptfenster)
-                }
-            } else {
-                if (istgespeichert == false) {
-
-                    taBewohner[index].setEditable(false);
-                    btnBearbeitenBewohner[index].setIcon(editicon);
-                    //Sachen abspeichern Mehode
-                    istgespeichert = true;
-                    wirdbearbeitet = false;
-                }
-            }
-        }
-    }
-
-
-    class ButtonListener1 implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            cl.show(cards, "Spezifisch");
-
 
         }
     }

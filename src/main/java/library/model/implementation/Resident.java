@@ -1,6 +1,6 @@
-package model.implementation;
+package library.model.implementation;
 
-import model.People;
+import library.model.People;
 
 public class Resident extends People {
     private int resID;
