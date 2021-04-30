@@ -14,7 +14,7 @@ public class GUI extends JFrame {
     static int knopfidentifikation = 0;
     static int indexabgleich = 0;
     static int letzterknopf = 0;
-    Object sourceBtnAlle;
+//    static Object sourceBtnAlle;
 
 
     ImageIcon saveicon;
@@ -82,7 +82,6 @@ public class GUI extends JFrame {
         taAngehoeriger.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
         taBesuch.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
         taSonstiges.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-
 
 
         spStammdaten = new JScrollPane(taStammdaten);
@@ -154,7 +153,7 @@ public class GUI extends JFrame {
 
         GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
         GUI.Buttonlistener2 bl2 = new GUI.Buttonlistener2();
-        GUI.ButtonListener3 bl3 = new GUI.ButtonListener3();
+//        GUI.ButtonListener3 bl3 = new GUI.ButtonListener3();
 
 
         for (int i = 1; i < 11; i++) {
@@ -225,7 +224,7 @@ public class GUI extends JFrame {
         btnAlle.setPreferredSize(new Dimension(30, 51));
         jpFilterTextAlle.add(btnAlle, BorderLayout.EAST);
         btnAlle.setIcon(editicon);
-        btnAlle.addActionListener(bl3);
+        btnAlle.addActionListener(bl2);
     }
 
     class ButtonListener1 implements ActionListener {
@@ -270,6 +269,7 @@ public class GUI extends JFrame {
                     }
                 }
             }
+
         }
     }
 
@@ -277,68 +277,64 @@ public class GUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            int index = Arrays.asList(btnBearbeitenBewohner).indexOf(e.getSource());
 
+ //           System.out.println(index);
 
-            if (wirdbearbeitet == false) {
+            if (e.getSource() != btnAlle) {
 
-                if (istgespeichert == true) {
+                int index = Arrays.asList(btnBearbeitenBewohner).indexOf(e.getSource());
 
-                    wirdbearbeitet = true;
-                    taBewohner[index].setEditable(true);
-                    btnBearbeitenBewohner[index].setIcon(saveicon);
-                    istgespeichert = false;
-                    indexabgleich = index;
+                if (wirdbearbeitet == false) {
 
+                    if (istgespeichert == true) {
+
+                        wirdbearbeitet = true;
+                        taBewohner[index].setEditable(true);
+                        btnBearbeitenBewohner[index].setIcon(saveicon);
+                        istgespeichert = false;
+                        indexabgleich = index;
+
+                    }
+                } else {
+                    if (istgespeichert == false && btnAlle.getIcon()==editicon) {
+                        if (indexabgleich == index && e.getSource() != btnAlle) {
+
+                            taBewohner[index].setEditable(false);
+                            btnBearbeitenBewohner[index].setIcon(editicon);
+                            //Sachen abspeichern Mehode
+                            istgespeichert = true;
+                            wirdbearbeitet = false;
+
+                        }
+                    }
                 }
             } else {
-                if (istgespeichert == false) {
-                    if (indexabgleich == index) {
+                if (wirdbearbeitet == false) {
 
-                        taBewohner[index].setEditable(false);
-                        btnBearbeitenBewohner[index].setIcon(editicon);
-                        //Sachen abspeichern Mehode
-                        istgespeichert = true;
-                        wirdbearbeitet = false;
+                    if (istgespeichert == true) {
 
+                        wirdbearbeitet = true;
+                        taAlle.setEditable(true);
+                        btnAlle.setIcon(saveicon);
+                        istgespeichert = false;
+
+                    }
+                } else {
+                    if (istgespeichert == false && btnAlle.getIcon()==saveicon) {
+                        if (btnAlle==e.getSource()) {
+
+                            taAlle.setEditable(false);
+                            btnAlle.setIcon(editicon);
+                            //Sachen abspeichern Mehode
+                            istgespeichert = true;
+                            wirdbearbeitet = false;
+
+                        }
                     }
                 }
             }
         }
     }
-
-    class ButtonListener3 implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            sourceBtnAlle = e.getSource();
-
-            if (wirdbearbeitet == false) {
-
-                if (istgespeichert == true) {
-
-                    wirdbearbeitet = true;
-                    taAlle.setEditable(true);
-                    btnAlle.setIcon(saveicon);
-                    istgespeichert = false;
-
-                }
-            } else {
-                if (istgespeichert == false) {
-                    if (sourceBtnAlle.equals(e.getSource())) {
-
-                        taAlle.setEditable(false);
-                        btnAlle.setIcon(editicon);
-                        //Sachen abspeichern Mehode
-                        istgespeichert = true;
-                        wirdbearbeitet = false;
-
-                    }
-                }
-            }
-        }
-    }
-
 
     public static void main(String[] args) {
         GUI frame = new GUI();
