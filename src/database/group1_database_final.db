@@ -1,0 +1,123 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "employee" (
+	"employeeID"	INTEGER,
+	"name"	TEXT,
+	"surname"	TEXT,
+	"age"	INTEGER,
+	"stationID"	INTEGER,
+	PRIMARY KEY("employeeID")
+);
+CREATE TABLE IF NOT EXISTS "senior_resident" (
+	"resID"	INTEGER,
+	"name"	TEXT,
+	"surname"	TEXTe,
+	"age"	INTEGER,
+	"room"	INTEGER,
+	"stationID"	INTEGER,
+	"visitID"	INTEGER,
+	"iceID"	INTEGER,
+	PRIMARY KEY("resID")
+);
+CREATE TABLE IF NOT EXISTS "station" (
+	"stationID"	INTEGER,
+	"name"	TEXT,
+	PRIMARY KEY("stationID")
+);
+CREATE TABLE IF NOT EXISTS "ice" (
+	"iceID"	INTEGER,
+	"resID"	INTEGER,
+	"name"	TEXT,
+	"surname"	TEXT,
+	"tel_number"	BLOB,
+	"adress"	BLOB,
+	PRIMARY KEY("iceID")
+);
+CREATE TABLE IF NOT EXISTS "visits" (
+	"visitID"	INTEGER,
+	"resID"	INTEGER,
+	"description"	TEXT,
+	PRIMARY KEY("visitID")
+);
+CREATE TABLE IF NOT EXISTS "shift_shedule" (
+	"shiftID"	INTEGER,
+	"employeeID"	INTEGER,
+	"date"	BLOB,
+	"category"	INTEGER,
+	PRIMARY KEY("shiftID")
+);
+CREATE TABLE IF NOT EXISTS "incidents" (
+	"incidentID"	INTEGER,
+	"description"	TEXT,
+	"resID"	INTEGER,
+	"shiftID"	INTEGER,
+	PRIMARY KEY("incidentID")
+);
+CREATE TABLE IF NOT EXISTS "medication" (
+	"medicID"	INTEGER,
+	"name"	TEXT,
+	PRIMARY KEY("medicID")
+);
+CREATE TABLE IF NOT EXISTS "medplan" (
+	"medID"	INTEGER,
+	"intake_frequency"	REAL,
+	"concentration"	REAL,
+	"resID"	INTEGER,
+	"medicID"	INTEGER,
+	PRIMARY KEY("medID")
+);
+INSERT INTO "employee" VALUES (1,'Torsten','Schmidt',30,1);
+INSERT INTO "employee" VALUES (2,'Ursel','Fischer',34,1);
+INSERT INTO "employee" VALUES (3,'Brigitte','Altmann',28,1);
+INSERT INTO "employee" VALUES (4,'Robert','Eschmann',27,1);
+INSERT INTO "employee" VALUES (5,'Manuel','Blume',44,1);
+INSERT INTO "employee" VALUES (6,'Lisa','Schnalke',37,1);
+INSERT INTO "employee" VALUES (7,'Maria','Elpel',25,1);
+INSERT INTO "employee" VALUES (8,'Anne','Dumjahn',35,1);
+INSERT INTO "employee" VALUES (9,'Monika','Apel',43,1);
+INSERT INTO "employee" VALUES (10,'Bernd','Schiller',40,1);
+INSERT INTO "senior_resident" VALUES (1,'Robert','Ibe',85,10,1,NULL,NULL);
+INSERT INTO "senior_resident" VALUES (2,'Marleen','Hastung',79,11,1,NULL,NULL);
+INSERT INTO "senior_resident" VALUES (3,'Inge','Steinecke',87,12,1,1,1);
+INSERT INTO "senior_resident" VALUES (4,'Franka','Steikert',87,13,1,NULL,NULL);
+INSERT INTO "senior_resident" VALUES (5,'Edith','Brand',90,14,1,NULL,NULL);
+INSERT INTO "senior_resident" VALUES (6,'Irma','Kübel',79,15,1,NULL,NULL);
+INSERT INTO "senior_resident" VALUES (7,'Friedrich','Groß',82,16,1,NULL,NULL);
+INSERT INTO "senior_resident" VALUES (8,'Wilhelm','Meister',75,17,1,3,2);
+INSERT INTO "senior_resident" VALUES (9,'Martha','Hoppe',76,18,1,4,4);
+INSERT INTO "senior_resident" VALUES (10,'Erich','Kästner',85,19,1,NULL,NULL);
+INSERT INTO "station" VALUES (1,'Silberrücken');
+INSERT INTO "ice" VALUES (1,3,'Jürgen','Büchner','0151540838','67601 Ludwigshafen am Rhein, Saarlandstraße 122');
+INSERT INTO "ice" VALUES (2,8,'Heiko','Steichert','0151540448','38440 Wolfsburg, Sebastian-Kneipp-Straße 7');
+INSERT INTO "ice" VALUES (3,9,'Karla','Michel','015150335238','13086 Berlin, Ringallee 104');
+INSERT INTO "visits" VALUES (1,3,'Frau Steinecke bekam Besuch von Ihrem Enkel');
+INSERT INTO "visits" VALUES (2,5,'Frau Brand wurde von einem alten Schulfreund Neil Armstrong besucht');
+INSERT INTO "visits" VALUES (3,8,'Der Bruder von Herr Meister kam heute Mittag');
+INSERT INTO "shift_shedule" VALUES (1,1,'2021.07.01',1);
+INSERT INTO "shift_shedule" VALUES (2,2,'2021.07.01',2);
+INSERT INTO "shift_shedule" VALUES (3,3,'2021.07.01',3);
+INSERT INTO "shift_shedule" VALUES (4,4,'2021.07.02',1);
+INSERT INTO "shift_shedule" VALUES (5,5,'2021.07.02',2);
+INSERT INTO "shift_shedule" VALUES (6,6,'2021.07.02',3);
+INSERT INTO "shift_shedule" VALUES (7,7,'2021.07.03',1);
+INSERT INTO "shift_shedule" VALUES (8,8,'2021.07.03',2);
+INSERT INTO "shift_shedule" VALUES (9,9,'2021.07.03',3);
+INSERT INTO "incidents" VALUES (1,'unfortunately Mrs Steinecke fell out of her wheelchair this morning. (small bruises)',3,4);
+INSERT INTO "incidents" VALUES (2,'Mr Wilhelm fell when he tried to reach a cup of coffe. He hurt his right knee.',8,7);
+INSERT INTO "incidents" VALUES (3,'This morning her denture could not be found, she needs a replacement as fast as possible!',9,5);
+INSERT INTO "medication" VALUES (1,'Acetyldigoxin');
+INSERT INTO "medication" VALUES (2,'Bromazepam');
+INSERT INTO "medication" VALUES (3,'Flecainid');
+INSERT INTO "medication" VALUES (4,'Sotalol');
+INSERT INTO "medication" VALUES (5,'Trimipramin');
+INSERT INTO "medication" VALUES (6,'Doxepin 
+');
+INSERT INTO "medication" VALUES (7,'Promethazin 
+');
+INSERT INTO "medication" VALUES (8,'Doxazosin 
+');
+INSERT INTO "medication" VALUES (9,'Diclofenac');
+INSERT INTO "medication" VALUES (10,'Piracetam');
+INSERT INTO "medplan" VALUES (1,3.0,0.5,3,1);
+INSERT INTO "medplan" VALUES (2,2.0,0.25,5,3);
+INSERT INTO "medplan" VALUES (3,3.0,0.75,7,5);
+COMMIT;
