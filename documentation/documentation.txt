@@ -7,7 +7,7 @@
 //21.04.2021 - team call, planned tasks for the week, discussed status of tasks
 //23.04.2021 - team call, working call, planned tasks for next week
 //
-//
+//30.04.2021 - Britta, review of folder projects and documentation: schön, euer ScrumBoard, hilfreicher Überblick! Documentation: schöne Berufsbeschreibung! procedure.txt überzeugt mich auch. In der ERD ppt sind noch kleine Inkonsistenzen zwischen den Diagrammen (betrifft auch das auch Vererbungsdiagramm), z.B. sind die Ebntitäten Medplan und Incidents nicht in allen Diagrammen sichtbar. Tests habt ihr noch nicht, bitte legt die dann so ab, dass wir sie finden. VG Britta
 //
 //
 //
