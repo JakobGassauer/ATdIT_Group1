@@ -6,8 +6,8 @@
 //                        set up timeplan describing when to meet
 //21.04.2021 - team call, planned tasks for the week, discussed status of tasks
 //23.04.2021 - team call, working call, planned tasks for next week
-//
-//
+//28.04.2021 - team call, planned tasks for the week, discussed status of tasks
+//30.04.2021 - team call, debugging gui and database
 //
 //
 //
