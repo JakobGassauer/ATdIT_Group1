@@ -11,9 +11,9 @@ public class GUI extends JFrame {
     static boolean wirdbearbeitet = false;
     static boolean istgespeichert = true;
     static boolean hatgeswitcht = false;
-    static int knopfidentifikation = -1;
-    static int indexabgleich = -1;
-    static int letzterknopf = -1;
+    static int knopfidentifikation = 0;
+    static int indexabgleich = 0;
+    static int letzterknopf = 0;
     Object sourceBtnAlle;
 
 
@@ -39,8 +39,8 @@ public class GUI extends JFrame {
     JComboBox jcbZeit;
 
 
-    JTextArea[] taBewohner = new JTextArea[10];
-    JScrollPane[] spBewohner = new JScrollPane[10];
+    JTextArea[] taBewohner = new JTextArea[11];
+    JScrollPane[] spBewohner = new JScrollPane[11];
     JTextArea taAlle;
 
 
@@ -74,6 +74,16 @@ public class GUI extends JFrame {
         taAngehoeriger = new JTextArea("Angehöriger");
         taBesuch = new JTextArea("Besuch");
         taSonstiges = new JTextArea("Sonstiges");
+
+        taStammdaten.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taStammdaten.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+        taMedikation.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taDiagnoseblatt.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taAngehoeriger.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taBesuch.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taSonstiges.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+
+
 
         spStammdaten = new JScrollPane(taStammdaten);
         spMedikation = new JScrollPane(taMedikation);
@@ -135,9 +145,9 @@ public class GUI extends JFrame {
         jpTextBewohnerUndBearbeiten.add(jpBearbeitenBewohner, gbc);
 
 
-        btnBewohner = new JButton[10];
-        btnBearbeitenBewohner = new JButton[10];
-        lblRaum = new JLabel[10];
+        btnBewohner = new JButton[11];
+        btnBearbeitenBewohner = new JButton[11];
+        lblRaum = new JLabel[11];
         schichten = new String[]{"Frühschicht", "Spätschicht", "Nachtschicht"};
         zeiten = new String[]{"25.04.2021", "26.04.2021", "27.04.2021", "28.04.2021", "29.04.2021", "30.04.2021"};
 
@@ -147,7 +157,7 @@ public class GUI extends JFrame {
         GUI.ButtonListener3 bl3 = new GUI.ButtonListener3();
 
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 11; i++) {
             btnBewohner[i] = new JButton("Bewohner " + (i + 1));
             btnBewohner[i].setBackground(lightgrey);
             btnBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -157,7 +167,7 @@ public class GUI extends JFrame {
             btnBewohner[i].addActionListener(bL1);
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 11; i++) {
             lblRaum[i] = new JLabel("Raum " + (i + 1), SwingConstants.CENTER);
             lblRaum[i].setBackground(lightgrey);
             lblRaum[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -167,7 +177,7 @@ public class GUI extends JFrame {
             jpRaum.add(lblRaum[i]);
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 11; i++) {
             taBewohner[i] = new JTextArea("TEST " + (i + 1));
             taBewohner[i].setLineWrap(true);
             taBewohner[i].setWrapStyleWord(true);
@@ -179,7 +189,7 @@ public class GUI extends JFrame {
 
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 11; i++) {
             btnBearbeitenBewohner[i] = new JButton();
             btnBearbeitenBewohner[i].setBackground(lightgrey);
             btnBearbeitenBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -228,7 +238,7 @@ public class GUI extends JFrame {
                 if (knopfidentifikation == index) {
 
                     cl.show(cards, "Bewohner");
-                    knopfidentifikation = -1;
+                    knopfidentifikation = 0;
                     hatgeswitcht = false;
                     btnBewohner[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                     lblRaum[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
