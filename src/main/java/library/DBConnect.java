@@ -4,7 +4,7 @@ import java.sql.*;
 
 
 public class DBConnect {
-    public static final String location="jdbc:sqlite:src/database/group1_database_final.db";
+    public static final String location="jdbc:sqlite:src/database/test.db";
 
     public static Connection connect() {
 
@@ -19,8 +19,27 @@ public class DBConnect {
         return conn;
     }
 
+    public void selectAll(){
+        String sql = "SELECT * FROM medicatoin";
+
+        try (Connection conn = this.connect();
+        Statement stmt  = conn.createStatement();
+        ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println(
+                        rs.getInt("medicID") +  "\t" +
+                        rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         Connection conn = connect();
+
 
 
     }
