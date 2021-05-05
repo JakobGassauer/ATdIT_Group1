@@ -4,7 +4,7 @@ import java.sql.*;
 
 
 public class DBConnect {
-    public static final String location="jdbc:sqlite:src/database/test.db";
+    public static final String location="jdbc:sqlite:src/database/db.sqlite";
 
     public static Connection connect() {
 
@@ -20,7 +20,7 @@ public class DBConnect {
     }
 
     public void selectAll(){
-        String sql = "SELECT * FROM medicatoin";
+        String sql = "SELECT * FROM medication";
 
         try (Connection conn = this.connect();
         Statement stmt  = conn.createStatement();
@@ -39,7 +39,6 @@ public class DBConnect {
 
     public static void main(String[] args) {
         Connection conn = connect();
-
 
 
     }
