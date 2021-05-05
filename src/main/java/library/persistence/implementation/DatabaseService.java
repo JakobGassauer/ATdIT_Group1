@@ -20,24 +20,12 @@ public class DatabaseService implements Service {
             Connection connection = DBConnect.connect();
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(sql);
-       /*     System.out.println(result.getInt("resID"));
-            System.out.println(result.getString("name"));
-            System.out.println(result.getString("surname"));
-            System.out.println(result.getInt("age"));
-            System.out.println(result.getInt("room"));
-            System.out.println(result.getInt("stationID"));
-            System.out.println(result.getInt("visitID"));
-            System.out.println(result.getInt("iceID"));
-*/
-            //PreparedStatement preparedStatement = connection.prepareStatement(sql);
             while(result.next()){
                 Resident resident = new Resident(
                         result.getInt("resID"),result.getString("name"),
                         result.getString("surname"),result.getInt("age"),
                         result.getInt("stationID"),result.getInt("room"));
-               System.out.println(resident.toString());
                 residentArrayList.add(resident);
-                result.next();
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -57,7 +45,6 @@ public class DatabaseService implements Service {
                         result.getString("surname"),result.getInt("age"),
                         result.getInt("stationID"));
                 residentArrayList.add(employee);
-                result.next();
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -77,7 +64,6 @@ public class DatabaseService implements Service {
                         result.getString("name"),result.getString("surname"),
                         result.getInt("tel_number"),result.getInt("adress"));
                 arrayList.add(ice);
-                result.next();
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -96,7 +82,6 @@ public class DatabaseService implements Service {
                         result.getInt("incidentID"),result.getInt("resID"),
                         result.getInt("shiftID"),result.getString("description"));
                 arrayList.add(incident);
-                result.next();
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -114,7 +99,6 @@ public class DatabaseService implements Service {
                 Medication medication = new Medication(
                         result.getInt("medID"),result.getString("name"));
                 arrayList.add(medication);
-                result.next();
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -133,7 +117,6 @@ public class DatabaseService implements Service {
                         result.getInt("medID"),result.getInt("resID"),
                         result.getDouble("concentration"),result.getDouble("intakeFrequency"));
                 arrayList.add(medPlan);
-                result.next();
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -151,7 +134,6 @@ public class DatabaseService implements Service {
                 ShiftSchedule shiftSchedule = new ShiftSchedule(
                         result.getInt("shiftID"),result.getInt("employeeID"));
                 arrayList.add(shiftSchedule);
-                result.next();
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -170,7 +152,6 @@ public class DatabaseService implements Service {
                 Station station = new Station(
                         result.getInt("stationID"),result.getString("name"));
                 arrayList.add(station);
-                result.next();
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -189,7 +170,6 @@ public class DatabaseService implements Service {
                         result.getInt("visitID"),result.getString("description"),
                         result.getInt("resID"));
                 arrayList.add(visits);
-                result.next();
             }
         }catch (SQLException e){
             System.out.println(e);

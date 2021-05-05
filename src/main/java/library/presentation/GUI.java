@@ -54,7 +54,7 @@ public class GUI extends JFrame {
 
 
     public GUI() {
-        ArrayList<Resident> residents = new ArrayList<>();
+        ArrayList<Resident> residents;
         residents = DatabaseService.getResidents();
 
         saveicon = new ImageIcon("Saveicon.png");
@@ -346,8 +346,9 @@ public class GUI extends JFrame {
     public static void main(String[] args) {
         GUI frame = new GUI();
         frame.setTitle("Schichtplan");
-        frame.setSize(1600, 950);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 }

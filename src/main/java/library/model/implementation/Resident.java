@@ -49,6 +49,7 @@ public class Resident extends People {
     public static Resident get(int index) {
         List<Resident> residentsArrayList =new ArrayList<>();
         residentsArrayList = DatabaseService.getResidents();
+
         Resident resident = residentsArrayList.get(index);
         return resident;
         //TODO implement get logic

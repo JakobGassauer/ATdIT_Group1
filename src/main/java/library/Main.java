@@ -10,8 +10,5 @@ public class Main {
     public static void main(String[] args) {
         System.out.println(Resident.get(2));
         System.out.println(Resident.get("Robert").getRoom());
-
-
     }
-
 }
