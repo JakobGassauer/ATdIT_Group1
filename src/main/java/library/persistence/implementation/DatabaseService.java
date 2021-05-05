@@ -35,6 +35,7 @@ public class DatabaseService implements Service {
                         result.getInt("resID"),result.getString("name"),
                         result.getString("surname"),result.getInt("age"),
                         result.getInt("stationID"),result.getInt("room"));
+               System.out.println(resident.toString());
                 residentArrayList.add(resident);
                 result.next();
             }

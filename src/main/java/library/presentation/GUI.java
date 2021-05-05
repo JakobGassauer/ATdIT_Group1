@@ -1,8 +1,12 @@
 package library.presentation;
 
+import library.model.implementation.Resident;
+import library.persistence.implementation.DatabaseService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -11,10 +15,9 @@ public class GUI extends JFrame {
     static boolean wirdbearbeitet = false;
     static boolean istgespeichert = true;
     static boolean hatgeswitcht = false;
-    static int knopfidentifikation = 0;
-    static int indexabgleich = 0;
-    static int letzterknopf = 0;
-//    static Object sourceBtnAlle;
+    static int knopfidentifikation = -1;
+    static int indexabgleich = -1;
+    static int letzterknopf = -1;
 
 
     ImageIcon saveicon;
@@ -51,6 +54,8 @@ public class GUI extends JFrame {
 
 
     public GUI() {
+        ArrayList<Resident> residents = new ArrayList<>();
+        residents = DatabaseService.getResidents();
 
         saveicon = new ImageIcon("Saveicon.png");
         editicon = new ImageIcon("Editicon.png");
@@ -144,9 +149,9 @@ public class GUI extends JFrame {
         jpTextBewohnerUndBearbeiten.add(jpBearbeitenBewohner, gbc);
 
 
-        btnBewohner = new JButton[11];
-        btnBearbeitenBewohner = new JButton[11];
-        lblRaum = new JLabel[11];
+        btnBewohner = new JButton[10];
+        btnBearbeitenBewohner = new JButton[10];
+        lblRaum = new JLabel[10];
         schichten = new String[]{"Frühschicht", "Spätschicht", "Nachtschicht"};
         zeiten = new String[]{"25.04.2021", "26.04.2021", "27.04.2021", "28.04.2021", "29.04.2021", "30.04.2021"};
 
@@ -156,8 +161,10 @@ public class GUI extends JFrame {
 //        GUI.ButtonListener3 bl3 = new GUI.ButtonListener3();
 
 
-        for (int i = 1; i < 11; i++) {
-            btnBewohner[i] = new JButton("Bewohner " + (i + 1));
+
+
+        for (int i = 0; i < residents.size(); i++) {
+            btnBewohner[i] = new JButton(residents.get(i).getName()+ " " +residents.get(i).getSurname());
             btnBewohner[i].setBackground(lightgrey);
             btnBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnBewohner[i].setPreferredSize(new Dimension(302, 51));
@@ -166,8 +173,8 @@ public class GUI extends JFrame {
             btnBewohner[i].addActionListener(bL1);
         }
 
-        for (int i = 1; i < 11; i++) {
-            lblRaum[i] = new JLabel("Raum " + (i + 1), SwingConstants.CENTER);
+        for (int i = 0; i < residents.size(); i++) {
+            lblRaum[i] = new JLabel("Raum " + (residents.get(i).getRoom()), SwingConstants.CENTER);
             lblRaum[i].setBackground(lightgrey);
             lblRaum[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             lblRaum[i].setOpaque(true);
@@ -176,7 +183,7 @@ public class GUI extends JFrame {
             jpRaum.add(lblRaum[i]);
         }
 
-        for (int i = 1; i < 11; i++) {
+        for (int i = 0; i < residents.size(); i++) {
             taBewohner[i] = new JTextArea("TEST " + (i + 1));
             taBewohner[i].setLineWrap(true);
             taBewohner[i].setWrapStyleWord(true);
@@ -188,7 +195,7 @@ public class GUI extends JFrame {
 
         }
 
-        for (int i = 1; i < 11; i++) {
+        for (int i = 0; i < residents.size(); i++) {
             btnBearbeitenBewohner[i] = new JButton();
             btnBearbeitenBewohner[i].setBackground(lightgrey);
             btnBearbeitenBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -237,7 +244,7 @@ public class GUI extends JFrame {
                 if (knopfidentifikation == index) {
 
                     cl.show(cards, "Bewohner");
-                    knopfidentifikation = 0;
+                    knopfidentifikation = -1;
                     hatgeswitcht = false;
                     btnBewohner[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                     lblRaum[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
