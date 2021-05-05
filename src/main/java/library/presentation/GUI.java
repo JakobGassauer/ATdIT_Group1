@@ -12,12 +12,12 @@ import java.util.Arrays;
 
 public class GUI extends JFrame {
 
-    static boolean wirdbearbeitet = false;
-    static boolean istgespeichert = true;
-    static boolean hatgeswitcht = false;
-    static int knopfidentifikation = -1;
-    static int indexabgleich = -1;
-    static int letzterknopf = -1;
+    static boolean beingEdited = false;
+    static boolean isSaved = true;
+    static boolean hasSwitched = false;
+    static int buttonIdentification = -1;
+    static int indexComparison = -1;
+    static int lastButton = -1;
 
 
     ImageIcon saveicon;
@@ -27,24 +27,24 @@ public class GUI extends JFrame {
 
     CardLayout cl = new CardLayout();
 
-    JPanel jpBewohnerRaum, jpFilterTextAlle, jpFilter, jpTextBewohner, jpBewohner, jpRaum, jpSpezifisch, jpBearbeitenBewohner, jpTextBewohnerUndBearbeiten, cards;
+    JPanel jpResidentRoom, jpFilterTextAll, jpFilter, jpTextResident, jpResident, jpRoom, jpSpecific, jpEditResident, jpTextResidentAndEdit, cards;
 
-    JScrollPane spStammdaten, spMedikation, spDiagnoseblatt, spAngehoeriger, spBesuch, spSonstiges;
-    JTextArea taStammdaten, taMedikation, taDiagnoseblatt, taAngehoeriger, taBesuch, taSonstiges;
+    JScrollPane spBaseData, spMedication, spDiagnoseblatt, spClosestRelative, spVisits, spOther;
+    JTextArea taBaseData, taMedication, taDiagnoseblatt, taClosestRelative, taVisits, taOther;
 
-    JButton[] btnBewohner;
-    JButton[] btnBearbeitenBewohner;
-    JButton btnAlle;
-    JLabel[] lblRaum;
-    String[] schichten;
-    String[] zeiten;
-    JComboBox jcbSchicht;
-    JComboBox jcbZeit;
+    JButton[] btnResident;
+    JButton[] btnEditResident;
+    JButton btnAll;
+    JLabel[] lblRoom;
+    String[] shifts;
+    String[] time;
+    JComboBox jcbShift;
+    JComboBox jcbTime;
 
 
-    JTextArea[] taBewohner = new JTextArea[11];
-    JScrollPane[] spBewohner = new JScrollPane[11];
-    JTextArea taAlle;
+    JTextArea[] taResident;
+    JScrollPane[] spTextResident;
+    JTextArea taAll;
 
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -62,39 +62,43 @@ public class GUI extends JFrame {
 
         c = getContentPane();
 
-        jpBewohnerRaum = new JPanel(new GridBagLayout());
-        jpFilterTextAlle = new JPanel(new BorderLayout());
+
+        jpResidentRoom = new JPanel(new GridBagLayout());
+        jpFilterTextAll = new JPanel(new BorderLayout());
         jpFilter = new JPanel(new GridLayout(2, 1));
-        jpTextBewohner = new JPanel(new GridLayout(10, 1));
-        jpBewohner = new JPanel(new GridLayout(10, 1));
-        jpRaum = new JPanel(new GridLayout(10, 1));
-        jpBearbeitenBewohner = new JPanel(new GridLayout(10, 1));
-        jpSpezifisch = new JPanel(new GridBagLayout());
-        jpTextBewohnerUndBearbeiten = new JPanel(new GridBagLayout());
+        jpTextResident = new JPanel(new GridLayout(10, 1));
+        jpResident = new JPanel(new GridLayout(10, 1));
+        jpRoom = new JPanel(new GridLayout(10, 1));
+        jpEditResident = new JPanel(new GridLayout(10, 1));
+        jpSpecific = new JPanel(new GridBagLayout());
+        jpTextResidentAndEdit = new JPanel(new GridBagLayout());
         cards = new JPanel(cl);
 
-        taStammdaten = new JTextArea("Stammdaten");
-        taMedikation = new JTextArea("Medikation");
+        taBaseData = new JTextArea("Stammdaten");
+        taMedication = new JTextArea("Medikation");
         taDiagnoseblatt = new JTextArea("Diagnoseblatt");
-        taAngehoeriger = new JTextArea("Angehöriger");
-        taBesuch = new JTextArea("Besuch");
-        taSonstiges = new JTextArea("Sonstiges");
+        taClosestRelative = new JTextArea("Angehöriger");
+        taVisits = new JTextArea("Besuch");
+        taOther = new JTextArea("Sonstiges");
+        taResident = new JTextArea[residents.size()];
 
-        taStammdaten.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taStammdaten.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
-        taMedikation.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+
+        taBaseData.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taBaseData.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+        taMedication.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
         taDiagnoseblatt.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taAngehoeriger.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taBesuch.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taSonstiges.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taClosestRelative.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taVisits.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taOther.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
 
 
-        spStammdaten = new JScrollPane(taStammdaten);
-        spMedikation = new JScrollPane(taMedikation);
+        spBaseData = new JScrollPane(taBaseData);
+        spMedication = new JScrollPane(taMedication);
         spDiagnoseblatt = new JScrollPane(taDiagnoseblatt);
-        spAngehoeriger = new JScrollPane(taAngehoeriger);
-        spBesuch = new JScrollPane(taBesuch);
-        spSonstiges = new JScrollPane(taSonstiges);
+        spClosestRelative = new JScrollPane(taClosestRelative);
+        spVisits = new JScrollPane(taVisits);
+        spOther = new JScrollPane(taOther);
+        spTextResident = new JScrollPane[residents.size()];
 
 
         gbc.fill = GridBagConstraints.BOTH;
@@ -105,27 +109,27 @@ public class GUI extends JFrame {
         gbc.gridheight = 2;
         gbc.weighty = 1;
         gbc.weightx = 1;
-        jpSpezifisch.add(spStammdaten, gbc);
+        jpSpecific.add(spBaseData, gbc);
         gbc.gridx = 1;
-        jpSpezifisch.add(spMedikation, gbc);
+        jpSpecific.add(spMedication, gbc);
         gbc.gridx = 2;
-        jpSpezifisch.add(spDiagnoseblatt, gbc);
+        jpSpecific.add(spDiagnoseblatt, gbc);
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridheight = 1;
-        jpSpezifisch.add(spAngehoeriger, gbc);
+        jpSpecific.add(spClosestRelative, gbc);
         gbc.gridx = 1;
-        jpSpezifisch.add(spBesuch, gbc);
+        jpSpecific.add(spVisits, gbc);
         gbc.gridx = 2;
-        jpSpezifisch.add(spSonstiges, gbc);
+        jpSpecific.add(spOther, gbc);
 
 
-        c.add(jpBewohnerRaum, BorderLayout.WEST);
-        c.add(jpFilterTextAlle, BorderLayout.NORTH);
+        c.add(jpResidentRoom, BorderLayout.WEST);
+        c.add(jpFilterTextAll, BorderLayout.NORTH);
         c.add(cards, BorderLayout.CENTER);
-        jpFilterTextAlle.add(jpFilter, BorderLayout.WEST);
-        cards.add(jpTextBewohnerUndBearbeiten, "Bewohner");
-        cards.add(jpSpezifisch, "Spezifisch");
+        jpFilterTextAll.add(jpFilter, BorderLayout.WEST);
+        cards.add(jpTextResidentAndEdit, "Bewohner");
+        cards.add(jpSpecific, "Spezifisch");
         cl.show(cards, "Bewohner");
 
 
@@ -136,143 +140,140 @@ public class GUI extends JFrame {
         gbc.gridheight = 1;
         gbc.weighty = 1;
         gbc.weightx = 1;
-        jpBewohnerRaum.add(jpBewohner, gbc);
+        jpResidentRoom.add(jpResident, gbc);
         gbc.gridx = 2;
         gbc.gridwidth = 1;
-        jpBewohnerRaum.add(jpRaum, gbc);
+        jpResidentRoom.add(jpRoom, gbc);
 
 
         gbc.gridx = 0;
-        jpTextBewohnerUndBearbeiten.add(jpTextBewohner, gbc);
+        jpTextResidentAndEdit.add(jpTextResident, gbc);
         gbc.weightx = 0;
         gbc.gridx = 1;
-        jpTextBewohnerUndBearbeiten.add(jpBearbeitenBewohner, gbc);
+        jpTextResidentAndEdit.add(jpEditResident, gbc);
 
 
-        btnBewohner = new JButton[10];
-        btnBearbeitenBewohner = new JButton[10];
-        lblRaum = new JLabel[10];
-        schichten = new String[]{"Frühschicht", "Spätschicht", "Nachtschicht"};
-        zeiten = new String[]{"25.04.2021", "26.04.2021", "27.04.2021", "28.04.2021", "29.04.2021", "30.04.2021"};
+        btnResident = new JButton[10];
+        btnEditResident = new JButton[10];
+        lblRoom = new JLabel[10];
+        shifts = new String[]{"Frühschicht", "Spätschicht", "Nachtschicht"};
+        time = new String[]{"25.04.2021", "26.04.2021", "27.04.2021", "28.04.2021", "29.04.2021", "30.04.2021"};
 
 
         GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
         GUI.Buttonlistener2 bl2 = new GUI.Buttonlistener2();
-//        GUI.ButtonListener3 bl3 = new GUI.ButtonListener3();
-
-
 
 
         for (int i = 0; i < residents.size(); i++) {
-            btnBewohner[i] = new JButton(residents.get(i).getName()+ " " +residents.get(i).getSurname());
-            btnBewohner[i].setBackground(lightgrey);
-            btnBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            btnBewohner[i].setPreferredSize(new Dimension(302, 51));
-            btnBewohner[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-            jpBewohner.add(btnBewohner[i]);
-            btnBewohner[i].addActionListener(bL1);
+            btnResident[i] = new JButton(residents.get(i).getName()+ " " +residents.get(i).getSurname());
+            btnResident[i].setBackground(lightgrey);
+            btnResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            btnResident[i].setPreferredSize(new Dimension(302, 51));
+            btnResident[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+            jpResident.add(btnResident[i]);
+            btnResident[i].addActionListener(bL1);
         }
 
         for (int i = 0; i < residents.size(); i++) {
-            lblRaum[i] = new JLabel("Raum " + (residents.get(i).getRoom()), SwingConstants.CENTER);
-            lblRaum[i].setBackground(lightgrey);
-            lblRaum[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            lblRaum[i].setOpaque(true);
-            lblRaum[i].setPreferredSize(new Dimension(132, 51));
-            lblRaum[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-            jpRaum.add(lblRaum[i]);
+            lblRoom[i] = new JLabel("Raum " + (residents.get(i).getRoom()), SwingConstants.CENTER);
+            lblRoom[i].setBackground(lightgrey);
+            lblRoom[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            lblRoom[i].setOpaque(true);
+            lblRoom[i].setPreferredSize(new Dimension(132, 51));
+            lblRoom[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+            jpRoom.add(lblRoom[i]);
         }
 
         for (int i = 0; i < residents.size(); i++) {
-            taBewohner[i] = new JTextArea("TEST " + (i + 1));
-            taBewohner[i].setLineWrap(true);
-            taBewohner[i].setWrapStyleWord(true);
-            taBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            taBewohner[i].setFont(new Font("TimesNewRoman", Font.PLAIN, 15));
-            taBewohner[i].setEditable(false);
-            spBewohner[i] = new JScrollPane(taBewohner[i]);
-            jpTextBewohner.add(spBewohner[i]);
+            taResident[i] = new JTextArea("TEST " + (i + 1));
+            taResident[i].setLineWrap(true);
+            taResident[i].setWrapStyleWord(true);
+            taResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            taResident[i].setFont(new Font("TimesNewRoman", Font.PLAIN, 15));
+            taResident[i].setEditable(false);
+            spTextResident[i] = new JScrollPane(taResident[i]);
+            jpTextResident.add(spTextResident[i]);
 
         }
 
         for (int i = 0; i < residents.size(); i++) {
-            btnBearbeitenBewohner[i] = new JButton();
-            btnBearbeitenBewohner[i].setBackground(lightgrey);
-            btnBearbeitenBewohner[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            btnBearbeitenBewohner[i].setPreferredSize(new Dimension(30, 51));
-            jpBearbeitenBewohner.add(btnBearbeitenBewohner[i]);
-            btnBearbeitenBewohner[i].setIcon(editicon);
-            btnBearbeitenBewohner[i].addActionListener(bl2);
+            btnEditResident[i] = new JButton();
+            btnEditResident[i].setBackground(lightgrey);
+            btnEditResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            btnEditResident[i].setPreferredSize(new Dimension(30, 51));
+            jpEditResident.add(btnEditResident[i]);
+            btnEditResident[i].setIcon(editicon);
+            btnEditResident[i].addActionListener(bl2);
         }
 
 
-        jcbSchicht = new JComboBox(schichten);
-        jpFilter.add(jcbSchicht);
-        jcbZeit = new JComboBox(zeiten);
-        jpFilter.add(jcbZeit);
-        jcbZeit.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 300, lightyellow));
-        jcbSchicht.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 300, lightyellow));
+        jcbShift = new JComboBox(shifts);
+        jpFilter.add(jcbShift);
+        jcbTime = new JComboBox(time);
+        jpFilter.add(jcbTime);
+        jcbTime.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 300, lightyellow));
+        jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 300, lightyellow));
         jpFilter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 
-        taAlle = new JTextArea(" Hier steht ein text, der über bestimmte Ereiginisse berichtet, die Bewohnerunspezifisch sind.");
-        taAlle.setLineWrap(true);
-        taAlle.setWrapStyleWord(true);
-        jpFilterTextAlle.add(taAlle, BorderLayout.CENTER);
-        taAlle.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        taAlle.setBackground(lightyellow);
-        taAlle.setEditable(false);
-        taAlle.setFont(new Font("TimesNewRoman", Font.BOLD, 15));
+        taAll = new JTextArea(" Hier steht ein text, der über bestimmte Ereiginisse berichtet, die Bewohnerunspezifisch sind.");
+        taAll.setLineWrap(true);
+        taAll.setWrapStyleWord(true);
+        jpFilterTextAll.add(taAll, BorderLayout.CENTER);
+        taAll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        taAll.setBackground(lightyellow);
+        taAll.setEditable(false);
+        taAll.setFont(new Font("TimesNewRoman", Font.BOLD, 15));
 
 
-        btnAlle = new JButton();
-        btnAlle.setBackground(lightgrey);
-        btnAlle.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        btnAlle.setPreferredSize(new Dimension(30, 51));
-        jpFilterTextAlle.add(btnAlle, BorderLayout.EAST);
-        btnAlle.setIcon(editicon);
-        btnAlle.addActionListener(bl2);
+        btnAll = new JButton();
+        btnAll.setBackground(lightgrey);
+        btnAll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        btnAll.setPreferredSize(new Dimension(30, 51));
+        jpFilterTextAll.add(btnAll, BorderLayout.EAST);
+        btnAll.setIcon(editicon);
+        btnAll.addActionListener(bl2);
     }
 
     class ButtonListener1 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            int index = Arrays.asList(btnBewohner).indexOf(e.getSource());
+            int index = Arrays.asList(btnResident).indexOf(e.getSource());
 
-            if (istgespeichert == true) {
-                if (knopfidentifikation == index) {
+            if (isSaved == true) {
+                if (buttonIdentification == index) {
 
                     cl.show(cards, "Bewohner");
-                    knopfidentifikation = -1;
-                    hatgeswitcht = false;
-                    btnBewohner[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                    lblRaum[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    buttonIdentification = -1;
+                    hasSwitched = false;
+                    btnResident[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    lblRoom[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 } else {
-                    if (hatgeswitcht == false) {
+                    if (hasSwitched == false) {
 
-                        knopfidentifikation = index;
+                        buttonIdentification = index;
                         //Aufspielen der Daten auf die Bewohnerübersicht
                         cl.show(cards, "Spezifisch");
-                        btnBewohner[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
-                        lblRaum[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
-                        hatgeswitcht = true;
-                        letzterknopf = index;
+                        btnResident[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
+                        lblRoom[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
+                        hasSwitched = true;
+                        lastButton = index;
 
                     } else {
-                        knopfidentifikation = index;
+                        buttonIdentification = index;
                         //Aufspielen der Daten auf die Bewohnerübersicht
                         cl.show(cards, "Spezifisch");
-                        hatgeswitcht = true;
+                        hasSwitched = true;
 
-                        btnBewohner[letzterknopf].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                        lblRaum[letzterknopf].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                        btnResident[lastButton].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                        lblRoom[lastButton].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-                        btnBewohner[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
-                        lblRaum[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
+                        btnResident[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
+                        lblRoom[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
 
-                        letzterknopf = index;
+                        lastButton = index;
                     }
                 }
             }
@@ -287,54 +288,54 @@ public class GUI extends JFrame {
 
  //           System.out.println(index);
 
-            if (e.getSource() != btnAlle) {
+            if (e.getSource() != btnAll) {
 
-                int index = Arrays.asList(btnBearbeitenBewohner).indexOf(e.getSource());
+                int index = Arrays.asList(btnEditResident).indexOf(e.getSource());
 
-                if (wirdbearbeitet == false) {
+                if (beingEdited == false) {
 
-                    if (istgespeichert == true) {
+                    if (isSaved == true) {
 
-                        wirdbearbeitet = true;
-                        taBewohner[index].setEditable(true);
-                        btnBearbeitenBewohner[index].setIcon(saveicon);
-                        istgespeichert = false;
-                        indexabgleich = index;
+                        beingEdited = true;
+                        taResident[index].setEditable(true);
+                        btnEditResident[index].setIcon(saveicon);
+                        isSaved = false;
+                        indexComparison = index;
 
                     }
                 } else {
-                    if (istgespeichert == false && btnAlle.getIcon()==editicon) {
-                        if (indexabgleich == index && e.getSource() != btnAlle) {
+                    if (isSaved == false && btnAll.getIcon()==editicon) {
+                        if (indexComparison == index && e.getSource() != btnAll) {
 
-                            taBewohner[index].setEditable(false);
-                            btnBearbeitenBewohner[index].setIcon(editicon);
+                            taResident[index].setEditable(false);
+                            btnEditResident[index].setIcon(editicon);
                             //Sachen abspeichern Mehode
-                            istgespeichert = true;
-                            wirdbearbeitet = false;
+                            isSaved = true;
+                            beingEdited = false;
 
                         }
                     }
                 }
             } else {
-                if (wirdbearbeitet == false) {
+                if (beingEdited == false) {
 
-                    if (istgespeichert == true) {
+                    if (isSaved == true) {
 
-                        wirdbearbeitet = true;
-                        taAlle.setEditable(true);
-                        btnAlle.setIcon(saveicon);
-                        istgespeichert = false;
+                        beingEdited = true;
+                        taAll.setEditable(true);
+                        btnAll.setIcon(saveicon);
+                        isSaved = false;
 
                     }
                 } else {
-                    if (istgespeichert == false && btnAlle.getIcon()==saveicon) {
-                        if (btnAlle==e.getSource()) {
+                    if (isSaved == false && btnAll.getIcon()==saveicon) {
+                        if (btnAll ==e.getSource()) {
 
-                            taAlle.setEditable(false);
-                            btnAlle.setIcon(editicon);
+                            taAll.setEditable(false);
+                            btnAll.setIcon(editicon);
                             //Sachen abspeichern Mehode
-                            istgespeichert = true;
-                            wirdbearbeitet = false;
+                            isSaved = true;
+                            beingEdited = false;
 
                         }
                     }
