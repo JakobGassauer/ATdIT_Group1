@@ -15,6 +15,12 @@ public class ICE extends People {
         this.adress=adress;
     }
 
+    public ICE(int iceID, int resID, String name, String surname, int tel_number, int adress) {
+        super();
+        this.name = name;
+        this.surname = surname;
+    }
+
     public int getIceID() {
         return iceID;
     }

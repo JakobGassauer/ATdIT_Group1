@@ -1,8 +1,12 @@
 package library.model.implementation;
 
 import library.model.Edit;
+import library.persistence.implementation.DatabaseService;
 
-public class Incidents implements Edit<Incidents> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Incident implements Edit<Incident> {
     private int incidentID;
     private String description;
     private int resID;
@@ -51,7 +55,7 @@ public class Incidents implements Edit<Incidents> {
                 '}';
     }
 
-    public Incidents(int incidentID, int resID, int shiftID, String description){
+    public Incident(int incidentID, int resID, int shiftID, String description){
         this.description=description;
         this.incidentID=incidentID;
         this.resID=resID;
@@ -59,18 +63,25 @@ public class Incidents implements Edit<Incidents> {
     }
 
     @Override
-    public void add(Incidents incident) {
+    public void add(Incident incident) {
         //TODO implement add logic
     }
 
     @Override
-    public void remove(Incidents incident) {
+    public void remove(Incident incident) {
         //TODO implement remove logic
     }
 
     @Override
-    public Incidents get() {
+    public Incident get() {
         return null;
+    }
+
+    public static Incident get(int index) {
+        List<Incident> incidentsArrayList =new ArrayList<>();
+        incidentsArrayList = DatabaseService.getIncidents();
+        Incident incident = incidentsArrayList.get(index);
+        return incident;
         //TODO implement get logic
     }
 }

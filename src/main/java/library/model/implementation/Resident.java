@@ -1,6 +1,12 @@
 package library.model.implementation;
 
 import library.model.People;
+import library.persistence.implementation.DatabaseService;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Resident extends People {
     private int resID;
@@ -38,5 +44,31 @@ public class Resident extends People {
                 ", room=" + room +
                 ", stationID=" + stationID +
                 '}';
+    }
+
+    public static Resident get(int index) {
+        List<Resident> residentsArrayList =new ArrayList<>();
+        residentsArrayList = DatabaseService.getResidents();
+        Resident resident = residentsArrayList.get(index);
+        return resident;
+        //TODO implement get logic
+    }
+
+    public static Resident get(String name) {
+        try{
+            String sql = "Select * from senior_resident where name = ?";
+            ResultSet result = DatabaseService.createPreparedStatement(sql, name);
+            Resident resident = new Resident(result.getInt("resID"),
+                    result.getString("name"),
+                    result.getString("surname"),
+                    result.getInt("age"),
+                    result.getInt("stationID"),
+                    result.getInt("room"));
+            return resident;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }

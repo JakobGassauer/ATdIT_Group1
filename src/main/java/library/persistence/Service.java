@@ -1,7 +1,9 @@
 package library.persistence;
 
+import java.sql.SQLException;
+
 public interface Service {
-    class ServiceException extends Exception{
+    class ServiceException extends SQLException {
         public ServiceException(String message){
             super(message);
         }
