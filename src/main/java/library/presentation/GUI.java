@@ -29,8 +29,8 @@ public class GUI extends JFrame {
 
     JPanel jpResidentRoom, jpFilterTextAll, jpFilter, jpTextResident, jpResident, jpRoom, jpSpecific, jpEditResident, jpTextResidentAndEdit, cards;
 
-    JScrollPane spBaseData, spMedication, spDiagnoseblatt, spClosestRelative, spVisits, spOther;
-    JTextArea taBaseData, taMedication, taDiagnoseblatt, taClosestRelative, taVisits, taOther;
+    JScrollPane spBaseData, spMedication, spDiagnosisSheet, spClosestRelative, spVisits, spOther;
+    JTextArea taBaseData, taMedication, taDiagnosisSheet, taClosestRelative, taVisits, taOther;
 
     JButton[] btnResident;
     JButton[] btnEditResident;
@@ -76,7 +76,7 @@ public class GUI extends JFrame {
 
         taBaseData = new JTextArea("Stammdaten");
         taMedication = new JTextArea("Medikation");
-        taDiagnoseblatt = new JTextArea("Diagnoseblatt");
+        taDiagnosisSheet = new JTextArea("Diagnoseblatt");
         taClosestRelative = new JTextArea("Angehöriger");
         taVisits = new JTextArea("Besuch");
         taOther = new JTextArea("Sonstiges");
@@ -86,7 +86,7 @@ public class GUI extends JFrame {
         taBaseData.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
         taBaseData.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
         taMedication.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taDiagnoseblatt.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taDiagnosisSheet.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
         taClosestRelative.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
         taVisits.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
         taOther.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
@@ -94,7 +94,7 @@ public class GUI extends JFrame {
 
         spBaseData = new JScrollPane(taBaseData);
         spMedication = new JScrollPane(taMedication);
-        spDiagnoseblatt = new JScrollPane(taDiagnoseblatt);
+        spDiagnosisSheet = new JScrollPane(taDiagnosisSheet);
         spClosestRelative = new JScrollPane(taClosestRelative);
         spVisits = new JScrollPane(taVisits);
         spOther = new JScrollPane(taOther);
@@ -113,7 +113,7 @@ public class GUI extends JFrame {
         gbc.gridx = 1;
         jpSpecific.add(spMedication, gbc);
         gbc.gridx = 2;
-        jpSpecific.add(spDiagnoseblatt, gbc);
+        jpSpecific.add(spDiagnosisSheet, gbc);
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridheight = 1;
