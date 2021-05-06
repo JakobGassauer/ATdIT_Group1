@@ -3,6 +3,8 @@ package library.model.implementation;
 import library.model.Edit;
 import library.persistence.implementation.DatabaseService;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,16 +74,37 @@ public class Incident implements Edit<Incident> {
         //TODO implement remove logic
     }
 
+
+    public static Incident get(int ResID) {
+        try{
+            String sql = "Select * from incidents where resID = ?";
+            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(ResID));
+            System.out.println(rs);
+            Incident incident = new Incident(
+                    rs.getInt("incidentID"),
+                    rs.getInt("resID"),
+                    rs.getInt("shiftID"),
+                    rs.getString("description"));
+            return incident;
+        }catch (SQLException e){
+            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
+                return new Incident(0,0,0,"no incident");
+            }
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
-    public Incident get() {
+    public  Incident get() {
         return null;
     }
 
-    public static Incident get(int index) {
+    /*public static Incident get(int index) {
         List<Incident> incidentsArrayList =new ArrayList<>();
         incidentsArrayList = DatabaseService.getIncidents();
         Incident incident = incidentsArrayList.get(index);
         return incident;
         //TODO implement get logic
-    }
+    }*/
 }

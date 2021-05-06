@@ -62,7 +62,7 @@ public class DatabaseService implements Service {
                 ICE ice = new ICE(
                         result.getInt("iceID"),result.getInt("resID"),
                         result.getString("name"),result.getString("surname"),
-                        result.getInt("tel_number"),result.getInt("adress"));
+                        result.getInt("tel_number"),result.getString("adress"));
                 arrayList.add(ice);
             }
         }catch (SQLException e){
@@ -115,7 +115,8 @@ public class DatabaseService implements Service {
             while(result.next()){
                 MedPlan medPlan = new MedPlan(
                         result.getInt("medID"),result.getInt("resID"),
-                        result.getDouble("concentration"),result.getDouble("intakeFrequency"));
+                        result.getDouble("concentration"),result.getDouble("intakeFrequency")
+                        , result.getInt("medicID"));
                 arrayList.add(medPlan);
             }
         }catch (SQLException e){
@@ -132,7 +133,7 @@ public class DatabaseService implements Service {
             ResultSet result = createNewStatement(sql);
             while(result.next()){
                 ShiftSchedule shiftSchedule = new ShiftSchedule(
-                        result.getInt("shiftID"),result.getInt("employeeID"));
+                        result.getInt("shiftID"),result.getInt("employeeID"), result.getInt("category"), result.getDate("date"), result.getString("shiftIncidents"));
                 arrayList.add(shiftSchedule);
             }
         }catch (SQLException e){
@@ -202,6 +203,20 @@ public class DatabaseService implements Service {
         }
     }
 
+    public static ResultSet createPreparedStatement(String sql, String value1, String value2) {
+        try{
+            Connection connection = DBConnect.connect();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,value1);
+            statement.setString(2,value2);
+            ResultSet result = statement.executeQuery();
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
    /* public List<entity> getTable() throws ServiceException{
         ArrayList<entity> arrayList = new ArrayList<>();
@@ -225,7 +240,7 @@ public class DatabaseService implements Service {
     }*/
 
 
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         List<Resident> residents = new ArrayList<Resident>();
         //try {
           residents = DatabaseService.getResidents();
@@ -239,5 +254,5 @@ public class DatabaseService implements Service {
         }else
             System.out.println("fail");
 
-    }
+    }*/
 }

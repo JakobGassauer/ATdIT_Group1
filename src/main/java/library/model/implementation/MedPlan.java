@@ -1,12 +1,17 @@
 package library.model.implementation;
 
 import library.model.Edit;
+import library.persistence.implementation.DatabaseService;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MedPlan implements Edit<MedPlan> {
     private int medID;
     private int resID;
     private double intakeFrequency;
     private double concentration;
+    private int medicID;
 
     public int getResID() {
         return this.resID;
@@ -22,6 +27,10 @@ public class MedPlan implements Edit<MedPlan> {
 
     public double getIntakeFrequency() {
         return this.intakeFrequency;
+    }
+
+    public int getMedicID() {
+        return medicID;
     }
 
     public void setResID(int resID) {
@@ -40,6 +49,10 @@ public class MedPlan implements Edit<MedPlan> {
         this.intakeFrequency = intakeFrequency;
     }
 
+    public void setMedicID(int medicID) {
+        this.medicID = medicID;
+    }
+
     @Override
     public String toString() {
         return "MedPlan{" +
@@ -47,19 +60,42 @@ public class MedPlan implements Edit<MedPlan> {
                 ", resID=" + resID +
                 ", intakeFrequency=" + intakeFrequency +
                 ", concentration=" + concentration +
+                ", medicID=" + medicID +
                 '}';
     }
 
-    public MedPlan(int medID, int resID, double concentration, double intakeFrequency){
+    public MedPlan(int medID, int resID, double concentration, double intakeFrequency, int medicID){
         this.concentration=concentration;
         this.intakeFrequency=intakeFrequency;
         this.medID=medID;
         this.resID=resID;
+        this.medicID = medicID;
     }
 
     @Override
     public void add(MedPlan object) {
         //TODO implement add logic
+    }
+
+    public static MedPlan get(int resID) {
+        try{
+            String sql = "Select * from medplan where resID = ?";
+            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
+            System.out.println(rs);
+            MedPlan medPlan = new MedPlan(
+                    rs.getInt("medID"),
+                    rs.getInt("resID"),
+                    rs.getDouble("intake_frequency"),
+                    rs.getDouble("concentration"),
+                    rs.getInt("medicID"));
+            return medPlan;
+        }catch (SQLException e){
+            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
+                return new MedPlan(0, 0,0,0,0);
+            }
+            e.printStackTrace();
+            return null;
+        }// return initial values if ResultSet ist closed : überprüfe e.detailMessage.equals("ResultSet closed")
     }
 
     @Override

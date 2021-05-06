@@ -1,13 +1,19 @@
 package library.presentation;
 
-import library.model.implementation.Resident;
+import library.model.implementation.*;
 import library.persistence.implementation.DatabaseService;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 
 public class GUI extends JFrame {
@@ -54,8 +60,12 @@ public class GUI extends JFrame {
 
 
     public GUI() {
+
+        //todo in Methode auslagern: getData
         ArrayList<Resident> residents;
         residents = DatabaseService.getResidents();
+        ArrayList<Incident> incidents;
+        incidents = DatabaseService.getIncidents();
 
         saveicon = new ImageIcon("Saveicon.png");
         editicon = new ImageIcon("Editicon.png");
@@ -73,6 +83,10 @@ public class GUI extends JFrame {
         jpSpecific = new JPanel(new GridBagLayout());
         jpTextResidentAndEdit = new JPanel(new GridBagLayout());
         cards = new JPanel(cl);
+
+        //todo: internationalization
+        //getting pressed button:
+
 
         taBaseData = new JTextArea("Stammdaten");
         taMedication = new JTextArea("Medikation");
@@ -157,15 +171,18 @@ public class GUI extends JFrame {
         btnEditResident = new JButton[10];
         lblRoom = new JLabel[10];
         shifts = new String[]{"Frühschicht", "Spätschicht", "Nachtschicht"};
-        time = new String[]{"25.04.2021", "26.04.2021", "27.04.2021", "28.04.2021", "29.04.2021", "30.04.2021"};
-
+        LocalDate today = LocalDate.now();
+        time = new String[6]; //todo currentdate
+        for (int i = 0; i < time.length; i++){
+            time[i]=today.format(DateTimeFormatter.ofPattern("dd.MM.uuuu"));
+            today.plusDays(1);
+        }
 
         GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
         GUI.Buttonlistener2 bl2 = new GUI.Buttonlistener2();
 
-
         for (int i = 0; i < residents.size(); i++) {
-            btnResident[i] = new JButton(residents.get(i).getName()+ " " +residents.get(i).getSurname());
+            btnResident[i] = new JButton(residents.get(i).getName()+ " " + residents.get(i).getSurname());
             btnResident[i].setBackground(lightgrey);
             btnResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnResident[i].setPreferredSize(new Dimension(302, 51));
@@ -185,7 +202,9 @@ public class GUI extends JFrame {
         }
 
         for (int i = 0; i < residents.size(); i++) {
-            taResident[i] = new JTextArea("TEST " + (i + 1));
+            int resID = residents.get(i).getResID();
+           //todo
+            taResident[i] = new JTextArea("Vorfälle: " + Incident.get(resID).getDescription());
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
             taResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -193,7 +212,6 @@ public class GUI extends JFrame {
             taResident[i].setEditable(false);
             spTextResident[i] = new JScrollPane(taResident[i]);
             jpTextResident.add(spTextResident[i]);
-
         }
 
         for (int i = 0; i < residents.size(); i++) {
@@ -215,8 +233,8 @@ public class GUI extends JFrame {
         jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 300, lightyellow));
         jpFilter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-
-        taAll = new JTextArea(" Hier steht ein text, der über bestimmte Ereiginisse berichtet, die Bewohnerunspezifisch sind.");
+        taAll = new JTextArea();
+        setShiftIncidentText();
         taAll.setLineWrap(true);
         taAll.setWrapStyleWord(true);
         jpFilterTextAll.add(taAll, BorderLayout.CENTER);
@@ -225,6 +243,8 @@ public class GUI extends JFrame {
         taAll.setEditable(false);
         taAll.setFont(new Font("TimesNewRoman", Font.BOLD, 15));
 
+        jcbShift.addItemListener(new ComboBoxItemListener());
+        jcbShift.addItemListener(new ComboBoxItemListener());
 
         btnAll = new JButton();
         btnAll.setBackground(lightgrey);
@@ -235,11 +255,28 @@ public class GUI extends JFrame {
         btnAll.addActionListener(bl2);
     }
 
+    class ComboBoxItemListener implements ItemListener{
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            setShiftIncidentText();
+        }
+    }
+
+    private void setShiftIncidentText() {
+        int shiftCategory;
+        Object date;
+        shiftCategory= (jcbShift.getSelectedIndex())+1;
+        date = jcbTime.getSelectedItem();
+        taAll.setText(ShiftSchedule.get(shiftCategory, date).getShiftIncidents());
+    }
+
     class ButtonListener1 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
             int index = Arrays.asList(btnResident).indexOf(e.getSource());
+
+            setResidentSpecificData(index);
 
             if (isSaved == true) {
                 if (buttonIdentification == index) {
@@ -279,14 +316,85 @@ public class GUI extends JFrame {
             }
 
         }
+
+
     }
+
+    public void setResidentSpecificData(int index) {
+        Resident selectedResident = Resident.get(index);
+        MedPlan medPlan = MedPlan.get(selectedResident.getResID());
+        ICE ice = ICE.get(selectedResident.getResID());
+
+        setBaseData(selectedResident);
+        setMedication(selectedResident,medPlan);
+        setDiagnosisSheet();
+        setClosestRelative(ice);
+        setVisits(selectedResident);
+        setOther();
+
+    }
+
+    private void setBaseData(Resident selectedResident) {
+        taBaseData.setText("Stammdaten"
+                + "\n" + "Name: " + selectedResident.getSurname()
+                + "\n" + "Vorname : " + selectedResident.getName()
+                + "\n" + "ID: " + selectedResident.getResID()
+                + "\n" + "Alter: " + selectedResident.getAge()
+                + "\n" + "Raum: " + selectedResident.getRoom()
+                + "\n" + "Station: " + selectedResident.getStationID());
+    }
+
+    private void setMedication(Resident selectedResident, MedPlan medPlan) {
+        try{
+        taMedication.setText("Medikation"
+                + "\n" + "MedPlanId: " + medPlan.getMedID()
+                + "\n" + "resID: " + selectedResident.getResID()
+                + "\n" + "intakeFrequency: " + medPlan.getIntakeFrequency()
+                + "\n" + "concentration: " + medPlan.getConcentration()
+                + "\n" + "MedicationID: " + medPlan.getMedicID()
+                + "\n" + "Name des Medikaments: " + Medication.get(medPlan.getMedID()));
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException");
+        }
+    }
+
+    private void setDiagnosisSheet() {
+        taDiagnosisSheet.setText("Diagnoseblatt");
+        // was soll hier drauf?
+    }
+
+    private void setClosestRelative(ICE ice) {
+        try{
+        taClosestRelative.setText("Angehöriger"
+                + "\n" + "Name: " + ice.getSurname()
+                + "\n" + "Vorname: " + ice.getName()
+                + "\n" + "IceID: " + ice.getIceID()
+                + "\n" + "Adresse: " + ice.getAdress()
+                + "\n" + "Telefonnummer: " + MessageFormat.format("{0,number,#}", ice.getTelnumber())); //todo format
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException");
+        }
+    }
+
+    private void setVisits(Resident selectedResident) {
+        try{
+        taVisits.setText("Besuch"
+                + "\n" + Visits.get(selectedResident.getResID()));
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException");
+        }
+    }
+
+    private void setOther() {
+        taOther.setText("Sonstiges");
+        //was soll hier drauf?
+    }
+
 
     class Buttonlistener2 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-
- //           System.out.println(index);
 
             if (e.getSource() != btnAll) {
 
@@ -344,12 +452,4 @@ public class GUI extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        GUI frame = new GUI();
-        frame.setTitle("Schichtplan");
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    }
 }
