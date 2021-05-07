@@ -98,12 +98,23 @@ public class GUI extends JFrame {
 
 
         taBaseData.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taBaseData.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+        taBaseData.setLineWrap(true);
+        taBaseData.setWrapStyleWord(true);
         taMedication.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taMedication.setLineWrap(true);
+        taMedication.setWrapStyleWord(true);
         taDiagnosisSheet.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taDiagnosisSheet.setLineWrap(true);
+        taDiagnosisSheet.setWrapStyleWord(true);
         taClosestRelative.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taClosestRelative.setLineWrap(true);
+        taClosestRelative.setWrapStyleWord(true);
         taVisits.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taVisits.setLineWrap(true);
+        taVisits.setWrapStyleWord(true);
         taOther.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+        taOther.setLineWrap(true);
+        taOther.setWrapStyleWord(true);
 
 
         spBaseData = new JScrollPane(taBaseData);
