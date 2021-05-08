@@ -3,7 +3,9 @@ wednesday: 10-11
 friday: 14.30-16.30
  
  
- Ziel bis zum Zwischenreview
+ZIEL BIS ZUM ZWISCHENREVIEW:
+
+
 Programmieren
 * Schichtübergabe ausprogrammieren
    * Architektur
@@ -40,6 +42,7 @@ Commits
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+GRUNDLEGENDE ÜBERLEGUNGEN WÄHREND DES ERSTEN TREFFENS BEZÜGLICH DES PROGRAMMS:
 
 
 Aufbau Schichtenübergabe
@@ -55,10 +58,7 @@ Ziele Funktionen des Programms:
 -Plus-Button -->neue infos dazufügen
 
 
-
-
 Methoden:
-
 
 patientenspezifische Ansicht (colourcoding für dringliche Ereignisse)
 
