@@ -4,7 +4,7 @@
 //develop branch before merged with current changes and commits
 //
 //procedure.txt with all the information of the status so far and the infos for the project (in folder documentation)
-//documentation.txt with the dates and the contents of our meetings along the emergence of our project (in folder documentation)
+//documentation.txt with the dates and the contents of our meetings along the emergence of our project (in folder documentation) (they do NOT include the times we are   //                                                                                                                                working on it ourselfs without a call)
 //
 //
 //in *Projects* we opened a Kanban Board for our SCRUM based work on the program
