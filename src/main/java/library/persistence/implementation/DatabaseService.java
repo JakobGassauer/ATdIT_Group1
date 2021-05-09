@@ -3,9 +3,15 @@ package library.persistence.implementation;
 import library.model.implementation.*;
 import library.persistence.Service;
 import library.DBConnect;
+//import org.graalvm.compiler.core.common.calc.FloatConvertCategory;
 
+import javax.swing.*;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseService implements Service {
@@ -128,12 +134,21 @@ public class DatabaseService implements Service {
     //ShiftSchedule
     public static ArrayList<ShiftSchedule> getShiftSchedule() {
         ArrayList<ShiftSchedule> arrayList = new ArrayList<ShiftSchedule>();
-        String sql = "SELECT * FROM ShiftSchedule";
+        String sql = "SELECT * FROM shift_schedule";
         try {
             ResultSet result = createNewStatement(sql);
             while(result.next()){
+                //todo datumsangabe anpassen
+                Date date1 = null;
+                try{
+                   date1 = new SimpleDateFormat("yyyy-MM-dd").parse(result.getString("date"));
+                }catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 ShiftSchedule shiftSchedule = new ShiftSchedule(
-                        result.getInt("shiftID"),result.getInt("employeeID"), result.getInt("category"), result.getDate("date"), result.getString("shiftIncidents"));
+                        result.getInt("shiftID"),result.getInt("employeeID"),
+                        result.getInt("category"),
+                        date1, result.getString("shift_incidents"));
                 arrayList.add(shiftSchedule);
             }
         }catch (SQLException e){

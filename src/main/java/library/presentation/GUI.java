@@ -11,10 +11,13 @@ import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 
 public class GUI extends JFrame {
@@ -106,6 +109,8 @@ public class GUI extends JFrame {
         residents = DatabaseService.getResidents();
         ArrayList<Incident> incidents;
         incidents = DatabaseService.getIncidents();
+        ArrayList<ShiftSchedule> shiftSchedules;
+        shiftSchedules = DatabaseService.getShiftSchedule();
 
         saveicon = new ImageIcon("Saveicon.png");
         editicon = new ImageIcon("Editicon.png");
@@ -199,11 +204,23 @@ public class GUI extends JFrame {
         btnEditResident = new JButton[10];
         lblRoom = new JLabel[10];
         shifts = new String[]{"Frühschicht", "Spätschicht", "Nachtschicht"};
-        LocalDate today = LocalDate.now();
-        time = new String[6]; //todo currentdate
-        for (int i = 0; i < time.length; i++){
-            time[i]=today.format(DateTimeFormatter.ofPattern("dd.MM.uuuu"));
-            today.plusDays(1);
+        time = new String[(shiftSchedules.size()/3)];
+        int n=0;
+        String previous = null;
+        for (int i = 0; i < shiftSchedules.size(); i++){
+            Date date = shiftSchedules.get(i).getDate();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+            String dateInString = formatter.format(date);
+            if(i!=0) {
+                if (dateInString.equals(previous)) {
+                    i++;
+                    n+=2;
+                    //n++;
+                    continue;
+                }
+            }
+            time[i-n] = String.format(dateInString, "dd.MM.yyyy" );
+            previous = dateInString;
         }
 
         GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
@@ -231,7 +248,7 @@ public class GUI extends JFrame {
 
         for (int i = 0; i < residents.size(); i++) {
             int resID = residents.get(i).getResID();
-           //todo
+           //todo abgleich mit date
             taResident[i] = new JTextArea("Vorfälle: " + Incident.get(resID).getDescription());
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
@@ -272,7 +289,7 @@ public class GUI extends JFrame {
         taAll.setFont(new Font("TimesNewRoman", Font.BOLD, 15));
 
         jcbShift.addItemListener(new ComboBoxItemListener());
-        jcbShift.addItemListener(new ComboBoxItemListener());
+        jcbTime.addItemListener(new ComboBoxItemListener());
 
         btnAll = new JButton();
         btnAll.setBackground(lightgrey);
@@ -292,10 +309,17 @@ public class GUI extends JFrame {
 
     private void setShiftIncidentText() {
         int shiftCategory;
-        Object date;
         shiftCategory= (jcbShift.getSelectedIndex())+1;
-        date = jcbTime.getSelectedItem();
-        taAll.setText(ShiftSchedule.get(shiftCategory, date).getShiftIncidents());
+
+        String dateString = (String) jcbTime.getSelectedItem(); //String format
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("dd.MM.yyyy").parse((String)dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String shiftIncident = ShiftSchedule.get(shiftCategory, date).getShiftIncidents();
+        taAll.setText(shiftIncident);
     }
 
     class ButtonListener1 implements ActionListener {

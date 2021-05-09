@@ -3,8 +3,12 @@ package library.model.implementation;
 import library.model.Edit;
 import library.persistence.implementation.DatabaseService;
 
+import javax.swing.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ShiftSchedule implements Edit<ShiftSchedule> {
@@ -65,17 +69,26 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
                 '}';
     }
 
-    public static ShiftSchedule get(Object category, Object date) {
+    public static ShiftSchedule get(Object category, Date date) {
         try{
-            String sql = "Select * from shift_shedule where date = ? and category  = ?";
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(date), String.valueOf(category));
+            String sql = "Select * from shift_schedule where date = ? and category  = ?";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String dateInString = formatter.format(date);
+            ResultSet rs = DatabaseService.createPreparedStatement(sql, dateInString, String.valueOf(category));
             System.out.println(rs);
+            Date date1 =null;
+            try{
+                date1 = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("date"));
+            }catch (ParseException pe) {
+                pe.printStackTrace();
+                return null;
+            }
             ShiftSchedule shiftSchedule = new ShiftSchedule(
                     rs.getInt("shiftID"),
                     rs.getInt("employeeID"),
                     rs.getInt("category"),
-                    rs.getDate("date"),
-                    rs.getString("shiftIncidents"));
+                    date1,
+                    rs.getString("shift_incidents"));
             return shiftSchedule;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
@@ -83,6 +96,7 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
             }
             e.printStackTrace();
             return null;
+
         }
     }
     /*
