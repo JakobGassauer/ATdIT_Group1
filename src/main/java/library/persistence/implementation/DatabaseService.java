@@ -251,7 +251,17 @@ public class DatabaseService implements Service {
         try{
             String newTextEdited = newText.substring(10);
             Connection connection = DBConnect.connect();
-            String sql = "REPLACE into incidents (description) values (" + newTextEdited + ")";
+            String sql = "UPDATE incidents set incidentID = ?, description = ?, resID = ?, shiftID = ?, incidents_date = ? WHERE resID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, String.valueOf(incident.getIncidentID()));
+            statement.setString(2, newTextEdited);
+            statement.setString(3, String.valueOf(incident.getResID()));
+            statement.setString(4, String.valueOf(incident.getShiftID()));
+            statement.setString(5, String.valueOf(incident.getIncidentsDate()));
+            statement.setString(6, String.valueOf(incident.getResID()));
+            statement.execute();
+
+            //"REPLACE into incidents (description) values (" + newTextEdited + ") WHERE resID = " + incident.getResID();
 
                     /*"REPLACE into incidents (incidentID, description, resID, shiftID, incidentsDate) " +
                     "values (" + incident.getIncidentID() + ", " +
@@ -260,9 +270,8 @@ public class DatabaseService implements Service {
                     incident.getShiftID() + ", " +
                     incident.getIncidentsDate() + ") ";*/
             //WHERE resID = " + resID;
-
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            //Statement statement = connection.createStatement();
+            //  statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -13,7 +13,7 @@ public class Main {
         //System.out.println(Resident.get(2));
         //System.out.println(Incident.get(Resident.get("Inge").getResID()).getDescription());
         //System.out.println(Resident.get("Robert").getRoom());
-
+        //todo Junit Tests & internationalization
         GUI frame = new GUI();
         frame.setTitle("Schichtplan");
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
