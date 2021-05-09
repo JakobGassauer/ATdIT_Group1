@@ -413,6 +413,8 @@ public class GUI extends JFrame {
             docBaseData.insertString(docBaseData.getLength(), "\n \n Station: ", attrSubHeader);
             docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getStationID()), attrText);
 
+            docBaseData.insertString(docBaseData.getLength(), "\n \n                                                                         ", attrText);
+
         }catch(BadLocationException e){}
     }
 
@@ -434,6 +436,8 @@ public class GUI extends JFrame {
             docMedication.insertString(docMedication.getLength(), "\n \n Medication name: ", attrSubHeader);
             docMedication.insertString(docMedication.getLength(), Medication.get(medPlan.getMedID()), attrText);
 
+            docMedication.insertString(docMedication.getLength(), "\n \n                                                                         ", attrText);
+
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
         } catch (BadLocationException be){ }
@@ -443,6 +447,10 @@ public class GUI extends JFrame {
        try{
            tpDiagnosisSheet.setText("");
            docDiagnosisSheet.insertString(docDiagnosisSheet.getLength()," Diagnosis", attrHeader);
+           docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), "\n \n Currently no information given.", attrText);
+
+          docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), "\n \n                                                                         ", attrText);
+
        } catch (BadLocationException be){ }
 
        // todo was soll hier drauf?
@@ -463,6 +471,8 @@ public class GUI extends JFrame {
             docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Phone number: ", attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), String.valueOf(ice.getTelnumber()), attrText);
 
+            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n                                                                         ", attrText);
+
 //                + "\n" + "Telefonnummer: " + MessageFormat.format("{0,number,#}", ice.getTelnumber()));
 //                       integer wird falsch angezeigt ?!   todo format
 
@@ -477,6 +487,8 @@ public class GUI extends JFrame {
         docVisits.insertString(docVisits.getLength(), " Visits", attrHeader);
         docVisits.insertString(docVisits.getLength(), "\n \n " + Visits.get(selectedResident.getResID()), attrText);
 
+        docVisits.insertString(docVisits.getLength(), "\n \n                                                                         ", attrText);
+
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
         } catch (BadLocationException be){ }
@@ -486,6 +498,8 @@ public class GUI extends JFrame {
         try{
         tpOther.setText(" ");
         docOther.insertString(docOther.getLength()," Other", attrHeader);
+
+        docOther.insertString(docOther.getLength(), "\n \n                                                                         ", attrText);
 
         //todo was soll hier drauf?
         } catch (BadLocationException be){ }
