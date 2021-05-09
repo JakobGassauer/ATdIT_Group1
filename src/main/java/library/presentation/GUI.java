@@ -106,6 +106,8 @@ public class GUI extends JFrame {
         tpOther.setEditable(false);
 
 
+
+
         //todo in Methode auslagern: getData
         residents = DatabaseService.getResidents();
         incidents = DatabaseService.getIncidents();
@@ -152,7 +154,7 @@ public class GUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
-        gbc.gridheight = 2;
+        gbc.gridheight = 1;
         gbc.weighty = 1;
         gbc.weightx = 1;
         jpSpecific.add(spBaseData, gbc);
@@ -161,8 +163,7 @@ public class GUI extends JFrame {
         gbc.gridx = 2;
         jpSpecific.add(spDiagnosisSheet, gbc);
         gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridheight = 1;
+        gbc.gridy = 1;
         jpSpecific.add(spClosestRelative, gbc);
         gbc.gridx = 1;
         jpSpecific.add(spVisits, gbc);
