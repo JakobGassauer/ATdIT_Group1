@@ -86,7 +86,7 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
                 date1 = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("date"));
             }catch (ParseException pe) {
                 pe.printStackTrace();
-                return null;
+              //  return null;
             }
             ShiftSchedule shiftSchedule = new ShiftSchedule(
                     rs.getInt("shiftID"),
@@ -94,6 +94,8 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
                     rs.getInt("category"),
                     date1,
                     rs.getString("shift_incidents"));
+            rs.getStatement().close();
+            rs.close();
             return shiftSchedule;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db

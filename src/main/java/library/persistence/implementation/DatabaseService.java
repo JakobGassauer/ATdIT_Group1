@@ -30,6 +30,7 @@ public class DatabaseService implements Service {
                         result.getInt("stationID"),result.getInt("room"));
                 residentArrayList.add(resident);
             }
+            statement.close();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -41,7 +42,9 @@ public class DatabaseService implements Service {
         ArrayList<Employee> residentArrayList = new ArrayList<>();
         String sql = "SELECT * FROM employee";
         try {
-            ResultSet result = createNewStatement(sql);
+            Connection connection = DBConnect.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
             if (result != null) {
                 while(result.next()){
                     Employee employee = new Employee(
@@ -51,6 +54,7 @@ public class DatabaseService implements Service {
                     residentArrayList.add(employee);
                 }
             }
+            statement.close();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -62,7 +66,9 @@ public class DatabaseService implements Service {
         ArrayList<ICE> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM ICE";
         try {
-            ResultSet result = createNewStatement(sql);
+            Connection connection = DBConnect.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
             if (result != null) {
                 while(result.next()){
                     ICE ice = new ICE(
@@ -72,6 +78,7 @@ public class DatabaseService implements Service {
                     arrayList.add(ice);
                 }
             }
+            statement.close();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -83,7 +90,9 @@ public class DatabaseService implements Service {
         ArrayList<Incident> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Incidents";
         try {
-            ResultSet result = createNewStatement(sql);
+            Connection connection = DBConnect.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
             Date incidentsDate = null;
             if (result!=null){
                 try{
@@ -98,6 +107,7 @@ public class DatabaseService implements Service {
                     arrayList.add(incident);
                 }
             }
+            statement.close();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -109,7 +119,9 @@ public class DatabaseService implements Service {
         ArrayList<Medication> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Medication";
         try {
-            ResultSet result = createNewStatement(sql);
+            Connection connection = DBConnect.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
             if (result != null) {
                 while(result.next()){
                     Medication medication = new Medication(
@@ -117,6 +129,7 @@ public class DatabaseService implements Service {
                     arrayList.add(medication);
                 }
             }
+            statement.close();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -128,7 +141,9 @@ public class DatabaseService implements Service {
         ArrayList<MedPlan> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM MedPlan";
         try {
-            ResultSet result = createNewStatement(sql);
+            Connection connection = DBConnect.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
             if (result != null) {
                 while(result.next()){
                     MedPlan medPlan = new MedPlan(
@@ -138,6 +153,7 @@ public class DatabaseService implements Service {
                     arrayList.add(medPlan);
                 }
             }
+            statement.close();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -149,7 +165,9 @@ public class DatabaseService implements Service {
         ArrayList<ShiftSchedule> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM shift_schedule";
         try {
-            ResultSet result = createNewStatement(sql);
+            Connection connection = DBConnect.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
             if (result != null) {
                 while(result.next()){
                     Date date1 = null;
@@ -165,6 +183,7 @@ public class DatabaseService implements Service {
                     arrayList.add(shiftSchedule);
                 }
             }
+            statement.close();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -177,7 +196,9 @@ public class DatabaseService implements Service {
         ArrayList<Station> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Station";
         try {
-            ResultSet result = createNewStatement(sql);
+            Connection connection = DBConnect.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
             if (result != null) {
                 while(result.next()){
                     Station station = new Station(
@@ -185,6 +206,7 @@ public class DatabaseService implements Service {
                     arrayList.add(station);
                 }
             }
+            statement.close();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -196,7 +218,9 @@ public class DatabaseService implements Service {
         ArrayList<Visits> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Visits";
         try {
-            ResultSet result = createNewStatement(sql);
+            Connection connection = DBConnect.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
             if (result != null) {
                 while(result.next()){
                     Visits visits = new Visits(
@@ -205,6 +229,7 @@ public class DatabaseService implements Service {
                     arrayList.add(visits);
                 }
             }
+            statement.close();
         }catch (SQLException | NullPointerException e){
             System.out.println(e.getMessage());
         }
@@ -251,27 +276,11 @@ public class DatabaseService implements Service {
         try{
             String newTextEdited = newText.substring(10);
             Connection connection = DBConnect.connect();
-            String sql = "UPDATE incidents set incidentID = ?, description = ?, resID = ?, shiftID = ?, incidents_date = ? WHERE resID = ?";
+            String sql = "UPDATE incidents set description = ? WHERE resID = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, String.valueOf(incident.getIncidentID()));
-            statement.setString(2, newTextEdited);
-            statement.setString(3, String.valueOf(incident.getResID()));
-            statement.setString(4, String.valueOf(incident.getShiftID()));
-            statement.setString(5, String.valueOf(incident.getIncidentsDate()));
-            statement.setString(6, String.valueOf(incident.getResID()));
+            statement.setString(1, newTextEdited);
+            statement.setString(2, String.valueOf(incident.getResID()));
             statement.execute();
-
-            //"REPLACE into incidents (description) values (" + newTextEdited + ") WHERE resID = " + incident.getResID();
-
-                    /*"REPLACE into incidents (incidentID, description, resID, shiftID, incidentsDate) " +
-                    "values (" + incident.getIncidentID() + ", " +
-                    newTextEdited + ", " +
-                    incident.getResID() + ", " +
-                    incident.getShiftID() + ", " +
-                    incident.getIncidentsDate() + ") ";*/
-            //WHERE resID = " + resID;
-            //Statement statement = connection.createStatement();
-            //  statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }

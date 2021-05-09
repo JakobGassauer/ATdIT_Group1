@@ -41,7 +41,10 @@ public class Medication {
         try{
             String sql = "Select name from medication where medicID = ?";
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(medicID));
-            return rs.getString("name"); //todo testen ob das richtige zurückgeben wird
+            String name = rs.getString("name");
+            rs.getStatement().close();
+            rs.close();
+            return name; //todo testen ob das richtige zurückgeben wird
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
                 return "no medication";

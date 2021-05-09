@@ -4,7 +4,7 @@ import java.sql.*;
 
 
 public class DBConnect {
-    public static final String location="jdbc:sqlite:src/database/db.sqlite";
+    public static final String location="jdbc:sqlite:src/database/kopie.sqlite";
 
     public static Connection connect() {
 

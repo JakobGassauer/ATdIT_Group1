@@ -88,6 +88,8 @@ public class MedPlan implements Edit<MedPlan> {
                     rs.getDouble("intake_frequency"),
                     rs.getDouble("concentration"),
                     rs.getInt("medicID"));
+            rs.getStatement().close();
+            rs.close();
             return medPlan;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db

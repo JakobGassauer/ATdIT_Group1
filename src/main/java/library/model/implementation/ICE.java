@@ -84,6 +84,8 @@ public class ICE extends People {
                         rs.getInt("tel_number"),
                         rs.getString("adress"));
             }
+            rs.getStatement().close();
+            rs.close();
             return new ICE(0,0,null,null,0,null);
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db

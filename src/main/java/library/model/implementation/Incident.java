@@ -101,6 +101,8 @@ public class Incident implements Edit<Incident> {
                     rs.getInt("resID"),
                     rs.getInt("shiftID"),
                     rs.getString("description"), incidentsDate);
+            rs.getStatement().close();
+            rs.close();
             return incident;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
@@ -127,6 +129,8 @@ public class Incident implements Edit<Incident> {
                     rs.getInt("resID"),
                     rs.getInt("shiftID"),
                     rs.getString("description"), incidentsDate);
+            rs.getStatement().close();
+            rs.close();
             return incident;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db

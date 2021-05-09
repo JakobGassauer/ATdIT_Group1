@@ -50,7 +50,10 @@ public class Visits implements Edit<Visits> {
         try{
             String sql = "Select description from visits where resID = ?";
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
-            return rs.getString("description"); //todo testen ob das richtige zurückgeben wird
+            String description = rs.getString("description");
+            rs.getStatement().close();
+            rs.close();
+            return description; //todo testen ob das richtige zurückgeben wird
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
                 return "no visits";

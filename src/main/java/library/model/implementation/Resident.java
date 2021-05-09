@@ -65,6 +65,8 @@ public class Resident extends People {
                     result.getInt("age"),
                     result.getInt("stationID"),
                     result.getInt("room"));
+            result.getStatement().close();
+            result.close();
             return resident;
         }catch (SQLException e){
             e.printStackTrace();
