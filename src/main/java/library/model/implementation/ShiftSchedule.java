@@ -30,6 +30,11 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
         return shiftIncidents;
     }
 
+
+    public Date getDate() {
+        return date;
+    }
+
     public void setShiftID(int shiftID) { this.shiftID = shiftID; }
 
     public void setEmployeeID(int employeeID) { this.employeeID = employeeID; }
