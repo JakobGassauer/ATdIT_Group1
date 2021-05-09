@@ -126,7 +126,7 @@ public class GUI extends JFrame {
         jpResident = new JPanel(new GridLayout(10, 1));
         jpRoom = new JPanel(new GridLayout(10, 1));
         jpEditResident = new JPanel(new GridLayout(10, 1));
-        jpSpecific = new JPanel(new GridBagLayout());
+        jpSpecific = new JPanel(new GridLayout(2,3));
         jpTextResidentAndEdit = new JPanel(new GridBagLayout());
         cards = new JPanel(cl);
 
@@ -149,27 +149,19 @@ public class GUI extends JFrame {
         spTextResident = new JScrollPane[residents.size()];
 
 
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.weighty = 1;
-        gbc.weightx = 1;
-        jpSpecific.add(spBaseData, gbc);
-        gbc.gridx = 1;
-        jpSpecific.add(spMedication, gbc);
-        gbc.gridx = 2;
-        jpSpecific.add(spDiagnosisSheet, gbc);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        jpSpecific.add(spClosestRelative, gbc);
-        gbc.gridx = 1;
-        jpSpecific.add(spVisits, gbc);
-        gbc.gridx = 2;
-        jpSpecific.add(spOther, gbc);
+        jpSpecific.add(spBaseData);
+        jpSpecific.add(spMedication);
+        jpSpecific.add(spDiagnosisSheet);
+        jpSpecific.add(spClosestRelative);
+        jpSpecific.add(spVisits);
+        jpSpecific.add(spOther);
 
+        spBaseData.setBorder(BorderFactory.createMatteBorder(12,12,6,6,lightgrey));
+        spMedication.setBorder(BorderFactory.createMatteBorder(12,6,6,6,lightgrey));
+        spDiagnosisSheet.setBorder(BorderFactory.createMatteBorder(12,6,6,12,lightgrey));
+        spClosestRelative.setBorder(BorderFactory.createMatteBorder(6,12,12,6,lightgrey));
+        spVisits.setBorder(BorderFactory.createMatteBorder(6,6,12,6,lightgrey));
+        spOther.setBorder(BorderFactory.createMatteBorder(6,6,12,12,lightgrey));
 
         c.add(jpResidentRoom, BorderLayout.WEST);
         c.add(jpFilterTextAll, BorderLayout.NORTH);
@@ -180,6 +172,7 @@ public class GUI extends JFrame {
         cl.show(cards, "Bewohner");
 
 
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -414,8 +407,6 @@ public class GUI extends JFrame {
             docBaseData.insertString(docBaseData.getLength(), "\n \n Station: ", attrSubHeader);
             docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getStationID()), attrText);
 
-            docBaseData.insertString(docBaseData.getLength(), "\n \n                                                                         ", attrText);
-
         }catch(BadLocationException e){}
     }
 
@@ -437,8 +428,6 @@ public class GUI extends JFrame {
             docMedication.insertString(docMedication.getLength(), "\n \n Medication name: ", attrSubHeader);
             docMedication.insertString(docMedication.getLength(), Medication.get(medPlan.getMedID()), attrText);
 
-            docMedication.insertString(docMedication.getLength(), "\n \n                                                                         ", attrText);
-
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
         } catch (BadLocationException be){ }
@@ -449,8 +438,6 @@ public class GUI extends JFrame {
            tpDiagnosisSheet.setText("");
            docDiagnosisSheet.insertString(docDiagnosisSheet.getLength()," Diagnosis", attrHeader);
            docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), "\n \n Currently no information given.", attrText);
-
-          docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), "\n \n                                                                         ", attrText);
 
        } catch (BadLocationException be){ }
 
@@ -472,8 +459,6 @@ public class GUI extends JFrame {
             docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Phone number: ", attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), String.valueOf(ice.getTelnumber()), attrText);
 
-            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n                                                                         ", attrText);
-
 //                + "\n" + "Telefonnummer: " + MessageFormat.format("{0,number,#}", ice.getTelnumber()));
 //                       integer wird falsch angezeigt ?!   todo format
 
@@ -488,8 +473,6 @@ public class GUI extends JFrame {
         docVisits.insertString(docVisits.getLength(), " Visits", attrHeader);
         docVisits.insertString(docVisits.getLength(), "\n \n " + Visits.get(selectedResident.getResID()), attrText);
 
-        docVisits.insertString(docVisits.getLength(), "\n \n                                                                         ", attrText);
-
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
         } catch (BadLocationException be){ }
@@ -499,8 +482,6 @@ public class GUI extends JFrame {
         try{
         tpOther.setText(" ");
         docOther.insertString(docOther.getLength()," Other", attrHeader);
-
-        docOther.insertString(docOther.getLength(), "\n \n                                                                         ", attrText);
 
         //todo was soll hier drauf?
         } catch (BadLocationException be){ }
