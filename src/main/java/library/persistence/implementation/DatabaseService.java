@@ -5,14 +5,11 @@ import library.persistence.Service;
 import library.DBConnect;
 //import org.graalvm.compiler.core.common.calc.FloatConvertCategory;
 
-import javax.swing.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class DatabaseService implements Service {
     public DatabaseService(){
@@ -83,10 +80,16 @@ public class DatabaseService implements Service {
         String sql = "SELECT * FROM Incidents";
         try {
             ResultSet result = createNewStatement(sql);
+            Date incidentsDate = null;
+            try{
+                incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(result.getString("incidents_date"));
+            }catch (ParseException e) {
+                e.printStackTrace();
+            }
             while(result.next()){
                 Incident incident = new Incident(
                         result.getInt("incidentID"),result.getInt("resID"),
-                        result.getInt("shiftID"),result.getString("description"));
+                        result.getInt("shiftID"),result.getString("description"), incidentsDate);
                 arrayList.add(incident);
             }
         }catch (SQLException e){
@@ -229,6 +232,27 @@ public class DatabaseService implements Service {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static void updateIncidentsDatabase(String newText, Incident incident){
+        try{
+            String newTextEdited = newText.substring(10);
+            Connection connection = DBConnect.connect();
+            String sql = "REPLACE into incidents (description) values (" + newTextEdited + ")";
+
+                    /*"REPLACE into incidents (incidentID, description, resID, shiftID, incidentsDate) " +
+                    "values (" + incident.getIncidentID() + ", " +
+                    newTextEdited + ", " +
+                    incident.getResID() + ", " +
+                    incident.getShiftID() + ", " +
+                    incident.getIncidentsDate() + ") ";*/
+            //WHERE resID = " + resID;
+
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

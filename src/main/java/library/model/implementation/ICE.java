@@ -9,10 +9,10 @@ import java.sql.SQLException;
 public class ICE extends People {
     private int iceID;
     private int resID;
-    private float telnumber;
+    private int telnumber;
     private String adress;
 
-    public ICE(int iceID, int resID, float telnumber, String adress){
+    public ICE(int iceID, int resID, int telnumber, String adress){
         this.iceID=iceID;
         this.resID=resID;
         this.telnumber=telnumber;
@@ -37,7 +37,7 @@ public class ICE extends People {
         return resID;
     }
 
-    public float getTelnumber() {
+    public int getTelnumber() {
         return telnumber;
     }
 
@@ -53,7 +53,7 @@ public class ICE extends People {
         this.resID = resID;
     }
 
-    public void setTelnumber(float telnumber) {
+    public void setTelnumber(int telnumber) {
         this.telnumber = telnumber;
     }
 

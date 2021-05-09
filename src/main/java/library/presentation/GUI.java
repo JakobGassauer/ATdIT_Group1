@@ -68,6 +68,10 @@ public class GUI extends JFrame {
     Color lightgrey = new Color(245, 245, 245);
     Color lightyellow = new Color(255, 255, 202);
 
+    ArrayList<Resident> residents;
+    ArrayList<Incident> incidents;
+    ArrayList<ShiftSchedule> shiftSchedules;
+
 
     public GUI() {
 
@@ -105,11 +109,8 @@ public class GUI extends JFrame {
 
 
         //todo in Methode auslagern: getData
-        ArrayList<Resident> residents;
         residents = DatabaseService.getResidents();
-        ArrayList<Incident> incidents;
         incidents = DatabaseService.getIncidents();
-        ArrayList<ShiftSchedule> shiftSchedules;
         shiftSchedules = DatabaseService.getShiftSchedule();
 
         saveicon = new ImageIcon("Saveicon.png");
@@ -215,13 +216,20 @@ public class GUI extends JFrame {
                 if (dateInString.equals(previous)) {
                     i++;
                     n+=2;
-                    //n++;
                     continue;
                 }
             }
             time[i-n] = String.format(dateInString, "dd.MM.yyyy" );
             previous = dateInString;
         }
+
+        jcbShift = new JComboBox(shifts);
+        jpFilter.add(jcbShift);
+        jcbTime = new JComboBox(time);
+        jpFilter.add(jcbTime);
+        jcbTime.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 300, lightyellow));
+        jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 300, lightyellow));
+        jpFilter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
         GUI.Buttonlistener2 bl2 = new GUI.Buttonlistener2();
@@ -248,7 +256,6 @@ public class GUI extends JFrame {
 
         for (int i = 0; i < residents.size(); i++) {
             int resID = residents.get(i).getResID();
-           //todo abgleich mit date
             taResident[i] = new JTextArea("Vorfälle: " + Incident.get(resID).getDescription());
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
@@ -270,13 +277,6 @@ public class GUI extends JFrame {
         }
 
 
-        jcbShift = new JComboBox(shifts);
-        jpFilter.add(jcbShift);
-        jcbTime = new JComboBox(time);
-        jpFilter.add(jcbTime);
-        jcbTime.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 300, lightyellow));
-        jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 300, lightyellow));
-        jpFilter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         taAll = new JTextArea();
         setShiftIncidentText();
@@ -304,6 +304,21 @@ public class GUI extends JFrame {
         @Override
         public void itemStateChanged(ItemEvent e) {
             setShiftIncidentText();
+            setResidentIncidentText();
+        }
+    }
+
+    private void setResidentIncidentText() {
+        for (int i = 0; i < residents.size(); i++) {
+            int resID = residents.get(i).getResID();
+            String dateString = (String) jcbTime.getSelectedItem(); //String format
+            Date date = null;
+            try {
+                date = new SimpleDateFormat("dd.MM.yyyy").parse((String)dateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            taResident[i].setText("Vorfälle: " + Incident.get(resID,date).getDescription());
         }
     }
 
@@ -432,7 +447,7 @@ public class GUI extends JFrame {
            docDiagnosisSheet.insertString(docDiagnosisSheet.getLength()," Diagnosis", attrHeader);
        } catch (BadLocationException be){ }
 
-       // was soll hier drauf?
+       // todo was soll hier drauf?
     }
 
     private void setClosestRelative(ICE ice) {
@@ -448,9 +463,10 @@ public class GUI extends JFrame {
             docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Address: ", attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), ice.getAdress(), attrText);
             docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Phone number: ", attrSubHeader);
-            docClosestRelative.insertString(docClosestRelative.getLength(), "MUSS EINGEFÜGT WERDEN", attrText);
+            docClosestRelative.insertString(docClosestRelative.getLength(), String.valueOf(ice.getTelnumber()), attrText);
 
-//                + "\n" + "Telefonnummer: " + MessageFormat.format("{0,number,#}", ice.getTelnumber())); //todo format
+//                + "\n" + "Telefonnummer: " + MessageFormat.format("{0,number,#}", ice.getTelnumber()));
+//                       integer wird falsch angezeigt ?!   todo format
 
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
@@ -473,7 +489,7 @@ public class GUI extends JFrame {
         tpOther.setText(" ");
         docOther.insertString(docOther.getLength()," Other", attrHeader);
 
-        //was soll hier drauf?
+        //todo was soll hier drauf?
         } catch (BadLocationException be){ }
     }
 
@@ -504,6 +520,7 @@ public class GUI extends JFrame {
 
                             taResident[index].setEditable(false);
                             btnEditResident[index].setIcon(editicon);
+                            saveChanges(index);
                             //Sachen abspeichern Mehode
                             isSaved = true;
                             beingEdited = false;
@@ -537,6 +554,13 @@ public class GUI extends JFrame {
                 }
             }
         }
+    }
+
+    private void saveChanges(int index) {
+        String newText = taResident[index].getText();
+        int resID = residents.get(index).getResID();
+        DatabaseService.updateIncidentsDatabase(newText, incidents.get(index));
+
     }
 
 }
