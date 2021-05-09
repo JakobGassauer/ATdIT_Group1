@@ -17,7 +17,7 @@ public class DatabaseService implements Service {
 
     //Residents
     public static ArrayList<Resident> getResidents() {
-        ArrayList<Resident> residentArrayList = new ArrayList<Resident>();
+        ArrayList<Resident> residentArrayList = new ArrayList<>();
         String sql = "SELECT * FROM senior_resident";
         try {
             Connection connection = DBConnect.connect();
@@ -31,131 +31,142 @@ public class DatabaseService implements Service {
                 residentArrayList.add(resident);
             }
         }catch (SQLException e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return residentArrayList;
     }
 
     // Employees
     public static ArrayList<Employee> getEmployees() {
-        ArrayList<Employee> residentArrayList = new ArrayList<Employee>();
+        ArrayList<Employee> residentArrayList = new ArrayList<>();
         String sql = "SELECT * FROM employee";
         try {
             ResultSet result = createNewStatement(sql);
-            while(result.next()){
-                Employee employee = new Employee(
-                        result.getInt("employeeID"),result.getString("name"),
-                        result.getString("surname"),result.getInt("age"),
-                        result.getInt("stationID"));
-                residentArrayList.add(employee);
+            if (result != null) {
+                while(result.next()){
+                    Employee employee = new Employee(
+                            result.getInt("employeeID"),result.getString("name"),
+                            result.getString("surname"),result.getInt("age"),
+                            result.getInt("stationID"));
+                    residentArrayList.add(employee);
+                }
             }
         }catch (SQLException e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return residentArrayList;
     }
 
     // ICE
     public static ArrayList<ICE> getICE() {
-        ArrayList<ICE> arrayList = new ArrayList<ICE>();
+        ArrayList<ICE> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM ICE";
         try {
             ResultSet result = createNewStatement(sql);
-            while(result.next()){
-                ICE ice = new ICE(
-                        result.getInt("iceID"),result.getInt("resID"),
-                        result.getString("name"),result.getString("surname"),
-                        result.getInt("tel_number"),result.getString("adress"));
-                arrayList.add(ice);
+            if (result != null) {
+                while(result.next()){
+                    ICE ice = new ICE(
+                            result.getInt("iceID"),result.getInt("resID"),
+                            result.getString("name"),result.getString("surname"),
+                            result.getInt("tel_number"),result.getString("adress"));
+                    arrayList.add(ice);
+                }
             }
         }catch (SQLException e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return arrayList;
     }
 
     // Incidents
     public static ArrayList<Incident> getIncidents() {
-        ArrayList<Incident> arrayList = new ArrayList<Incident>();
+        ArrayList<Incident> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Incidents";
         try {
             ResultSet result = createNewStatement(sql);
             Date incidentsDate = null;
-            try{
-                incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(result.getString("incidents_date"));
-            }catch (ParseException e) {
-                e.printStackTrace();
-            }
-            while(result.next()){
-                Incident incident = new Incident(
-                        result.getInt("incidentID"),result.getInt("resID"),
-                        result.getInt("shiftID"),result.getString("description"), incidentsDate);
-                arrayList.add(incident);
+            if (result!=null){
+                try{
+                    incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(result.getString("incidents_date"));
+                }catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                while(result.next()){
+                    Incident incident = new Incident(
+                            result.getInt("incidentID"),result.getInt("resID"),
+                            result.getInt("shiftID"),result.getString("description"), incidentsDate);
+                    arrayList.add(incident);
+                }
             }
         }catch (SQLException e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return arrayList;
     }
 
     // Medication
     public static ArrayList<Medication> getMedication() {
-        ArrayList<Medication> arrayList = new ArrayList<Medication>();
+        ArrayList<Medication> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Medication";
         try {
             ResultSet result = createNewStatement(sql);
-            while(result.next()){
-                Medication medication = new Medication(
-                        result.getInt("medID"),result.getString("name"));
-                arrayList.add(medication);
+            if (result != null) {
+                while(result.next()){
+                    Medication medication = new Medication(
+                            result.getInt("medID"),result.getString("name"));
+                    arrayList.add(medication);
+                }
             }
         }catch (SQLException e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return arrayList;
     }
 
     // MedPlan
     public static ArrayList<MedPlan> getMedPlan() {
-        ArrayList<MedPlan> arrayList = new ArrayList<MedPlan>();
+        ArrayList<MedPlan> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM MedPlan";
         try {
             ResultSet result = createNewStatement(sql);
-            while(result.next()){
-                MedPlan medPlan = new MedPlan(
-                        result.getInt("medID"),result.getInt("resID"),
-                        result.getDouble("concentration"),result.getDouble("intakeFrequency")
-                        , result.getInt("medicID"));
-                arrayList.add(medPlan);
+            if (result != null) {
+                while(result.next()){
+                    MedPlan medPlan = new MedPlan(
+                            result.getInt("medID"),result.getInt("resID"),
+                            result.getDouble("concentration"),result.getDouble("intakeFrequency")
+                            , result.getInt("medicID"));
+                    arrayList.add(medPlan);
+                }
             }
         }catch (SQLException e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return arrayList;
     }
 
     //ShiftSchedule
     public static ArrayList<ShiftSchedule> getShiftSchedule() {
-        ArrayList<ShiftSchedule> arrayList = new ArrayList<ShiftSchedule>();
+        ArrayList<ShiftSchedule> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM shift_schedule";
         try {
             ResultSet result = createNewStatement(sql);
-            while(result.next()){
-                //todo datumsangabe anpassen
-                Date date1 = null;
-                try{
-                   date1 = new SimpleDateFormat("yyyy-MM-dd").parse(result.getString("date"));
-                }catch (ParseException e) {
-                    e.printStackTrace();
+            if (result != null) {
+                while(result.next()){
+                    Date date1 = null;
+                    try{
+                       date1 = new SimpleDateFormat("yyyy-MM-dd").parse(result.getString("date"));
+                    }catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    ShiftSchedule shiftSchedule = new ShiftSchedule(
+                            result.getInt("shiftID"),result.getInt("employeeID"),
+                            result.getInt("category"),
+                            date1, result.getString("shift_incidents"));
+                    arrayList.add(shiftSchedule);
                 }
-                ShiftSchedule shiftSchedule = new ShiftSchedule(
-                        result.getInt("shiftID"),result.getInt("employeeID"),
-                        result.getInt("category"),
-                        date1, result.getString("shift_incidents"));
-                arrayList.add(shiftSchedule);
             }
         }catch (SQLException e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return arrayList;
     }
@@ -163,35 +174,39 @@ public class DatabaseService implements Service {
 
     //Station
     public static ArrayList<Station> getStation() {
-        ArrayList<Station> arrayList = new ArrayList<Station>();
+        ArrayList<Station> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Station";
         try {
             ResultSet result = createNewStatement(sql);
-            while(result.next()){
-                Station station = new Station(
-                        result.getInt("stationID"),result.getString("name"));
-                arrayList.add(station);
+            if (result != null) {
+                while(result.next()){
+                    Station station = new Station(
+                            result.getInt("stationID"),result.getString("name"));
+                    arrayList.add(station);
+                }
             }
         }catch (SQLException e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return arrayList;
     }
 
     // Visits
     public static ArrayList<Visits> getVisits() {
-        ArrayList<Visits> arrayList = new ArrayList<Visits>();
+        ArrayList<Visits> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Visits";
         try {
             ResultSet result = createNewStatement(sql);
-            while(result.next()){
-                Visits visits = new Visits(
-                        result.getInt("visitID"),result.getString("description"),
-                        result.getInt("resID"));
-                arrayList.add(visits);
+            if (result != null) {
+                while(result.next()){
+                    Visits visits = new Visits(
+                            result.getInt("visitID"),result.getString("description"),
+                            result.getInt("resID"));
+                    arrayList.add(visits);
+                }
             }
-        }catch (SQLException e){
-            System.out.println(e);
+        }catch (SQLException | NullPointerException e){
+            System.out.println(e.getMessage());
         }
         return arrayList;
     }
@@ -200,8 +215,7 @@ public class DatabaseService implements Service {
         try {
             Connection connection = DBConnect.connect();
             Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(sql);
-            return result;
+            return statement.executeQuery(sql);
         }catch(SQLException e){
             //todo error handling
             return null;
@@ -213,8 +227,7 @@ public class DatabaseService implements Service {
             Connection connection = DBConnect.connect();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,name);
-            ResultSet result = statement.executeQuery();
-            return result;
+            return statement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -227,8 +240,7 @@ public class DatabaseService implements Service {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,value1);
             statement.setString(2,value2);
-            ResultSet result = statement.executeQuery();
-            return result;
+            return statement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

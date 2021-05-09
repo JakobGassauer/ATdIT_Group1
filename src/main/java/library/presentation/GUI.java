@@ -10,14 +10,12 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.*;
-import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class GUI extends JFrame {
@@ -54,8 +52,8 @@ public class GUI extends JFrame {
     JLabel[] lblRoom;
     String[] shifts;
     String[] time;
-    JComboBox jcbShift;
-    JComboBox jcbTime;
+    JComboBox<String> jcbShift;
+    JComboBox<String> jcbTime;
 
 
     JTextArea[] taResident;
@@ -223,9 +221,9 @@ public class GUI extends JFrame {
             previous = dateInString;
         }
 
-        jcbShift = new JComboBox(shifts);
+        jcbShift = new JComboBox<>(shifts);
         jpFilter.add(jcbShift);
-        jcbTime = new JComboBox(time);
+        jcbTime = new JComboBox<>(time);
         jpFilter.add(jcbTime);
         jcbTime.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 300, lightyellow));
         jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 300, lightyellow));
@@ -256,7 +254,7 @@ public class GUI extends JFrame {
 
         for (int i = 0; i < residents.size(); i++) {
             int resID = residents.get(i).getResID();
-            taResident[i] = new JTextArea("Vorfälle: " + Incident.get(resID).getDescription());
+            taResident[i] = new JTextArea("Vorfälle: " + Objects.requireNonNull(Incident.get(resID)).getDescription());
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
             taResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -314,11 +312,11 @@ public class GUI extends JFrame {
             String dateString = (String) jcbTime.getSelectedItem(); //String format
             Date date = null;
             try {
-                date = new SimpleDateFormat("dd.MM.yyyy").parse((String)dateString);
+                date = new SimpleDateFormat("dd.MM.yyyy").parse(dateString);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            taResident[i].setText("Vorfälle: " + Incident.get(resID,date).getDescription());
+            taResident[i].setText("Vorfälle: " + Objects.requireNonNull(Incident.get(resID, date)).getDescription());
         }
     }
 
@@ -329,11 +327,11 @@ public class GUI extends JFrame {
         String dateString = (String) jcbTime.getSelectedItem(); //String format
         Date date = null;
         try {
-            date = new SimpleDateFormat("dd.MM.yyyy").parse((String)dateString);
+            date = new SimpleDateFormat("dd.MM.yyyy").parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String shiftIncident = ShiftSchedule.get(shiftCategory, date).getShiftIncidents();
+        String shiftIncident = Objects.requireNonNull(ShiftSchedule.get(shiftCategory, date)).getShiftIncidents();
         taAll.setText(shiftIncident);
     }
 
@@ -345,7 +343,7 @@ public class GUI extends JFrame {
 
             setResidentSpecificData(index);
 
-            if (isSaved == true) {
+            if (isSaved) {
                 if (buttonIdentification == index) {
 
                     cl.show(cards, "Bewohner");
@@ -355,7 +353,7 @@ public class GUI extends JFrame {
                     lblRoom[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 } else {
-                    if (hasSwitched == false) {
+                    if (!hasSwitched) {
 
                         buttonIdentification = index;
                         //Aufspielen der Daten auf die Bewohnerübersicht
@@ -503,9 +501,9 @@ public class GUI extends JFrame {
 
                 int index = Arrays.asList(btnEditResident).indexOf(e.getSource());
 
-                if (beingEdited == false) {
+                if (!beingEdited) {
 
-                    if (isSaved == true) {
+                    if (isSaved) {
 
                         beingEdited = true;
                         taResident[index].setEditable(true);
@@ -515,7 +513,7 @@ public class GUI extends JFrame {
 
                     }
                 } else {
-                    if (isSaved == false && btnAll.getIcon()==editicon) {
+                    if (!isSaved && btnAll.getIcon()==editicon) {
                         if (indexComparison == index && e.getSource() != btnAll) {
 
                             taResident[index].setEditable(false);
@@ -529,9 +527,9 @@ public class GUI extends JFrame {
                     }
                 }
             } else {
-                if (beingEdited == false) {
+                if (!beingEdited) {
 
-                    if (isSaved == true) {
+                    if (isSaved) {
 
                         beingEdited = true;
                         taAll.setEditable(true);
@@ -540,7 +538,7 @@ public class GUI extends JFrame {
 
                     }
                 } else {
-                    if (isSaved == false && btnAll.getIcon()==saveicon) {
+                    if (!isSaved && btnAll.getIcon()==saveicon) {
                         if (btnAll ==e.getSource()) {
 
                             taAll.setEditable(false);
