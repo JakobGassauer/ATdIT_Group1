@@ -4,16 +4,17 @@ import library.model.implementation.*;
 import library.persistence.implementation.DatabaseService;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 
 public class GUI extends JFrame {
@@ -36,7 +37,13 @@ public class GUI extends JFrame {
     JPanel jpResidentRoom, jpFilterTextAll, jpFilter, jpTextResident, jpResident, jpRoom, jpSpecific, jpEditResident, jpTextResidentAndEdit, cards;
 
     JScrollPane spBaseData, spMedication, spDiagnosisSheet, spClosestRelative, spVisits, spOther;
-    JTextArea taBaseData, taMedication, taDiagnosisSheet, taClosestRelative, taVisits, taOther;
+    JTextPane tpBaseData, tpMedication, tpDiagnosisSheet, tpClosestRelative, tpVisits, tpOther;
+    Document docBaseData,docMedication, docDiagnosisSheet, docClosestRelative, docVisits, docOther;
+
+    SimpleAttributeSet attrHeader;
+    SimpleAttributeSet attrSubHeader;
+    SimpleAttributeSet attrText;
+
 
     JButton[] btnResident;
     JButton[] btnEditResident;
@@ -60,6 +67,39 @@ public class GUI extends JFrame {
 
 
     public GUI() {
+
+        tpBaseData = new JTextPane();
+        tpMedication = new JTextPane();
+        tpDiagnosisSheet = new JTextPane();
+        tpClosestRelative = new JTextPane();
+        tpVisits = new JTextPane();
+        tpOther = new JTextPane();
+
+        docBaseData = tpBaseData.getStyledDocument();
+        docMedication = tpMedication.getStyledDocument();
+        docDiagnosisSheet = tpDiagnosisSheet.getStyledDocument();
+        docClosestRelative = tpClosestRelative.getStyledDocument();
+        docVisits = tpVisits.getStyledDocument();
+        docOther = tpOther.getStyledDocument();
+
+        attrHeader = new SimpleAttributeSet();
+        StyleConstants.setFontSize(attrHeader,26);
+        StyleConstants.setBold(attrHeader,true);
+
+        attrSubHeader = new SimpleAttributeSet();
+        StyleConstants.setFontSize(attrSubHeader, 20);
+        StyleConstants.setBold(attrSubHeader,true);
+
+        attrText = new SimpleAttributeSet();
+        StyleConstants.setFontSize(attrText, 20);
+
+        tpBaseData.setEditable(false);
+        tpMedication.setEditable(false);
+        tpDiagnosisSheet.setEditable(false);
+        tpClosestRelative.setEditable(false);
+        tpVisits.setEditable(false);
+        tpOther.setEditable(false);
+
 
         //todo in Methode auslagern: getData
         ArrayList<Resident> residents;
@@ -88,41 +128,18 @@ public class GUI extends JFrame {
         //getting pressed button:
 
 
-        taBaseData = new JTextArea("Stammdaten");
-        taMedication = new JTextArea("Medikation");
-        taDiagnosisSheet = new JTextArea("Diagnoseblatt");
-        taClosestRelative = new JTextArea("Angehöriger");
-        taVisits = new JTextArea("Besuch");
-        taOther = new JTextArea("Sonstiges");
+
         taResident = new JTextArea[residents.size()];
 
 
-        taBaseData.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taBaseData.setLineWrap(true);
-        taBaseData.setWrapStyleWord(true);
-        taMedication.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taMedication.setLineWrap(true);
-        taMedication.setWrapStyleWord(true);
-        taDiagnosisSheet.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taDiagnosisSheet.setLineWrap(true);
-        taDiagnosisSheet.setWrapStyleWord(true);
-        taClosestRelative.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taClosestRelative.setLineWrap(true);
-        taClosestRelative.setWrapStyleWord(true);
-        taVisits.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taVisits.setLineWrap(true);
-        taVisits.setWrapStyleWord(true);
-        taOther.setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-        taOther.setLineWrap(true);
-        taOther.setWrapStyleWord(true);
 
 
-        spBaseData = new JScrollPane(taBaseData);
-        spMedication = new JScrollPane(taMedication);
-        spDiagnosisSheet = new JScrollPane(taDiagnosisSheet);
-        spClosestRelative = new JScrollPane(taClosestRelative);
-        spVisits = new JScrollPane(taVisits);
-        spOther = new JScrollPane(taOther);
+        spBaseData = new JScrollPane(tpBaseData);
+        spMedication = new JScrollPane(tpMedication);
+        spDiagnosisSheet = new JScrollPane(tpDiagnosisSheet);
+        spClosestRelative = new JScrollPane(tpClosestRelative);
+        spVisits = new JScrollPane(tpVisits);
+        spOther = new JScrollPane(tpOther);
         spTextResident = new JScrollPane[residents.size()];
 
 
@@ -325,10 +342,7 @@ public class GUI extends JFrame {
                     }
                 }
             }
-
         }
-
-
     }
 
     public void setResidentSpecificData(int index) {
@@ -346,59 +360,97 @@ public class GUI extends JFrame {
     }
 
     private void setBaseData(Resident selectedResident) {
-        taBaseData.setText("Stammdaten"
-                + "\n" + "Name: " + selectedResident.getSurname()
-                + "\n" + "Vorname : " + selectedResident.getName()
-                + "\n" + "ID: " + selectedResident.getResID()
-                + "\n" + "Alter: " + selectedResident.getAge()
-                + "\n" + "Raum: " + selectedResident.getRoom()
-                + "\n" + "Station: " + selectedResident.getStationID());
+        try {
+            tpBaseData.setText("");
+            docBaseData.insertString(docBaseData.getLength(), " Base Data", attrHeader);
+            docBaseData.insertString(docBaseData.getLength(), "\n \n Surname: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), selectedResident.getSurname(), attrText);
+            docBaseData.insertString(docBaseData.getLength(), "\n \n Name: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), selectedResident.getName(), attrText);
+            docBaseData.insertString(docBaseData.getLength(), "\n \n ID: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getResID()), attrText);
+            docBaseData.insertString(docBaseData.getLength(), "\n \n Age: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getAge()), attrText);
+            docBaseData.insertString(docBaseData.getLength(), "\n \n Room: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getRoom()), attrText);
+            docBaseData.insertString(docBaseData.getLength(), "\n \n Station: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getStationID()), attrText);
+
+        }catch(BadLocationException e){}
     }
+
 
     private void setMedication(Resident selectedResident, MedPlan medPlan) {
         try{
-        taMedication.setText("Medikation"
-                + "\n" + "MedPlanId: " + medPlan.getMedID()
-                + "\n" + "resID: " + selectedResident.getResID()
-                + "\n" + "intakeFrequency: " + medPlan.getIntakeFrequency()
-                + "\n" + "concentration: " + medPlan.getConcentration()
-                + "\n" + "MedicationID: " + medPlan.getMedicID()
-                + "\n" + "Name des Medikaments: " + Medication.get(medPlan.getMedID()));
+            tpMedication.setText("");
+            docMedication.insertString(docMedication.getLength(), " Medication", attrHeader);
+            docMedication.insertString(docMedication.getLength(), "\n \n MedPlan ID: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getMedID()), attrText);
+            docMedication.insertString(docMedication.getLength(), "\n \n Resident ID: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), String.valueOf(selectedResident.getResID()), attrText);
+            docMedication.insertString(docMedication.getLength(), "\n \n Intake frequency: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getIntakeFrequency()), attrText);
+            docMedication.insertString(docMedication.getLength(), "\n \n Concentration: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getConcentration()), attrText);
+            docMedication.insertString(docMedication.getLength(), "\n \n Medication ID: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getMedicID()), attrText);
+            docMedication.insertString(docMedication.getLength(), "\n \n Medication name: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), Medication.get(medPlan.getMedID()), attrText);
+
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
-        }
+        } catch (BadLocationException be){ }
     }
 
     private void setDiagnosisSheet() {
-        taDiagnosisSheet.setText("Diagnoseblatt");
-        // was soll hier drauf?
+       try{
+           tpDiagnosisSheet.setText("");
+           docDiagnosisSheet.insertString(docDiagnosisSheet.getLength()," Diagnosis", attrHeader);
+       } catch (BadLocationException be){ }
+
+       // was soll hier drauf?
     }
 
     private void setClosestRelative(ICE ice) {
         try{
-        taClosestRelative.setText("Angehöriger"
-                + "\n" + "Name: " + ice.getSurname()
-                + "\n" + "Vorname: " + ice.getName()
-                + "\n" + "IceID: " + ice.getIceID()
-                + "\n" + "Adresse: " + ice.getAdress()
-                + "\n" + "Telefonnummer: " + MessageFormat.format("{0,number,#}", ice.getTelnumber())); //todo format
+            tpClosestRelative.setText(" ");
+            docClosestRelative.insertString(docClosestRelative.getLength(), " Closest Relative", attrHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Surname: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), ice.getSurname(), attrText);
+            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Name: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), ice.getName(), attrText);
+            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Ice ID: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), String.valueOf(ice.getIceID()), attrText);
+            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Address: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), ice.getAdress(), attrText);
+            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Phone number: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), "MUSS EINGEFÜGT WERDEN", attrText);
+
+//                + "\n" + "Telefonnummer: " + MessageFormat.format("{0,number,#}", ice.getTelnumber())); //todo format
+
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
-        }
+        } catch (BadLocationException be){ }
     }
 
     private void setVisits(Resident selectedResident) {
         try{
-        taVisits.setText("Besuch"
-                + "\n" + Visits.get(selectedResident.getResID()));
+        tpVisits.setText(" ");
+        docVisits.insertString(docVisits.getLength(), " Visits", attrHeader);
+        docVisits.insertString(docVisits.getLength(), "\n \n " + Visits.get(selectedResident.getResID()), attrText);
+
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
-        }
+        } catch (BadLocationException be){ }
     }
 
     private void setOther() {
-        taOther.setText("Sonstiges");
+        try{
+        tpOther.setText(" ");
+        docOther.insertString(docOther.getLength()," Other", attrHeader);
+
         //was soll hier drauf?
+        } catch (BadLocationException be){ }
     }
 
 
