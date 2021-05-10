@@ -10,7 +10,7 @@
 //30.04.2021 - team call, working call, debugging gui and database
 //05.05.2021 - team call, planned tasks till friday and review on 12.05, discussed about methods, database and gui, as well as PowerPoint and Textdocuments
 //07.05.2021 - team call, working call, nearly finished methods to get data out of database, worked on PowerPoint, mockup of UX, rewieved GUI in terms of clean code
-//
+//10.05.2021 - team call, working call, preparation for mid-term report and review of finished tasks
 //
 //
 //
