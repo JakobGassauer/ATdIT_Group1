@@ -11,12 +11,13 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 
 public class GUI extends JFrame {
@@ -67,11 +68,13 @@ public class GUI extends JFrame {
     Color lightgrey = new Color(245, 245, 245);
     Color lightyellow = new Color(255, 255, 202);
 
-
+    private final ResourceBundle resourceBundle;
+    private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
 
 
     public GUI() {
 
+        this.resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE);
         tpBaseData = new JTextPane();
         tpMedication = new JTextPane();
         tpDiagnosisSheet = new JTextPane();
@@ -187,7 +190,8 @@ public class GUI extends JFrame {
         btnResident = new JButton[10];
         btnEditResident = new JButton[10];
         lblRoom = new JLabel[10];
-        shifts = new String[]{"Frühschicht", "Spätschicht", "Nachtschicht"};
+
+        shifts = new String[]{resourceBundle.getString("morning_shift"), resourceBundle.getString("late_shift"), resourceBundle.getString("night_shift")};
         time = new String[(DatabaseFactory.shiftSchedules.size()/3)];
         int n=0;
         String previous = null;
@@ -228,7 +232,7 @@ public class GUI extends JFrame {
         }
 
         for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
-            lblRoom[i] = new JLabel("Raum " + (DatabaseFactory.residents.get(i).getRoom()), SwingConstants.CENTER);
+            lblRoom[i] = new JLabel(MessageFormat.format(resourceBundle.getString("room.0"), DatabaseFactory.residents.get(i).getRoom()), SwingConstants.CENTER);
             lblRoom[i].setBackground(lightgrey);
             lblRoom[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             lblRoom[i].setOpaque(true);
@@ -239,7 +243,7 @@ public class GUI extends JFrame {
 
         for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
             int resID = DatabaseFactory.residents.get(i).getResID();
-            taResident[i] = new JTextArea("Vorfälle: " + Objects.requireNonNull(Incident.get(resID)).getDescription());
+            taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"), Objects.requireNonNull(Incident.get(resID)).getDescription()));
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
             taResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -301,7 +305,7 @@ public class GUI extends JFrame {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            taResident[i].setText("Vorfälle: " + Objects.requireNonNull(Incident.get(resID, date)).getDescription());
+            taResident[i].setText(MessageFormat.format(resourceBundle.getString("incidents.0"), Objects.requireNonNull(Incident.get(resID, date)).getDescription()));
         }
     }
 
@@ -384,18 +388,18 @@ public class GUI extends JFrame {
     private void setBaseData(Resident selectedResident) {
         try {
             tpBaseData.setText("");
-            docBaseData.insertString(docBaseData.getLength(), " Base Data", attrHeader);
-            docBaseData.insertString(docBaseData.getLength(), "\n \n Surname: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), resourceBundle.getString("base.data"), attrHeader);
+            docBaseData.insertString(docBaseData.getLength(), resourceBundle.getString("surname"), attrSubHeader);
             docBaseData.insertString(docBaseData.getLength(), selectedResident.getSurname(), attrText);
-            docBaseData.insertString(docBaseData.getLength(), "\n \n Name: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), resourceBundle.getString("name"), attrSubHeader);
             docBaseData.insertString(docBaseData.getLength(), selectedResident.getName(), attrText);
-            docBaseData.insertString(docBaseData.getLength(), "\n \n ID: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), resourceBundle.getString("id"), attrSubHeader);
             docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getResID()), attrText);
-            docBaseData.insertString(docBaseData.getLength(), "\n \n Age: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), resourceBundle.getString("age"), attrSubHeader);
             docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getAge()), attrText);
-            docBaseData.insertString(docBaseData.getLength(), "\n \n Room: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), resourceBundle.getString("room"), attrSubHeader);
             docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getRoom()), attrText);
-            docBaseData.insertString(docBaseData.getLength(), "\n \n Station: ", attrSubHeader);
+            docBaseData.insertString(docBaseData.getLength(), resourceBundle.getString("station"), attrSubHeader);
             docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getStationID()), attrText);
 
         }catch(BadLocationException e){}
@@ -405,18 +409,18 @@ public class GUI extends JFrame {
     private void setMedication(Resident selectedResident, MedPlan medPlan) {
         try{
             tpMedication.setText("");
-            docMedication.insertString(docMedication.getLength(), " Medication", attrHeader);
-            docMedication.insertString(docMedication.getLength(), "\n \n MedPlan ID: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medication"), attrHeader);
+            docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medplan.id"), attrSubHeader);
             docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getMedID()), attrText);
-            docMedication.insertString(docMedication.getLength(), "\n \n Resident ID: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), resourceBundle.getString("resident.id"), attrSubHeader);
             docMedication.insertString(docMedication.getLength(), String.valueOf(selectedResident.getResID()), attrText);
-            docMedication.insertString(docMedication.getLength(), "\n \n Intake frequency: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), resourceBundle.getString("intake.frequency"), attrSubHeader);
             docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getIntakeFrequency()), attrText);
-            docMedication.insertString(docMedication.getLength(), "\n \n Concentration: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), resourceBundle.getString("concentration"), attrSubHeader);
             docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getConcentration()), attrText);
-            docMedication.insertString(docMedication.getLength(), "\n \n Medication ID: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medication.id"), attrSubHeader);
             docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getMedicID()), attrText);
-            docMedication.insertString(docMedication.getLength(), "\n \n Medication name: ", attrSubHeader);
+            docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medication.name"), attrSubHeader);
             docMedication.insertString(docMedication.getLength(), Medication.get(medPlan.getMedID()), attrText);
 
         } catch (NullPointerException e) {
@@ -427,8 +431,8 @@ public class GUI extends JFrame {
     private void setDiagnosisSheet() {
        try{
            tpDiagnosisSheet.setText("");
-           docDiagnosisSheet.insertString(docDiagnosisSheet.getLength()," Diagnosis", attrHeader);
-           docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), "\n \n Currently no information given.", attrText);
+           docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), resourceBundle.getString("diagnosis"), attrHeader);
+           docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), resourceBundle.getString("currently.no.information.given"), attrText);
 
        } catch (BadLocationException be){ }
 
@@ -438,16 +442,16 @@ public class GUI extends JFrame {
     private void setClosestRelative(ICE ice) {
         try{
             tpClosestRelative.setText(" ");
-            docClosestRelative.insertString(docClosestRelative.getLength(), " Closest Relative", attrHeader);
-            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Surname: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("closest.relative"), attrHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("surname"), attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), ice.getSurname(), attrText);
-            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Name: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("name"), attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), ice.getName(), attrText);
-            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Ice ID: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("ice.id"), attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), String.valueOf(ice.getIceID()), attrText);
-            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Address: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("address"), attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), ice.getAdress(), attrText);
-            docClosestRelative.insertString(docClosestRelative.getLength(), "\n \n Phone number: ", attrSubHeader);
+            docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("phone.number"), attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), String.valueOf(ice.getTelnumber()), attrText);
 
 //                + "\n" + "Telefonnummer: " + MessageFormat.format("{0,number,#}", ice.getTelnumber()));
@@ -461,7 +465,7 @@ public class GUI extends JFrame {
     private void setVisits(Resident selectedResident) {
         try{
         tpVisits.setText(" ");
-        docVisits.insertString(docVisits.getLength(), " Visits", attrHeader);
+        docVisits.insertString(docVisits.getLength(), resourceBundle.getString("visits"), attrHeader);
         docVisits.insertString(docVisits.getLength(), "\n \n " + Visits.get(selectedResident.getResID()), attrText);
 
         } catch (NullPointerException e) {
@@ -472,7 +476,7 @@ public class GUI extends JFrame {
     private void setOther() {
         try{
         tpOther.setText(" ");
-        docOther.insertString(docOther.getLength()," Other", attrHeader);
+        docOther.insertString(docOther.getLength(), resourceBundle.getString("other"), attrHeader);
 
         //todo was soll hier drauf?
         } catch (BadLocationException be){ }

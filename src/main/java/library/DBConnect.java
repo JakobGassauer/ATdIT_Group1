@@ -1,46 +1,22 @@
 package library;
 
 import java.sql.*;
+import java.util.ResourceBundle;
 
 
 public class DBConnect {
-    public static final String location="jdbc:sqlite:src/database/kopie.sqlite";
+    public static final String location="jdbc:sqlite:src/database/kopie.sqlite"; //NON-NLS
+    private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n/gui/gui"); //NON-NLS
 
     public static Connection connect() {
-
         Connection conn = null;
-
         try {
             conn = DriverManager.getConnection(location);
-            System.out.println("Connection to Database established");
+            System.out.println(resourceBundle.getString("connection.to.database.established"));
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return conn;
     }
-
-    public void selectAll(){
-        String sql = "SELECT * FROM medication";
-
-        try (Connection conn = this.connect();
-        Statement stmt  = conn.createStatement();
-        ResultSet rs    = stmt.executeQuery(sql)){
-
-            // loop through the result set
-            while (rs.next()) {
-                System.out.println(
-                        rs.getInt("medicID") +  "\t" +
-                        rs.getString("name"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    /*public static void main(String[] args) {
-        Connection conn = connect();
-
-
-    }*/
 
 }
