@@ -72,27 +72,6 @@ public class ICE extends People {
     }
 
     public static ICE get(int resID) {
-        try{
-            String sql = "Select * from ice where resID = ?";
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
-            if(rs != null) {
-                return new ICE(
-                        rs.getInt("iceID"),
-                        rs.getInt("resID"),
-                        rs.getString("name"),
-                        rs.getString("surname"),
-                        rs.getInt("tel_number"),
-                        rs.getString("adress"));
-            }
-            rs.getStatement().close();
-            rs.close();
-            return new ICE(0,0,null,null,0,null);
-        }catch (SQLException e){
-            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return new ICE(0,0,null,null,0,null);
-            }
-            e.printStackTrace();
-            return null;
-        }
+        return DatabaseService.getSingleICE(resID);
     }
 }

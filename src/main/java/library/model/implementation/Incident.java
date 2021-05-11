@@ -3,6 +3,7 @@ package library.model.implementation;
 import library.model.Edit;
 import library.persistence.implementation.DatabaseService;
 
+import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -87,58 +88,11 @@ public class Incident implements Edit<Incident> {
 
 
     public static Incident get(int resID) {
-        try{
-            String sql = "Select * from incidents where resID = ?";
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
-            Date incidentsDate = null;
-            try{
-                incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("incidents_date"));
-            }catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Incident incident = new Incident(
-                    rs.getInt("incidentID"),
-                    rs.getInt("resID"),
-                    rs.getInt("shiftID"),
-                    rs.getString("description"), incidentsDate);
-            rs.getStatement().close();
-            rs.close();
-            return incident;
-        }catch (SQLException e){
-            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return new Incident(0,0,0,"no incident", null);
-            }
-            e.printStackTrace();
-            return null;
-        }
+        return DatabaseService.getSingleIncident(resID);
     }
+
     public static Incident get(int resID, Date date) {
-        try{
-            String sql = "Select * from incidents where resID = ? and incidents_date = ?";
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String dateInString = formatter.format(date);
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID), dateInString);
-            Date incidentsDate = null;
-            try{
-                incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("incidents_date"));
-            }catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Incident incident = new Incident(
-                    rs.getInt("incidentID"),
-                    rs.getInt("resID"),
-                    rs.getInt("shiftID"),
-                    rs.getString("description"), incidentsDate);
-            rs.getStatement().close();
-            rs.close();
-            return incident;
-        }catch (SQLException e){
-            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return new Incident(0,0,0,"no incident", null);
-            }
-            e.printStackTrace();
-            return null;
-        }
+        return DatabaseService.getSingleIncident(resID, date);
     }
 
 
@@ -147,11 +101,5 @@ public class Incident implements Edit<Incident> {
         return null;
     }
 
-    /*public static Incident get(int index) {
-        List<Incident> incidentsArrayList =new ArrayList<>();
-        incidentsArrayList = DatabaseService.getIncidents();
-        Incident incident = incidentsArrayList.get(index);
-        return incident;
-        //TODO implement get logic
-    }*/
+
 }

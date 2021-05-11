@@ -2,6 +2,7 @@ package library.model.implementation;
 
 import library.persistence.implementation.DatabaseService;
 
+import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -38,20 +39,7 @@ public class Medication {
     }
 
     public static String get(int medicID) {
-        try{
-            String sql = "Select name from medication where medicID = ?";
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(medicID));
-            String name = rs.getString("name");
-            rs.getStatement().close();
-            rs.close();
-            return name; //todo testen ob das richtige zurückgeben wird
-        }catch (SQLException e){
-            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return "no medication";
-            }
-            e.printStackTrace();
-            return null;
-        }
+        return DatabaseService.getSingleMedication(medicID);
     }
 
 }

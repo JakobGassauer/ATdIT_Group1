@@ -78,26 +78,7 @@ public class MedPlan implements Edit<MedPlan> {
     }
 
     public static MedPlan get(int resID) {
-        try{
-            String sql = "Select * from medplan where resID = ?";
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
-            System.out.println(rs);
-            MedPlan medPlan = new MedPlan(
-                    rs.getInt("medID"),
-                    rs.getInt("resID"),
-                    rs.getDouble("intake_frequency"),
-                    rs.getDouble("concentration"),
-                    rs.getInt("medicID"));
-            rs.getStatement().close();
-            rs.close();
-            return medPlan;
-        }catch (SQLException e){
-            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return new MedPlan(0, 0,0,0,0);
-            }
-            e.printStackTrace();
-            return null;
-        }// return initial values if ResultSet ist closed : überprüfe e.detailMessage.equals("ResultSet closed")
+       return DatabaseService.getSingleMedPlan(resID);
     }
 
     @Override

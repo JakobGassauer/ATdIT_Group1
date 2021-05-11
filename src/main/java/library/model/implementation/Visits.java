@@ -47,20 +47,7 @@ public class Visits implements Edit<Visits> {
 
 
     public static String get(int resID) {
-        try{
-            String sql = "Select description from visits where resID = ?";
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
-            String description = rs.getString("description");
-            rs.getStatement().close();
-            rs.close();
-            return description; //todo testen ob das richtige zurückgeben wird
-        }catch (SQLException e){
-            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return "no visits";
-            }
-            e.printStackTrace();
-            return null;
-        }
+        return DatabaseService.getSingleVisitDescription(resID);
     }
 
     @Override

@@ -75,36 +75,7 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
     }
 
     public static ShiftSchedule get(Object category, Date date) {
-        try{
-            String sql = "Select * from shift_schedule where date = ? and category  = ?";
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String dateInString = formatter.format(date);
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, dateInString, String.valueOf(category));
-            System.out.println(rs);
-            Date date1 =null;
-            try{
-                date1 = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("date"));
-            }catch (ParseException pe) {
-                pe.printStackTrace();
-              //  return null;
-            }
-            ShiftSchedule shiftSchedule = new ShiftSchedule(
-                    rs.getInt("shiftID"),
-                    rs.getInt("employeeID"),
-                    rs.getInt("category"),
-                    date1,
-                    rs.getString("shift_incidents"));
-            rs.getStatement().close();
-            rs.close();
-            return shiftSchedule;
-        }catch (SQLException e){
-            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return new ShiftSchedule(0,0,0,null,"no shift incidents");
-            }
-            e.printStackTrace();
-            return null;
-
-        }
+        return DatabaseService.getSingleShiftSchedule(category, date);
     }
     /*
      date can be asked through GregorianCalendar() in main,
