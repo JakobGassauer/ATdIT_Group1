@@ -1,6 +1,7 @@
 package library.presentation;
 
 import library.model.implementation.*;
+import library.persistence.implementation.DatabaseFactory;
 import library.persistence.implementation.DatabaseService;
 
 import javax.swing.*;
@@ -66,9 +67,7 @@ public class GUI extends JFrame {
     Color lightgrey = new Color(245, 245, 245);
     Color lightyellow = new Color(255, 255, 202);
 
-    ArrayList<Resident> residents;
-    ArrayList<Incident> incidents;
-    ArrayList<ShiftSchedule> shiftSchedules;
+
 
 
     public GUI() {
@@ -106,13 +105,6 @@ public class GUI extends JFrame {
         tpOther.setEditable(false);
 
 
-
-
-        //todo in Methode auslagern: getData
-        residents = DatabaseService.getResidents();
-        incidents = DatabaseService.getIncidents();
-        shiftSchedules = DatabaseService.getShiftSchedule();
-
         saveicon = new ImageIcon("Saveicon.png");
         editicon = new ImageIcon("Editicon.png");
 
@@ -135,8 +127,7 @@ public class GUI extends JFrame {
 
 
 
-        taResident = new JTextArea[residents.size()];
-
+        taResident = new JTextArea[DatabaseFactory.residents.size()];
 
 
 
@@ -146,7 +137,7 @@ public class GUI extends JFrame {
         spClosestRelative = new JScrollPane(tpClosestRelative);
         spVisits = new JScrollPane(tpVisits);
         spOther = new JScrollPane(tpOther);
-        spTextResident = new JScrollPane[residents.size()];
+        spTextResident = new JScrollPane[DatabaseFactory.residents.size()];
 
 
         jpSpecific.add(spBaseData);
@@ -197,11 +188,11 @@ public class GUI extends JFrame {
         btnEditResident = new JButton[10];
         lblRoom = new JLabel[10];
         shifts = new String[]{"Frühschicht", "Spätschicht", "Nachtschicht"};
-        time = new String[(shiftSchedules.size()/3)];
+        time = new String[(DatabaseFactory.shiftSchedules.size()/3)];
         int n=0;
         String previous = null;
-        for (int i = 0; i < shiftSchedules.size(); i++){
-            Date date = shiftSchedules.get(i).getDate();
+        for (int i = 0; i < DatabaseFactory.shiftSchedules.size(); i++){
+            Date date = DatabaseFactory.shiftSchedules.get(i).getDate();
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
             String dateInString = formatter.format(date);
             if(i!=0) {
@@ -226,8 +217,8 @@ public class GUI extends JFrame {
         GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
         GUI.Buttonlistener2 bl2 = new GUI.Buttonlistener2();
 
-        for (int i = 0; i < residents.size(); i++) {
-            btnResident[i] = new JButton(residents.get(i).getName()+ " " + residents.get(i).getSurname());
+        for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
+            btnResident[i] = new JButton(DatabaseFactory.residents.get(i).getName()+ " " + DatabaseFactory.residents.get(i).getSurname());
             btnResident[i].setBackground(lightgrey);
             btnResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnResident[i].setPreferredSize(new Dimension(302, 51));
@@ -236,8 +227,8 @@ public class GUI extends JFrame {
             btnResident[i].addActionListener(bL1);
         }
 
-        for (int i = 0; i < residents.size(); i++) {
-            lblRoom[i] = new JLabel("Raum " + (residents.get(i).getRoom()), SwingConstants.CENTER);
+        for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
+            lblRoom[i] = new JLabel("Raum " + (DatabaseFactory.residents.get(i).getRoom()), SwingConstants.CENTER);
             lblRoom[i].setBackground(lightgrey);
             lblRoom[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             lblRoom[i].setOpaque(true);
@@ -246,8 +237,8 @@ public class GUI extends JFrame {
             jpRoom.add(lblRoom[i]);
         }
 
-        for (int i = 0; i < residents.size(); i++) {
-            int resID = residents.get(i).getResID();
+        for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
+            int resID = DatabaseFactory.residents.get(i).getResID();
             taResident[i] = new JTextArea("Vorfälle: " + Objects.requireNonNull(Incident.get(resID)).getDescription());
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
@@ -258,7 +249,7 @@ public class GUI extends JFrame {
             jpTextResident.add(spTextResident[i]);
         }
 
-        for (int i = 0; i < residents.size(); i++) {
+        for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
             btnEditResident[i] = new JButton();
             btnEditResident[i].setBackground(lightgrey);
             btnEditResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -301,8 +292,8 @@ public class GUI extends JFrame {
     }
 
     private void setResidentIncidentText() {
-        for (int i = 0; i < residents.size(); i++) {
-            int resID = residents.get(i).getResID();
+        for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
+            int resID = DatabaseFactory.residents.get(i).getResID();
             String dateString = (String) jcbTime.getSelectedItem(); //String format
             Date date = null;
             try {
@@ -552,8 +543,8 @@ public class GUI extends JFrame {
 
     private void saveChanges(int index) {
         String newText = taResident[index].getText();
-        int resID = residents.get(index).getResID();
-        DatabaseService.updateIncidentsDatabase(newText, incidents.get(index));
+        int resID = DatabaseFactory.residents.get(index).getResID();
+        DatabaseService.updateIncidentsDatabase(newText, DatabaseFactory.incidents.get(index));
 
     }
 
