@@ -14,7 +14,7 @@ public class Main {
         //System.out.println(Resident.get("Robert").getRoom());
         //todo Junit Tests & internationalization
 
-        Locale.setDefault(Locale.ENGLISH); // in Abfrage/Button ändern??
+        Locale.setDefault(Locale.GERMAN); // in Abfrage/Button ändern??
 
         GUI frame = new GUI();
         ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n/gui/gui"); //NON-NLS

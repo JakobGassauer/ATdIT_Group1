@@ -39,6 +39,7 @@ public class GUI extends JFrame {
     JScrollPane spBaseData, spMedication, spDiagnosisSheet, spClosestRelative, spVisits, spOther;
     JTextPane tpBaseData, tpMedication, tpDiagnosisSheet, tpClosestRelative, tpVisits, tpOther;
     Document docBaseData, docMedication, docDiagnosisSheet, docClosestRelative, docVisits, docOther;
+    JLabel lblspace;
 
     SimpleAttributeSet attrHeader;
     SimpleAttributeSet attrSubHeader;
@@ -51,8 +52,10 @@ public class GUI extends JFrame {
     JLabel[] lblRoom;
     String[] shifts;
     String[] time;
+    String[] language;
     JComboBox<String> jcbShift;
     JComboBox<String> jcbTime;
+    JComboBox<String> jcbLanguage;
 
 
     JTextArea[] taResident;
@@ -205,19 +208,40 @@ public class GUI extends JFrame {
             previous = dateInString;
         }
 
+
+        Object [] items = {
+                new ImageIcon("Germanyicon.png"),
+                new ImageIcon("UnitedKingdomicon.png")
+        };
+
+
+        language = new String[]{"German","English"};
         jcbShift = new JComboBox<>(shifts);
         jpFilter.add(jcbShift);
         jcbTime = new JComboBox<>(time);
+        lblspace = new JLabel("");
+        lblspace.setBackground(lightyellow);
+        lblspace.setOpaque(true);
+        jcbLanguage = new JComboBox(items);
+        jpFilter.add(jcbLanguage);
         jpFilter.add(jcbTime);
+        jpFilter.add(lblspace);
+
+
+
         if (Locale.getDefault() == Locale.GERMAN) {
-            jcbTime.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 300, lightyellow));
-            jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 300, lightyellow));
+            jcbShift.setBorder(BorderFactory.createMatteBorder(20, 40, 10, 73, lightyellow));
+            jcbTime.setBorder(BorderFactory.createMatteBorder(10, 40, 20, 73, lightyellow));
+            jcbLanguage.setBorder(BorderFactory.createMatteBorder(20, 38, 10, 90, lightyellow));
         } else {
             if (Locale.getDefault() == Locale.ENGLISH) {
-                jcbTime.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 312, lightyellow));
-                jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 312, lightyellow));
+                jcbShift.setBorder(BorderFactory.createMatteBorder(20, 40, 10, 86, lightyellow));
+                jcbTime.setBorder(BorderFactory.createMatteBorder(10, 40, 20, 86, lightyellow));
+                jcbLanguage.setBorder(BorderFactory.createMatteBorder(20, 50, 10, 93, lightyellow));
             }
         }
+
+
         jpFilter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
@@ -278,6 +302,7 @@ public class GUI extends JFrame {
 
         jcbShift.addItemListener(new ComboBoxItemListener());
         jcbTime.addItemListener(new ComboBoxItemListener());
+        jcbLanguage.addItemListener(new ComboBoxListenerLanguage());
 
         btnAll = new JButton();
         btnAll.setBackground(lightgrey);
@@ -294,6 +319,22 @@ public class GUI extends JFrame {
             setShiftIncidentText();
             setResidentIncidentText();
         }
+    }
+
+    class ComboBoxListenerLanguage implements ItemListener{
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            JComboBox cb = (JComboBox) e.getSource();
+            int index = cb.getSelectedIndex();
+            switch (index){
+                case 0: Locale.setDefault(Locale.GERMAN);
+                break;
+                case 1: Locale.setDefault(Locale.ENGLISH);
+                break;
+            }
+        }
+        //todo the frame has to refresh somehow so that the change of language is visible
     }
 
     private void setResidentIncidentText() {
