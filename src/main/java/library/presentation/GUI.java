@@ -14,10 +14,7 @@ import java.awt.event.*;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class GUI extends JFrame {
@@ -41,7 +38,7 @@ public class GUI extends JFrame {
 
     JScrollPane spBaseData, spMedication, spDiagnosisSheet, spClosestRelative, spVisits, spOther;
     JTextPane tpBaseData, tpMedication, tpDiagnosisSheet, tpClosestRelative, tpVisits, tpOther;
-    Document docBaseData,docMedication, docDiagnosisSheet, docClosestRelative, docVisits, docOther;
+    Document docBaseData, docMedication, docDiagnosisSheet, docClosestRelative, docVisits, docOther;
 
     SimpleAttributeSet attrHeader;
     SimpleAttributeSet attrSubHeader;
@@ -90,12 +87,12 @@ public class GUI extends JFrame {
         docOther = tpOther.getStyledDocument();
 
         attrHeader = new SimpleAttributeSet();
-        StyleConstants.setFontSize(attrHeader,26);
-        StyleConstants.setBold(attrHeader,true);
+        StyleConstants.setFontSize(attrHeader, 26);
+        StyleConstants.setBold(attrHeader, true);
 
         attrSubHeader = new SimpleAttributeSet();
         StyleConstants.setFontSize(attrSubHeader, 20);
-        StyleConstants.setBold(attrSubHeader,true);
+        StyleConstants.setBold(attrSubHeader, true);
 
         attrText = new SimpleAttributeSet();
         StyleConstants.setFontSize(attrText, 20);
@@ -121,7 +118,7 @@ public class GUI extends JFrame {
         jpResident = new JPanel(new GridLayout(10, 1));
         jpRoom = new JPanel(new GridLayout(10, 1));
         jpEditResident = new JPanel(new GridLayout(10, 1));
-        jpSpecific = new JPanel(new GridLayout(2,3));
+        jpSpecific = new JPanel(new GridLayout(2, 3));
         jpTextResidentAndEdit = new JPanel(new GridBagLayout());
         cards = new JPanel(cl);
 
@@ -129,9 +126,7 @@ public class GUI extends JFrame {
         //getting pressed button:
 
 
-
         taResident = new JTextArea[DatabaseFactory.residents.size()];
-
 
 
         spBaseData = new JScrollPane(tpBaseData);
@@ -150,12 +145,12 @@ public class GUI extends JFrame {
         jpSpecific.add(spVisits);
         jpSpecific.add(spOther);
 
-        spBaseData.setBorder(BorderFactory.createMatteBorder(12,12,6,6,lightgrey));
-        spMedication.setBorder(BorderFactory.createMatteBorder(12,6,6,6,lightgrey));
-        spDiagnosisSheet.setBorder(BorderFactory.createMatteBorder(12,6,6,12,lightgrey));
-        spClosestRelative.setBorder(BorderFactory.createMatteBorder(6,12,12,6,lightgrey));
-        spVisits.setBorder(BorderFactory.createMatteBorder(6,6,12,6,lightgrey));
-        spOther.setBorder(BorderFactory.createMatteBorder(6,6,12,12,lightgrey));
+        spBaseData.setBorder(BorderFactory.createMatteBorder(12, 12, 6, 6, lightgrey));
+        spMedication.setBorder(BorderFactory.createMatteBorder(12, 6, 6, 6, lightgrey));
+        spDiagnosisSheet.setBorder(BorderFactory.createMatteBorder(12, 6, 6, 12, lightgrey));
+        spClosestRelative.setBorder(BorderFactory.createMatteBorder(6, 12, 12, 6, lightgrey));
+        spVisits.setBorder(BorderFactory.createMatteBorder(6, 6, 12, 6, lightgrey));
+        spOther.setBorder(BorderFactory.createMatteBorder(6, 6, 12, 12, lightgrey));
 
         c.add(jpResidentRoom, BorderLayout.WEST);
         c.add(jpFilterTextAll, BorderLayout.NORTH);
@@ -192,21 +187,21 @@ public class GUI extends JFrame {
         lblRoom = new JLabel[10];
 
         shifts = new String[]{resourceBundle.getString("morning_shift"), resourceBundle.getString("late_shift"), resourceBundle.getString("night_shift")};
-        time = new String[(DatabaseFactory.shiftSchedules.size()/3)];
-        int n=0;
+        time = new String[(DatabaseFactory.shiftSchedules.size() / 3)];
+        int n = 0;
         String previous = null;
-        for (int i = 0; i < DatabaseFactory.shiftSchedules.size(); i++){
+        for (int i = 0; i < DatabaseFactory.shiftSchedules.size(); i++) {
             Date date = DatabaseFactory.shiftSchedules.get(i).getDate();
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
             String dateInString = formatter.format(date);
-            if(i!=0) {
+            if (i != 0) {
                 if (dateInString.equals(previous)) {
                     i++;
-                    n+=2;
+                    n += 2;
                     continue;
                 }
             }
-            time[i-n] = String.format(dateInString, "dd.MM.yyyy" );
+            time[i - n] = String.format(dateInString, "dd.MM.yyyy");
             previous = dateInString;
         }
 
@@ -214,15 +209,22 @@ public class GUI extends JFrame {
         jpFilter.add(jcbShift);
         jcbTime = new JComboBox<>(time);
         jpFilter.add(jcbTime);
-        jcbTime.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 300, lightyellow));
-        jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 300, lightyellow));
+        if (Locale.getDefault() == Locale.GERMAN) {
+            jcbTime.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 300, lightyellow));
+            jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 300, lightyellow));
+        } else {
+            if (Locale.getDefault() == Locale.ENGLISH) {
+                jcbTime.setBorder(BorderFactory.createMatteBorder(5, 30, 17, 312, lightyellow));
+                jcbShift.setBorder(BorderFactory.createMatteBorder(17, 30, 5, 312, lightyellow));
+            }
+        }
         jpFilter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
         GUI.Buttonlistener2 bl2 = new GUI.Buttonlistener2();
 
         for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
-            btnResident[i] = new JButton(DatabaseFactory.residents.get(i).getName()+ " " + DatabaseFactory.residents.get(i).getSurname());
+            btnResident[i] = new JButton(DatabaseFactory.residents.get(i).getName() + " " + DatabaseFactory.residents.get(i).getSurname());
             btnResident[i].setBackground(lightgrey);
             btnResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnResident[i].setPreferredSize(new Dimension(302, 51));
@@ -264,7 +266,6 @@ public class GUI extends JFrame {
         }
 
 
-
         taAll = new JTextArea();
         setShiftIncidentText();
         taAll.setLineWrap(true);
@@ -287,7 +288,7 @@ public class GUI extends JFrame {
         btnAll.addActionListener(bl2);
     }
 
-    class ComboBoxItemListener implements ItemListener{
+    class ComboBoxItemListener implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
             setShiftIncidentText();
@@ -311,7 +312,7 @@ public class GUI extends JFrame {
 
     private void setShiftIncidentText() {
         int shiftCategory;
-        shiftCategory= (jcbShift.getSelectedIndex())+1;
+        shiftCategory = (jcbShift.getSelectedIndex()) + 1;
 
         String dateString = (String) jcbTime.getSelectedItem(); //String format
         Date date = null;
@@ -377,7 +378,7 @@ public class GUI extends JFrame {
         ICE ice = ICE.get(selectedResident.getResID());
 
         setBaseData(selectedResident);
-        setMedication(selectedResident,medPlan);
+        setMedication(selectedResident, medPlan);
         setDiagnosisSheet();
         setClosestRelative(ice);
         setVisits(selectedResident);
@@ -402,12 +403,13 @@ public class GUI extends JFrame {
             docBaseData.insertString(docBaseData.getLength(), resourceBundle.getString("station"), attrSubHeader);
             docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getStationID()), attrText);
 
-        }catch(BadLocationException e){}
+        } catch (BadLocationException e) {
+        }
     }
 
 
     private void setMedication(Resident selectedResident, MedPlan medPlan) {
-        try{
+        try {
             tpMedication.setText("");
             docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medication"), attrHeader);
             docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medplan.id"), attrSubHeader);
@@ -425,22 +427,24 @@ public class GUI extends JFrame {
 
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
-        } catch (BadLocationException be){ }
+        } catch (BadLocationException be) {
+        }
     }
 
     private void setDiagnosisSheet() {
-       try{
-           tpDiagnosisSheet.setText("");
-           docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), resourceBundle.getString("diagnosis"), attrHeader);
-           docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), resourceBundle.getString("currently.no.information.given"), attrText);
+        try {
+            tpDiagnosisSheet.setText("");
+            docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), resourceBundle.getString("diagnosis"), attrHeader);
+            docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), resourceBundle.getString("currently.no.information.given"), attrText);
 
-       } catch (BadLocationException be){ }
+        } catch (BadLocationException be) {
+        }
 
-       // todo was soll hier drauf?
+        // todo was soll hier drauf?
     }
 
     private void setClosestRelative(ICE ice) {
-        try{
+        try {
             tpClosestRelative.setText(" ");
             docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("closest.relative"), attrHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("surname"), attrSubHeader);
@@ -459,27 +463,30 @@ public class GUI extends JFrame {
 
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
-        } catch (BadLocationException be){ }
+        } catch (BadLocationException be) {
+        }
     }
 
     private void setVisits(Resident selectedResident) {
-        try{
-        tpVisits.setText(" ");
-        docVisits.insertString(docVisits.getLength(), resourceBundle.getString("visits"), attrHeader);
-        docVisits.insertString(docVisits.getLength(), "\n \n " + Visits.get(selectedResident.getResID()), attrText);
+        try {
+            tpVisits.setText(" ");
+            docVisits.insertString(docVisits.getLength(), resourceBundle.getString("visits"), attrHeader);
+            docVisits.insertString(docVisits.getLength(), "\n \n " + Visits.get(selectedResident.getResID()), attrText);
 
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
-        } catch (BadLocationException be){ }
+        } catch (BadLocationException be) {
+        }
     }
 
     private void setOther() {
-        try{
-        tpOther.setText(" ");
-        docOther.insertString(docOther.getLength(), resourceBundle.getString("other"), attrHeader);
+        try {
+            tpOther.setText(" ");
+            docOther.insertString(docOther.getLength(), resourceBundle.getString("other"), attrHeader);
 
-        //todo was soll hier drauf?
-        } catch (BadLocationException be){ }
+            //todo was soll hier drauf?
+        } catch (BadLocationException be) {
+        }
     }
 
 
@@ -504,7 +511,7 @@ public class GUI extends JFrame {
 
                     }
                 } else {
-                    if (!isSaved && btnAll.getIcon()==editicon) {
+                    if (!isSaved && btnAll.getIcon() == editicon) {
                         if (indexComparison == index && e.getSource() != btnAll) {
 
                             taResident[index].setEditable(false);
@@ -529,8 +536,8 @@ public class GUI extends JFrame {
 
                     }
                 } else {
-                    if (!isSaved && btnAll.getIcon()==saveicon) {
-                        if (btnAll ==e.getSource()) {
+                    if (!isSaved && btnAll.getIcon() == saveicon) {
+                        if (btnAll == e.getSource()) {
 
                             taAll.setEditable(false);
                             btnAll.setIcon(editicon);
