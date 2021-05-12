@@ -75,7 +75,7 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
     }
 
     public static ShiftSchedule get(Object category, Date date) {
-        return DatabaseService.getSingleShiftSchedule(category, date);
+        return null;// DatabaseService.getSingleShiftSchedule(category, date);
     }
     /*
      date can be asked through GregorianCalendar() in main,
