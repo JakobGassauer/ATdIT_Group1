@@ -1,6 +1,12 @@
-package model.implementation;
+package library.model.implementation;
 
-import model.People;
+import library.model.People;
+import library.persistence.implementation.DatabaseService;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Resident extends People {
     private int resID;
@@ -38,5 +44,13 @@ public class Resident extends People {
                 ", room=" + room +
                 ", stationID=" + stationID +
                 '}';
+    }
+
+    public static Resident get(int index) {
+        return DatabaseService.getSingleResident(index);
+    }
+
+    public static Resident get(String name) {
+        return DatabaseService.getSingleResident(name);
     }
 }

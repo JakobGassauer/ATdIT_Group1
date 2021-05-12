@@ -1,4 +1,4 @@
-package model.implementation;
+package library.model.implementation;
 
 public class Station {
     private int stationID;

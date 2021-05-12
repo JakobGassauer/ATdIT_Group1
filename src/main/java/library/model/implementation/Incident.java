@@ -1,12 +1,21 @@
-package model.implementation;
+package library.model.implementation;
 
-import model.Edit;
+import library.model.Edit;
+import library.persistence.implementation.DatabaseService;
 
-public class Incidents implements Edit<Incidents> {
+import javax.xml.crypto.Data;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Incident implements Edit<Incident> {
     private int incidentID;
     private String description;
     private int resID;
     private int shiftID;
+    private Date incidentsDate;
 
     public int getIncidentID() {
         return this.incidentID;
@@ -22,6 +31,14 @@ public class Incidents implements Edit<Incidents> {
 
     public String getDescription() {
         return this.description;
+    }
+
+    public Date getIncidentsDate() {
+        return incidentsDate;
+    }
+
+    public void setIncidentsDate(Date incidentsDate) {
+        this.incidentsDate = incidentsDate;
     }
 
     public void setIncidentID(int incidentID) {
@@ -51,26 +68,38 @@ public class Incidents implements Edit<Incidents> {
                 '}';
     }
 
-    public Incidents(int incidentID, int resID, int shiftID, String description){
+    public Incident(int incidentID, int resID, int shiftID, String description, Date incidentsDate){
         this.description=description;
         this.incidentID=incidentID;
         this.resID=resID;
         this.shiftID=shiftID;
+        this.incidentsDate = incidentsDate;
     }
 
     @Override
-    public void add(Incidents incident) {
+    public void add(Incident incident) {
         //TODO implement add logic
     }
 
     @Override
-    public void remove(Incidents incident) {
+    public void remove(Incident incident) {
         //TODO implement remove logic
     }
 
-    @Override
-    public Incidents get() {
-        return null;
-        //TODO implement get logic
+
+    public static Incident get(int resID) {
+        return DatabaseService.getSingleIncident(resID);
     }
+
+    public static Incident get(int resID, Date date) {
+        return DatabaseService.getSingleIncident(resID, date);
+    }
+
+
+    @Override
+    public  Incident get() {
+        return null;
+    }
+
+
 }
