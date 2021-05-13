@@ -77,9 +77,9 @@ public class MedPlan implements Edit<MedPlan> {
         //TODO implement add logic
     }
 
-    public static MedPlan get(int resID) {
-       return DatabaseService.getSingleMedPlan(resID);
-    }
+    //public static MedPlan get(int resID) {
+     //  return DatabaseService.getSingleMedPlan(resID);
+   // }
 
     @Override
     public void remove(MedPlan object) {

@@ -9,11 +9,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class DatabaseFactory {
     DatabaseService service;
 
+    //maps types from db service to types used in the model (?)
+    // no direct database access/queries
+
+    //Data fromD DB
     public final ArrayList<ResidentData> residentsData;
     public final ArrayList<IncidentData> incidentsData;
     public final ArrayList<ShiftScheduleData> shiftSchedulesData;
@@ -24,7 +27,7 @@ public class DatabaseFactory {
     public final ArrayList<StationData> stationsData;
     public final ArrayList<VisitsData> visitsData;
 
-//Namenskonventionen!
+//Namenskonventionen! Lists to be used in gui
     public final ArrayList<Resident> residents = new ArrayList<>();
     public final ArrayList<Incident> incidents = new ArrayList<>();
     public final ArrayList<ShiftSchedule> shiftSchedules = new ArrayList<>();
@@ -138,71 +141,51 @@ public class DatabaseFactory {
     }
 
     public Resident getSingleResident(String name) {
-        try{
-            String sql = "Select * from senior_resident where name = ?";
-            ResultSet result = DatabaseService.createPreparedStatement(sql, name);
-            Resident resident = new Resident(result.getInt("resID"),
-                    result.getString("name"),
-                    result.getString("surname"),
-                    result.getInt("age"),
-                    result.getInt("stationID"),
-                    result.getInt("room"));
-            result.getStatement().close();
-            result.close();
-            return resident;
-        }catch (SQLException e){
-            e.printStackTrace();
-            return null;
-        }
+       ResidentData residentData = service.getSingleResidentData(name);
+       return new Resident(residentData.resID,residentData.name,
+               residentData.surname,residentData.age,
+               residentData.stationID,residentData.room);
     }
 
     public ShiftSchedule getSingleShiftSchedule(Object category, Date date) {
-        try{
-            String sql = "Select * from shift_schedule where date = ? and category  = ?";
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String dateInString = formatter.format(date);
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, dateInString, String.valueOf(category));
-            System.out.println(rs);
-            Date date1 =null;
-            try{
-                date1 = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("date"));
-            }catch (ParseException pe) {
-                pe.printStackTrace();
-                //  return null;
-            }
-            ShiftSchedule shiftSchedule = new ShiftSchedule(
-                    rs.getInt("shiftID"),
-                    rs.getInt("employeeID"),
-                    rs.getInt("category"),
-                    date1,
-                    rs.getString("shift_incidents"));
-            rs.getStatement().close();
-            rs.close();
-            return shiftSchedule;
-        }catch (SQLException e){
-            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return new ShiftSchedule(0,0,0,null,"no shift incidents");
-            }
-            e.printStackTrace();
-            return null;
-        }
+        ShiftScheduleData shiftScheduleData = service.getSingleShiftScheduleData(category,date);
+        return new ShiftSchedule(shiftScheduleData.shiftID,shiftScheduleData.employeeID,
+                shiftScheduleData.category,shiftScheduleData.date,
+                shiftScheduleData.shiftIncidents);
     }
 
     public String getSingleVisitDescription(int resID) {
-        try{
-            String sql = "Select description from visits where resID = ?";
-            ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
-            String description = rs.getString("description");
-            rs.getStatement().close();
-            rs.close();
-            return description; //todo testen ob das richtige zurückgeben wird
-        }catch (SQLException e){
-            if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return "no visits";
-            }
-            e.printStackTrace();
-            return null;
-        }
+        return service.getSingleVisitDataDescription(resID);
+    }
+
+
+    public ICE getSingleICE(int resID){
+        ICEData iceData = service.getSingleICEData(resID);
+        return new ICE(iceData.iceID, iceData.resID,iceData.name,iceData.surname,iceData.telnumber,iceData.adress);
+    }
+
+    public Incident getSingleIncident(int resID, Date date){
+        IncidentData incidentData = service.getSingleIncidentData(resID,date);
+        return new Incident(incidentData.incidentID,incidentData.resID,
+                incidentData.shiftID,incidentData.description,
+                incidentData.incidentsDate);
+    }
+    public Incident getSingleIncident(int resID){
+        IncidentData incidentData = service.getSingleIncidentData(resID);
+        return new Incident(incidentData.incidentID,incidentData.resID,
+                incidentData.shiftID,incidentData.description,
+                incidentData.incidentsDate);
+    }
+
+    public String getSingleMedication(int medicID){
+        return service.getSingleMedicationData(medicID);
+    }
+
+    public MedPlan getSingleMedPlan(int resID){
+        MedPlanData medPlanData = service.getSingleMedPlanData(resID);
+        return new MedPlan(medPlanData.medID,medPlanData.resID,
+                medPlanData.concentration,medPlanData.intakeFrequency,
+                medPlanData.medicID);
     }
 
 }

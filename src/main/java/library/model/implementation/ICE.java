@@ -71,7 +71,7 @@ public class ICE extends People {
                 '}';
     }
 
-    public static ICE get(int resID) {
-        return DatabaseService.getSingleICE(resID);
-    }
+   // public static ICE get(int resID) {
+    //    return DatabaseService.getSingleICE(resID);
+    //}
 }
