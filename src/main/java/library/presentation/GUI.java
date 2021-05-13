@@ -67,7 +67,8 @@ public class GUI extends JFrame {
 
     private final ResourceBundle resourceBundle;
     private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
-    DatabaseFactory factory = new DatabaseFactory();
+    DatabaseFactory factory = new DatabaseFactory(); // gui does not use db types from persistence but uses methods from the factory
+
     public GUI() {
 
         this.resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE);
@@ -244,7 +245,7 @@ public class GUI extends JFrame {
 
         for (int i = 0; i < factory.residents.size(); i++) {
             int resID = factory.residents.get(i).getResID();
-            taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"), Objects.requireNonNull(Incident.get(resID)).getDescription()));
+            taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"),factory.getSingleIncident(resID).getDescription()));
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
             taResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -305,7 +306,7 @@ public class GUI extends JFrame {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            taResident[i].setText(MessageFormat.format(resourceBundle.getString("incidents.0"), Objects.requireNonNull(Incident.get(resID, date)).getDescription()));
+            taResident[i].setText(MessageFormat.format(resourceBundle.getString("incidents.0"), factory.getSingleIncident(resID, date).getDescription()));
         }
     }
 
@@ -372,8 +373,8 @@ public class GUI extends JFrame {
 
     public void setResidentSpecificData(int index) {
         Resident selectedResident = factory.getSingleResident(index);
-        MedPlan medPlan = MedPlan.get(selectedResident.getResID());
-        ICE ice = ICE.get(selectedResident.getResID());
+        MedPlan medPlan =factory.getSingleMedPlan(selectedResident.getResID());
+        ICE ice = factory.getSingleICE(selectedResident.getResID());
 
         setBaseData(selectedResident);
         setMedication(selectedResident, medPlan);
@@ -421,7 +422,7 @@ public class GUI extends JFrame {
             docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medication.id"), attrSubHeader);
             docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getMedicID()), attrText);
             docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medication.name"), attrSubHeader);
-            docMedication.insertString(docMedication.getLength(), Medication.get(medPlan.getMedID()), attrText);
+            docMedication.insertString(docMedication.getLength(), factory.getSingleMedication(medPlan.getMedID()), attrText);
 
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");

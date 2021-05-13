@@ -38,8 +38,8 @@ public class Medication {
                 '}';
     }
 
-    public static String get(int medicID) {
-        return DatabaseService.getSingleMedication(medicID);
-    }
+   // public static String get(int medicID) {
+    //    return DatabaseService.getSingleMedication(medicID);
+    //}
 
 }

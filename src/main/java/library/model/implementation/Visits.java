@@ -46,9 +46,9 @@ public class Visits implements Edit<Visits> {
     }
 
 
-    public static String get(int resID) {
-        return null;//DatabaseService.getSingleVisitDescription(resID);
-    }
+    //public static String get(int resID) {
+     //   return null;//DatabaseService.getSingleVisitDescription(resID);
+    // }
 
     @Override
     public String toString() {
