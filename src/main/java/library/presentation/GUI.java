@@ -28,7 +28,6 @@ public class GUI extends JFrame {
     static int lastButton = -1;
     static int selectedLanguage = 0;
 
-
     ImageIcon saveicon;
     ImageIcon editicon;
 
@@ -47,7 +46,6 @@ public class GUI extends JFrame {
     SimpleAttributeSet attrSubHeader;
     SimpleAttributeSet attrText;
 
-
     JButton[] btnResident;
     JButton[] btnEditResident;
     JButton btnAll;
@@ -59,16 +57,17 @@ public class GUI extends JFrame {
     JComboBox<String> jcbTime;
     JComboBox<String> jcbLanguage;
 
-
     JTextArea[] taResident;
     JScrollPane[] spTextResident;
     JTextArea taAll;
-
 
     GridBagConstraints gbc = new GridBagConstraints();
 
     Color lightgrey = new Color(245, 245, 245);
     Color lightyellow = new Color(255, 255, 202);
+
+    GUI.ButtonListener1 bL1;
+    GUI.Buttonlistener2 bL2;
 
     private final ResourceBundle resourceBundle;
     private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
@@ -77,6 +76,148 @@ public class GUI extends JFrame {
     public GUI() {
 
         this.resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE);
+        saveicon = new ImageIcon("Saveicon.png");
+        editicon = new ImageIcon("Editicon.png");
+        bL1 = new GUI.ButtonListener1();
+        bL2 = new GUI.Buttonlistener2();
+
+        residentOverviewInitialization();
+
+        jpanelInitialization();
+
+        residentOverviewPanelInitialization();
+
+        contentPaneInitialisation();
+
+        residentTextAreaGridBagLayoutInitialization();
+
+        databaseConnectionForFilters();
+
+        filterAndJComboboxInitialization();
+
+        residentButtonInitialization();
+
+        roomLabelInitalization();
+
+        residentTextAreaInitialization();
+
+        editButtonInitialization();
+
+        unspecificButtonAndTextareaInitialization();
+
+    }
+
+    private void residentTextAreaGridBagLayoutInitialization() {
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 1;
+        gbc.weighty = 1;
+        gbc.weightx = 1;
+        jpResidentRoom.add(jpResident, gbc);
+        gbc.gridx = 2;
+        gbc.gridwidth = 1;
+        jpResidentRoom.add(jpRoom, gbc);
+
+        gbc.gridx = 0;
+        jpTextResidentAndEdit.add(jpTextResident, gbc);
+        gbc.weightx = 0;
+        gbc.gridx = 1;
+        jpTextResidentAndEdit.add(jpEditResident, gbc);
+    }
+
+    private void contentPaneInitialisation(){
+        c = getContentPane();
+        c.add(jpResidentRoom, BorderLayout.WEST);
+        c.add(jpFilterTextAll, BorderLayout.NORTH);
+        c.add(cards, BorderLayout.CENTER);
+        jpFilterTextAll.add(jpFilter, BorderLayout.WEST);
+        cards.add(jpTextResidentAndEdit, "Bewohner");
+        cards.add(jpSpecific, "Spezifisch");
+        cl.show(cards, "Bewohner");
+    }
+
+    private void residentOverviewPanelInitialization() {
+        spBaseData = new JScrollPane(tpBaseData);
+        spMedication = new JScrollPane(tpMedication);
+        spDiagnosisSheet = new JScrollPane(tpDiagnosisSheet);
+        spClosestRelative = new JScrollPane(tpClosestRelative);
+        spVisits = new JScrollPane(tpVisits);
+        spOther = new JScrollPane(tpOther);
+        spTextResident = new JScrollPane[DatabaseFactory.residents.size()];
+
+        jpSpecific.add(spBaseData);
+        jpSpecific.add(spMedication);
+        jpSpecific.add(spDiagnosisSheet);
+        jpSpecific.add(spClosestRelative);
+        jpSpecific.add(spVisits);
+        jpSpecific.add(spOther);
+
+        spBaseData.setBorder(BorderFactory.createMatteBorder(12, 12, 6, 6, lightgrey));
+        spMedication.setBorder(BorderFactory.createMatteBorder(12, 6, 6, 6, lightgrey));
+        spDiagnosisSheet.setBorder(BorderFactory.createMatteBorder(12, 6, 6, 12, lightgrey));
+        spClosestRelative.setBorder(BorderFactory.createMatteBorder(6, 12, 12, 6, lightgrey));
+        spVisits.setBorder(BorderFactory.createMatteBorder(6, 6, 12, 6, lightgrey));
+        spOther.setBorder(BorderFactory.createMatteBorder(6, 6, 12, 12, lightgrey));
+    }
+
+    private void unspecificButtonAndTextareaInitialization() {
+        taAll = new JTextArea();
+        setShiftIncidentText();
+        taAll.setLineWrap(true);
+        taAll.setWrapStyleWord(true);
+        jpFilterTextAll.add(taAll, BorderLayout.CENTER);
+        taAll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        taAll.setBackground(lightyellow);
+        taAll.setEditable(false);
+        taAll.setFont(new Font("TimesNewRoman", Font.BOLD, 15));
+
+        btnAll = new JButton();
+        btnAll.setBackground(lightgrey);
+        btnAll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        btnAll.setPreferredSize(new Dimension(30, 51));
+        jpFilterTextAll.add(btnAll, BorderLayout.EAST);
+        btnAll.setIcon(editicon);
+        btnAll.addActionListener(bL2);
+    }
+
+    private void jpanelInitialization() {
+        jpResidentRoom = new JPanel(new GridBagLayout());
+        jpFilterTextAll = new JPanel(new BorderLayout());
+        jpFilter = new JPanel(new GridLayout(2, 1));
+        jpTextResident = new JPanel(new GridLayout(10, 1));
+        jpResident = new JPanel(new GridLayout(10, 1));
+        jpRoom = new JPanel(new GridLayout(10, 1));
+        jpEditResident = new JPanel(new GridLayout(10, 1));
+        jpSpecific = new JPanel(new GridLayout(2, 3));
+        jpTextResidentAndEdit = new JPanel(new GridBagLayout());
+        cards = new JPanel(cl);
+    }
+
+    private void databaseConnectionForFilters() {
+        shifts = new String[]{resourceBundle.getString("morning_shift"), resourceBundle.getString("late_shift"), resourceBundle.getString("night_shift")};
+        time = new String[(DatabaseFactory.shiftSchedules.size() / 3)];
+        int n = 0;
+        String previous = null;
+        for (int i = 0; i < DatabaseFactory.shiftSchedules.size(); i++) {
+            Date date = DatabaseFactory.shiftSchedules.get(i).getDate();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+            String dateInString = formatter.format(date);
+            if (i != 0) {
+                if (dateInString.equals(previous)) {
+                    i++;
+                    n += 2;
+                    continue;
+                }
+            }
+            time[i - n] = String.format(dateInString, "dd.MM.yyyy");
+            previous = dateInString;
+        }
+    }
+
+    private void residentOverviewInitialization() {
         tpBaseData = new JTextPane();
         tpMedication = new JTextPane();
         tpDiagnosisSheet = new JTextPane();
@@ -108,114 +249,13 @@ public class GUI extends JFrame {
         tpClosestRelative.setEditable(false);
         tpVisits.setEditable(false);
         tpOther.setEditable(false);
+    }
 
-
-        saveicon = new ImageIcon("Saveicon.png");
-        editicon = new ImageIcon("Editicon.png");
-
-        c = getContentPane();
-
-
-        jpResidentRoom = new JPanel(new GridBagLayout());
-        jpFilterTextAll = new JPanel(new BorderLayout());
-        jpFilter = new JPanel(new GridLayout(2, 1));
-        jpTextResident = new JPanel(new GridLayout(10, 1));
-        jpResident = new JPanel(new GridLayout(10, 1));
-        jpRoom = new JPanel(new GridLayout(10, 1));
-        jpEditResident = new JPanel(new GridLayout(10, 1));
-        jpSpecific = new JPanel(new GridLayout(2, 3));
-        jpTextResidentAndEdit = new JPanel(new GridBagLayout());
-        cards = new JPanel(cl);
-
-        //todo: internationalization
-        //getting pressed button:
-
-
-        taResident = new JTextArea[DatabaseFactory.residents.size()];
-
-
-        spBaseData = new JScrollPane(tpBaseData);
-        spMedication = new JScrollPane(tpMedication);
-        spDiagnosisSheet = new JScrollPane(tpDiagnosisSheet);
-        spClosestRelative = new JScrollPane(tpClosestRelative);
-        spVisits = new JScrollPane(tpVisits);
-        spOther = new JScrollPane(tpOther);
-        spTextResident = new JScrollPane[DatabaseFactory.residents.size()];
-
-
-        jpSpecific.add(spBaseData);
-        jpSpecific.add(spMedication);
-        jpSpecific.add(spDiagnosisSheet);
-        jpSpecific.add(spClosestRelative);
-        jpSpecific.add(spVisits);
-        jpSpecific.add(spOther);
-
-        spBaseData.setBorder(BorderFactory.createMatteBorder(12, 12, 6, 6, lightgrey));
-        spMedication.setBorder(BorderFactory.createMatteBorder(12, 6, 6, 6, lightgrey));
-        spDiagnosisSheet.setBorder(BorderFactory.createMatteBorder(12, 6, 6, 12, lightgrey));
-        spClosestRelative.setBorder(BorderFactory.createMatteBorder(6, 12, 12, 6, lightgrey));
-        spVisits.setBorder(BorderFactory.createMatteBorder(6, 6, 12, 6, lightgrey));
-        spOther.setBorder(BorderFactory.createMatteBorder(6, 6, 12, 12, lightgrey));
-
-        c.add(jpResidentRoom, BorderLayout.WEST);
-        c.add(jpFilterTextAll, BorderLayout.NORTH);
-        c.add(cards, BorderLayout.CENTER);
-        jpFilterTextAll.add(jpFilter, BorderLayout.WEST);
-        cards.add(jpTextResidentAndEdit, "Bewohner");
-        cards.add(jpSpecific, "Spezifisch");
-        cl.show(cards, "Bewohner");
-
-
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(0, 0, 0, 0);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.gridheight = 1;
-        gbc.weighty = 1;
-        gbc.weightx = 1;
-        jpResidentRoom.add(jpResident, gbc);
-        gbc.gridx = 2;
-        gbc.gridwidth = 1;
-        jpResidentRoom.add(jpRoom, gbc);
-
-
-        gbc.gridx = 0;
-        jpTextResidentAndEdit.add(jpTextResident, gbc);
-        gbc.weightx = 0;
-        gbc.gridx = 1;
-        jpTextResidentAndEdit.add(jpEditResident, gbc);
-
-
-        btnResident = new JButton[10];
-        btnEditResident = new JButton[10];
-        lblRoom = new JLabel[10];
-
-        shifts = new String[]{resourceBundle.getString("morning_shift"), resourceBundle.getString("late_shift"), resourceBundle.getString("night_shift")};
-        time = new String[(DatabaseFactory.shiftSchedules.size() / 3)];
-        int n = 0;
-        String previous = null;
-        for (int i = 0; i < DatabaseFactory.shiftSchedules.size(); i++) {
-            Date date = DatabaseFactory.shiftSchedules.get(i).getDate();
-            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-            String dateInString = formatter.format(date);
-            if (i != 0) {
-                if (dateInString.equals(previous)) {
-                    i++;
-                    n += 2;
-                    continue;
-                }
-            }
-            time[i - n] = String.format(dateInString, "dd.MM.yyyy");
-            previous = dateInString;
-        }
-
-
+    private void filterAndJComboboxInitialization() {
         Object [] items = {
                 new ImageIcon("Germanyicon.png"),
                 new ImageIcon("UnitedKingdomicon.png")
         };
-
 
         language = new String[]{"German","English"};
         jcbShift = new JComboBox<>(shifts);
@@ -229,13 +269,10 @@ public class GUI extends JFrame {
         jpFilter.add(jcbTime);
         jpFilter.add(lblspace);
 
-
-
         jcbLanguage.setSelectedIndex(selectedLanguage);
         jcbShift.setBorder(BorderFactory.createMatteBorder(20, 40, 10, 73, lightyellow));
         jcbTime.setBorder(BorderFactory.createMatteBorder(10, 40, 20, 73, lightyellow));
         jcbLanguage.setBorder(BorderFactory.createMatteBorder(20, 38, 10, 90, lightyellow));
-
 
         if (Locale.getDefault() == Locale.GERMAN) {
             jcbShift.setBorder(BorderFactory.createMatteBorder(20, 40, 10, 73, lightyellow));
@@ -252,31 +289,29 @@ public class GUI extends JFrame {
             }
         }
 
-
         jpFilter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        GUI.ButtonListener1 bL1 = new GUI.ButtonListener1();
-        GUI.Buttonlistener2 bl2 = new GUI.Buttonlistener2();
+        jcbShift.addItemListener(new ComboBoxItemListener());
+        jcbTime.addItemListener(new ComboBoxItemListener());
+        jcbLanguage.addItemListener(new ComboBoxListenerLanguage());
+    }
+
+    private void editButtonInitialization() {
+        btnEditResident = new JButton[DatabaseFactory.residents.size()];
 
         for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
-            btnResident[i] = new JButton(DatabaseFactory.residents.get(i).getName() + " " + DatabaseFactory.residents.get(i).getSurname());
-            btnResident[i].setBackground(lightgrey);
-            btnResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            btnResident[i].setPreferredSize(new Dimension(302, 51));
-            btnResident[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-            jpResident.add(btnResident[i]);
-            btnResident[i].addActionListener(bL1);
+            btnEditResident[i] = new JButton();
+            btnEditResident[i].setBackground(lightgrey);
+            btnEditResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            btnEditResident[i].setPreferredSize(new Dimension(30, 51));
+            jpEditResident.add(btnEditResident[i]);
+            btnEditResident[i].setIcon(editicon);
+            btnEditResident[i].addActionListener(bL2);
         }
+    }
 
-        for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
-            lblRoom[i] = new JLabel(MessageFormat.format(resourceBundle.getString("room.0"), DatabaseFactory.residents.get(i).getRoom()), SwingConstants.CENTER);
-            lblRoom[i].setBackground(lightgrey);
-            lblRoom[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            lblRoom[i].setOpaque(true);
-            lblRoom[i].setPreferredSize(new Dimension(132, 51));
-            lblRoom[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
-            jpRoom.add(lblRoom[i]);
-        }
+    private void residentTextAreaInitialization() {
+        taResident = new JTextArea[DatabaseFactory.residents.size()];
 
         for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
             int resID = DatabaseFactory.residents.get(i).getResID();
@@ -288,74 +323,36 @@ public class GUI extends JFrame {
             taResident[i].setEditable(false);
             spTextResident[i] = new JScrollPane(taResident[i]);
             jpTextResident.add(spTextResident[i]);
-        }
+    }
+    }
+
+    private void roomLabelInitalization() {
+        lblRoom = new JLabel[DatabaseFactory.residents.size()];
 
         for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
-            btnEditResident[i] = new JButton();
-            btnEditResident[i].setBackground(lightgrey);
-            btnEditResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            btnEditResident[i].setPreferredSize(new Dimension(30, 51));
-            jpEditResident.add(btnEditResident[i]);
-            btnEditResident[i].setIcon(editicon);
-            btnEditResident[i].addActionListener(bl2);
-        }
-
-
-        taAll = new JTextArea();
-        setShiftIncidentText();
-        taAll.setLineWrap(true);
-        taAll.setWrapStyleWord(true);
-        jpFilterTextAll.add(taAll, BorderLayout.CENTER);
-        taAll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        taAll.setBackground(lightyellow);
-        taAll.setEditable(false);
-        taAll.setFont(new Font("TimesNewRoman", Font.BOLD, 15));
-
-        jcbShift.addItemListener(new ComboBoxItemListener());
-        jcbTime.addItemListener(new ComboBoxItemListener());
-        jcbLanguage.addItemListener(new ComboBoxListenerLanguage());
-
-        btnAll = new JButton();
-        btnAll.setBackground(lightgrey);
-        btnAll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        btnAll.setPreferredSize(new Dimension(30, 51));
-        jpFilterTextAll.add(btnAll, BorderLayout.EAST);
-        btnAll.setIcon(editicon);
-        btnAll.addActionListener(bl2);
-    }
-
-    class ComboBoxItemListener implements ItemListener {
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            setShiftIncidentText();
-            setResidentIncidentText();
+            lblRoom[i] = new JLabel(MessageFormat.format(resourceBundle.getString("room.0"), DatabaseFactory.residents.get(i).getRoom()), SwingConstants.CENTER);
+            lblRoom[i].setBackground(lightgrey);
+            lblRoom[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            lblRoom[i].setOpaque(true);
+            lblRoom[i].setPreferredSize(new Dimension(132, 51));
+            lblRoom[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+            jpRoom.add(lblRoom[i]);
         }
     }
 
-    class ComboBoxListenerLanguage implements ItemListener {
+    private void residentButtonInitialization() {
+        btnResident = new JButton[DatabaseFactory.residents.size()];
 
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            JComboBox cb = (JComboBox) e.getSource();
-            int index = cb.getSelectedIndex();
-            switch (index) {
-                case 0:
-                    Locale.setDefault(Locale.GERMAN);
-                    System.out.println("German");
-                    System.out.println(Locale.getDefault());
-                    break;
-                case 1:
-                    Locale.setDefault(Locale.ENGLISH);
-                    System.out.println("English");
-                    System.out.println(Locale.getDefault());
-                    break;
-            }
-           Main.closeFrame();
-            Main.launch();
+        for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
+            btnResident[i] = new JButton(DatabaseFactory.residents.get(i).getName() + " " + DatabaseFactory.residents.get(i).getSurname());
+            btnResident[i].setBackground(lightgrey);
+            btnResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            btnResident[i].setPreferredSize(new Dimension(302, 51));
+            btnResident[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
+            jpResident.add(btnResident[i]);
+            btnResident[i].addActionListener(bL1);
         }
     }
-        //todo the frame has to refresh somehow so that the change of language is visible
-
 
     private void setResidentIncidentText() {
         for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
@@ -384,53 +381,6 @@ public class GUI extends JFrame {
         }
         String shiftIncident = Objects.requireNonNull(ShiftSchedule.get(shiftCategory, date)).getShiftIncidents();
         taAll.setText(shiftIncident);
-    }
-
-    class ButtonListener1 implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            int index = Arrays.asList(btnResident).indexOf(e.getSource());
-
-            setResidentSpecificData(index);
-
-            if (isSaved) {
-                if (buttonIdentification == index) {
-
-                    cl.show(cards, "Bewohner");
-                    buttonIdentification = -1;
-                    hasSwitched = false;
-                    btnResident[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                    lblRoom[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-                } else {
-                    if (!hasSwitched) {
-
-                        buttonIdentification = index;
-                        //Aufspielen der Daten auf die Bewohnerübersicht
-                        cl.show(cards, "Spezifisch");
-                        btnResident[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
-                        lblRoom[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
-                        hasSwitched = true;
-                        lastButton = index;
-
-                    } else {
-                        buttonIdentification = index;
-                        //Aufspielen der Daten auf die Bewohnerübersicht
-                        cl.show(cards, "Spezifisch");
-                        hasSwitched = true;
-
-                        btnResident[lastButton].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                        lblRoom[lastButton].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-                        btnResident[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
-                        lblRoom[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
-
-                        lastButton = index;
-                    }
-                }
-            }
-        }
     }
 
     public void setResidentSpecificData(int index) {
@@ -467,7 +417,6 @@ public class GUI extends JFrame {
         } catch (BadLocationException e) {
         }
     }
-
 
     private void setMedication(Resident selectedResident, MedPlan medPlan) {
         try {
@@ -550,11 +499,63 @@ public class GUI extends JFrame {
         }
     }
 
+    private void saveChanges(int index) {
+        String newText = taResident[index].getText();
+        int resID = DatabaseFactory.residents.get(index).getResID();
+        DatabaseService.updateIncidentsDatabase(newText, DatabaseFactory.incidents.get(index));
+
+    }
+
+    class ButtonListener1 implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            int index = Arrays.asList(btnResident).indexOf(e.getSource());
+
+            setResidentSpecificData(index);
+
+            if (isSaved) {
+                if (buttonIdentification == index) {
+
+                    cl.show(cards, "Bewohner");
+                    buttonIdentification = -1;
+                    hasSwitched = false;
+                    btnResident[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    lblRoom[index].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+                } else {
+                    if (!hasSwitched) {
+
+                        buttonIdentification = index;
+                        //Aufspielen der Daten auf die Bewohnerübersicht
+                        cl.show(cards, "Spezifisch");
+                        btnResident[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
+                        lblRoom[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
+                        hasSwitched = true;
+                        lastButton = index;
+
+                    } else {
+                        buttonIdentification = index;
+                        //Aufspielen der Daten auf die Bewohnerübersicht
+                        cl.show(cards, "Spezifisch");
+                        hasSwitched = true;
+
+                        btnResident[lastButton].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                        lblRoom[lastButton].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+                        btnResident[index].setBorder(BorderFactory.createMatteBorder(4, 4, 4, 0, Color.lightGray));
+                        lblRoom[index].setBorder(BorderFactory.createMatteBorder(4, 0, 4, 0, Color.lightGray));
+
+                        lastButton = index;
+                    }
+                }
+            }
+        }
+    }
 
     class Buttonlistener2 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
 
             if (e.getSource() != btnAll) {
 
@@ -569,10 +570,10 @@ public class GUI extends JFrame {
                         btnEditResident[index].setIcon(saveicon);
                         isSaved = false;
                         indexComparison = index;
-
                     }
                 } else {
                     if (!isSaved && btnAll.getIcon() == editicon) {
+
                         if (indexComparison == index && e.getSource() != btnAll) {
 
                             taResident[index].setEditable(false);
@@ -581,7 +582,6 @@ public class GUI extends JFrame {
                             //Sachen abspeichern Mehode
                             isSaved = true;
                             beingEdited = false;
-
                         }
                     }
                 }
@@ -594,7 +594,6 @@ public class GUI extends JFrame {
                         taAll.setEditable(true);
                         btnAll.setIcon(saveicon);
                         isSaved = false;
-
                     }
                 } else {
                     if (!isSaved && btnAll.getIcon() == saveicon) {
@@ -605,7 +604,6 @@ public class GUI extends JFrame {
                             //Sachen abspeichern Mehode
                             isSaved = true;
                             beingEdited = false;
-
                         }
                     }
                 }
@@ -613,11 +611,35 @@ public class GUI extends JFrame {
         }
     }
 
-    private void saveChanges(int index) {
-        String newText = taResident[index].getText();
-        int resID = DatabaseFactory.residents.get(index).getResID();
-        DatabaseService.updateIncidentsDatabase(newText, DatabaseFactory.incidents.get(index));
+    class ComboBoxItemListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            setShiftIncidentText();
+            setResidentIncidentText();
+        }
+    }
 
+    class ComboBoxListenerLanguage implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            JComboBox cb = (JComboBox) e.getSource();
+            int index = cb.getSelectedIndex();
+            switch (index) {
+                case 0:
+                    Locale.setDefault(Locale.GERMAN);
+                    System.out.println("German");
+                    System.out.println(Locale.getDefault());
+                    break;
+                case 1:
+                    Locale.setDefault(Locale.ENGLISH);
+                    System.out.println("English");
+                    System.out.println(Locale.getDefault());
+                    break;
+            }
+            Main.closeFrame();
+            Main.launch();
+        }
     }
 
 }

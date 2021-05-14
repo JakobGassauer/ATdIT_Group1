@@ -15,9 +15,9 @@ public class Main {
         //System.out.println(Resident.get(2));
         //System.out.println(Incident.get(Resident.get("Inge").getResID()).getDescription());
         //System.out.println(Resident.get("Robert").getRoom());
-        //todo Junit Tests & internationalization
+        //todo Junit Tests
 
-   //     Locale.setDefault(Locale.GERMAN); // in Abfrage/Button ändern??
+
 
 
     }
