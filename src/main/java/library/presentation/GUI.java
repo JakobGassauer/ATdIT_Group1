@@ -26,6 +26,7 @@ public class GUI extends JFrame {
     static int buttonIdentification = -1;
     static int indexComparison = -1;
     static int lastButton = -1;
+    static int selectedLanguage = 0;
 
 
     ImageIcon saveicon;
@@ -230,15 +231,24 @@ public class GUI extends JFrame {
 
 
 
+        jcbLanguage.setSelectedIndex(selectedLanguage);
+        jcbShift.setBorder(BorderFactory.createMatteBorder(20, 40, 10, 73, lightyellow));
+        jcbTime.setBorder(BorderFactory.createMatteBorder(10, 40, 20, 73, lightyellow));
+        jcbLanguage.setBorder(BorderFactory.createMatteBorder(20, 38, 10, 90, lightyellow));
+
+
         if (Locale.getDefault() == Locale.GERMAN) {
             jcbShift.setBorder(BorderFactory.createMatteBorder(20, 40, 10, 73, lightyellow));
             jcbTime.setBorder(BorderFactory.createMatteBorder(10, 40, 20, 73, lightyellow));
             jcbLanguage.setBorder(BorderFactory.createMatteBorder(20, 38, 10, 90, lightyellow));
+            selectedLanguage = 0;
+
         } else {
             if (Locale.getDefault() == Locale.ENGLISH) {
                 jcbShift.setBorder(BorderFactory.createMatteBorder(20, 40, 10, 86, lightyellow));
                 jcbTime.setBorder(BorderFactory.createMatteBorder(10, 40, 20, 86, lightyellow));
                 jcbLanguage.setBorder(BorderFactory.createMatteBorder(20, 50, 10, 93, lightyellow));
+                selectedLanguage = 1;
             }
         }
 
