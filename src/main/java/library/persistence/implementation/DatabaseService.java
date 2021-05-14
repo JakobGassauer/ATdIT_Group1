@@ -128,7 +128,7 @@ public class DatabaseService implements Service {
             if (result != null) {
                 while(result.next()){
                     MedicationData medication = new MedicationData(
-                            result.getInt("medID"),result.getString("name"));
+                            result.getInt("medicID"),result.getString("name"));
                     arrayList.add(medication);
                 }
             }
@@ -151,7 +151,7 @@ public class DatabaseService implements Service {
                 while(result.next()){
                     MedPlanData medPlan = new MedPlanData(
                             result.getInt("medID"),result.getInt("resID"),
-                            result.getDouble("concentration"),result.getDouble("intakeFrequency")
+                            result.getDouble("concentration"),result.getDouble("intake_frequency")
                             , result.getInt("medicID"));
                     arrayList.add(medPlan);
                 }
@@ -238,7 +238,7 @@ public class DatabaseService implements Service {
         }
         return arrayList;
     }
-
+//todo
     public static ResultSet createNewStatement(String sql){
         try {
             Connection connection = DBConnect.connect();
@@ -275,15 +275,16 @@ public class DatabaseService implements Service {
         }
     }
 
-    public static void updateIncidentsDatabase(String newText, Incident incident){
+    public void updateIncidentsDataDatabase(String newText, int resID){
         try{
             String newTextEdited = newText.substring(10);
             Connection connection = DBConnect.connect();
             String sql = "UPDATE incidents set description = ? WHERE resID = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, newTextEdited);
-            statement.setString(2, String.valueOf(incident.getResID()));
+            statement.setString(2, String.valueOf(resID));
             statement.execute();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

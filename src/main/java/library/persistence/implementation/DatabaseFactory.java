@@ -188,4 +188,8 @@ public class DatabaseFactory {
                 medPlanData.medicID);
     }
 
+
+    public void updateIncidentsDatabase(String newText, Incident incident){
+        service.updateIncidentsDataDatabase(newText, incident.getResID());
+    }
 }

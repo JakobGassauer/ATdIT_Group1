@@ -2,7 +2,6 @@ package library.presentation;
 
 import library.model.implementation.*;
 import library.persistence.implementation.DatabaseFactory;
-import library.persistence.implementation.DatabaseService;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -554,7 +553,7 @@ public class GUI extends JFrame {
     private void saveChanges(int index) {
         String newText = taResident[index].getText();
         int resID = factory.residents.get(index).getResID();
-        DatabaseService.updateIncidentsDatabase(newText, factory.incidents.get(index));
+        factory.updateIncidentsDatabase(newText, factory.incidents.get(index));
 
     }
 
