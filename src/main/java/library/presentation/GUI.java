@@ -1,5 +1,6 @@
 package library.presentation;
 
+import library.Main;
 import library.model.implementation.*;
 import library.persistence.implementation.DatabaseFactory;
 import library.persistence.implementation.DatabaseService;
@@ -321,21 +322,30 @@ public class GUI extends JFrame {
         }
     }
 
-    class ComboBoxListenerLanguage implements ItemListener{
+    class ComboBoxListenerLanguage implements ItemListener {
 
         @Override
         public void itemStateChanged(ItemEvent e) {
             JComboBox cb = (JComboBox) e.getSource();
             int index = cb.getSelectedIndex();
-            switch (index){
-                case 0: Locale.setDefault(Locale.GERMAN);
-                break;
-                case 1: Locale.setDefault(Locale.ENGLISH);
-                break;
+            switch (index) {
+                case 0:
+                    Locale.setDefault(Locale.GERMAN);
+                    System.out.println("German");
+                    System.out.println(Locale.getDefault());
+                    break;
+                case 1:
+                    Locale.setDefault(Locale.ENGLISH);
+                    System.out.println("English");
+                    System.out.println(Locale.getDefault());
+                    break;
             }
+           Main.closeFrame();
+            Main.launch();
         }
-        //todo the frame has to refresh somehow so that the change of language is visible
     }
+        //todo the frame has to refresh somehow so that the change of language is visible
+
 
     private void setResidentIncidentText() {
         for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
