@@ -47,10 +47,10 @@ public class Resident extends People {
     }
 
     public static Resident get(int index) {
-        return DatabaseService.getSingleResident(index);
+        return null;//DatabaseService.getSingleResident(index);
     }
 
     public static Resident get(String name) {
-        return DatabaseService.getSingleResident(name);
+       return null;// DatabaseService.getSingleResident(name);
     }
 }

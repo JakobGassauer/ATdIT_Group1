@@ -87,13 +87,13 @@ public class Incident implements Edit<Incident> {
     }
 
 
-    public static Incident get(int resID) {
-        return DatabaseService.getSingleIncident(resID);
-    }
+    //public static Incident get(int resID) {
+     //   return DatabaseService.getSingleIncident(resID);
+    //}
 
-    public static Incident get(int resID, Date date) {
-        return DatabaseService.getSingleIncident(resID, date);
-    }
+    //public static Incident get(int resID, Date date) {
+     //   return DatabaseService.getSingleIncident(resID, date);
+    //}
 
 
     @Override
