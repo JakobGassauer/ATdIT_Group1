@@ -11,7 +11,8 @@ import java.util.ResourceBundle;
 public class Main {
     static GUI frame;
     public static void main(String[] args) {
-     launch();
+        Locale.setDefault(Locale.GERMAN);
+        launch();
         //System.out.println(Resident.get(2));
         //System.out.println(Incident.get(Resident.get("Inge").getResID()).getDescription());
         //System.out.println(Resident.get("Robert").getRoom());

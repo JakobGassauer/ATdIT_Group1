@@ -1,6 +1,5 @@
 package library.presentation;
 
-import library.Main;
 import library.model.implementation.*;
 import library.persistence.implementation.DatabaseFactory;
 import library.persistence.implementation.DatabaseService;
@@ -66,8 +65,8 @@ public class GUI extends JFrame {
     Color lightgrey = new Color(245, 245, 245);
     Color lightyellow = new Color(255, 255, 202);
 
-    GUI.ButtonListener1 bL1;
-    GUI.Buttonlistener2 bL2;
+    ButtonListenerChangeCardsForResidentSpecificData listenerChangeCardsForResidentSpecificData;
+    ButtonListenerEnableEditing listenerEnableEditing;
 
     private final ResourceBundle resourceBundle;
     private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
@@ -78,8 +77,8 @@ public class GUI extends JFrame {
         this.resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE);
         saveicon = new ImageIcon("Saveicon.png");
         editicon = new ImageIcon("Editicon.png");
-        bL1 = new GUI.ButtonListener1();
-        bL2 = new GUI.Buttonlistener2();
+        listenerChangeCardsForResidentSpecificData = new ButtonListenerChangeCardsForResidentSpecificData();
+        listenerEnableEditing = new ButtonListenerEnableEditing();
 
         residentOverviewInitialization();
 
@@ -180,7 +179,7 @@ public class GUI extends JFrame {
         btnAll.setPreferredSize(new Dimension(30, 51));
         jpFilterTextAll.add(btnAll, BorderLayout.EAST);
         btnAll.setIcon(editicon);
-        btnAll.addActionListener(bL2);
+        btnAll.addActionListener(listenerEnableEditing);
     }
 
     private void jpanelInitialization() {
@@ -252,6 +251,7 @@ public class GUI extends JFrame {
     }
 
     private void filterAndJComboboxInitialization() {
+
         Object [] items = {
                 new ImageIcon("Germanyicon.png"),
                 new ImageIcon("UnitedKingdomicon.png")
@@ -291,8 +291,8 @@ public class GUI extends JFrame {
 
         jpFilter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        jcbShift.addItemListener(new ComboBoxItemListener());
-        jcbTime.addItemListener(new ComboBoxItemListener());
+        jcbShift.addItemListener(new ComboBoxItemListener(this));
+        jcbTime.addItemListener(new ComboBoxItemListener(this));
         jcbLanguage.addItemListener(new ComboBoxListenerLanguage());
     }
 
@@ -306,7 +306,7 @@ public class GUI extends JFrame {
             btnEditResident[i].setPreferredSize(new Dimension(30, 51));
             jpEditResident.add(btnEditResident[i]);
             btnEditResident[i].setIcon(editicon);
-            btnEditResident[i].addActionListener(bL2);
+            btnEditResident[i].addActionListener(listenerEnableEditing);
         }
     }
 
@@ -350,11 +350,11 @@ public class GUI extends JFrame {
             btnResident[i].setPreferredSize(new Dimension(302, 51));
             btnResident[i].setFont(new Font("TimesNewRoman", Font.BOLD, 18));
             jpResident.add(btnResident[i]);
-            btnResident[i].addActionListener(bL1);
+            btnResident[i].addActionListener(listenerChangeCardsForResidentSpecificData);
         }
     }
 
-    private void setResidentIncidentText() {
+    public void setResidentIncidentText() {
         for (int i = 0; i < DatabaseFactory.residents.size(); i++) {
             int resID = DatabaseFactory.residents.get(i).getResID();
             String dateString = (String) jcbTime.getSelectedItem(); //String format
@@ -368,7 +368,7 @@ public class GUI extends JFrame {
         }
     }
 
-    private void setShiftIncidentText() {
+    public void setShiftIncidentText() {
         int shiftCategory;
         shiftCategory = (jcbShift.getSelectedIndex()) + 1;
 
@@ -499,14 +499,20 @@ public class GUI extends JFrame {
         }
     }
 
-    private void saveChanges(int index) {
+    public void saveChangesResidentIncidentText(int index) {
         String newText = taResident[index].getText();
         int resID = DatabaseFactory.residents.get(index).getResID();
+        //todo datumsabhängigkeit
         DatabaseService.updateIncidentsDatabase(newText, DatabaseFactory.incidents.get(index));
-
     }
 
-    class ButtonListener1 implements ActionListener {
+    public void saveChangesShiftIncidentText() {
+        String newText = taAll.getText();
+        //todo datums und shiftabhängigkeit
+       // DatabaseService.updateIncidentsDatabase(newText, DatabaseFactory.incidents.get(index));
+    }
+
+    class ButtonListenerChangeCardsForResidentSpecificData implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -553,7 +559,7 @@ public class GUI extends JFrame {
         }
     }
 
-    class Buttonlistener2 implements ActionListener {
+    class ButtonListenerEnableEditing implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -578,7 +584,7 @@ public class GUI extends JFrame {
 
                             taResident[index].setEditable(false);
                             btnEditResident[index].setIcon(editicon);
-                            saveChanges(index);
+                            saveChangesResidentIncidentText(index);
                             //Sachen abspeichern Mehode
                             isSaved = true;
                             beingEdited = false;
@@ -601,7 +607,7 @@ public class GUI extends JFrame {
 
                             taAll.setEditable(false);
                             btnAll.setIcon(editicon);
-                            //Sachen abspeichern Mehode
+                            saveChangesShiftIncidentText();
                             isSaved = true;
                             beingEdited = false;
                         }
@@ -610,36 +616,4 @@ public class GUI extends JFrame {
             }
         }
     }
-
-    class ComboBoxItemListener implements ItemListener {
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            setShiftIncidentText();
-            setResidentIncidentText();
-        }
-    }
-
-    class ComboBoxListenerLanguage implements ItemListener {
-
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            JComboBox cb = (JComboBox) e.getSource();
-            int index = cb.getSelectedIndex();
-            switch (index) {
-                case 0:
-                    Locale.setDefault(Locale.GERMAN);
-                    System.out.println("German");
-                    System.out.println(Locale.getDefault());
-                    break;
-                case 1:
-                    Locale.setDefault(Locale.ENGLISH);
-                    System.out.println("English");
-                    System.out.println(Locale.getDefault());
-                    break;
-            }
-            Main.closeFrame();
-            Main.launch();
-        }
-    }
-
 }
