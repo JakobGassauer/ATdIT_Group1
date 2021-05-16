@@ -3,10 +3,6 @@ package library.persistence.implementation;
 import library.model.implementation.*;
 import library.persistence.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -39,7 +35,7 @@ public class DatabaseFactory {
     public final ArrayList<Visits> visits = new ArrayList<>();
 
 
-
+    static int entriesAddedInSession;
 
     public DatabaseFactory(){
         service = new DatabaseService();
@@ -55,6 +51,7 @@ public class DatabaseFactory {
         visitsData = service.getVisitData();
 
         convertToModelObjects();
+        entriesAddedInSession=0;
     }
 
     private void convertToModelObjects() {
@@ -189,7 +186,19 @@ public class DatabaseFactory {
     }
 
 
-    public void updateIncidentsDatabase(String newText, Incident incident){
-        service.updateIncidentsDataDatabase(newText, incident.getResID());
+    public void saveResidentIncidentsDatabase(String newText, Incident incident, int resID, Date date){
+        if (incident.getIncidentID()==0){
+            int newIncidentID = incidents.size()+(entriesAddedInSession+2);
+            int shiftID = 0;
+            String description = newText;
+            IncidentData incidentData = new IncidentData(newIncidentID, resID, shiftID, description, date);
+            service.createNewResidentIncidentDatabase(incidentData);
+            entriesAddedInSession++;
+        }
+        service.updateResidentIncidentsDataDatabase(newText, incident.getIncidentID());
+    }
+
+    public void saveShiftIncidentsDatabase(String newText, int shiftID){
+        service.updateShiftIncidentsDataDatabase(newText, shiftID);
     }
 }

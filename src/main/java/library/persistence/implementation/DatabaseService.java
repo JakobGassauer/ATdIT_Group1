@@ -275,19 +275,36 @@ public class DatabaseService implements Service {
         }
     }
 
-    public void updateIncidentsDataDatabase(String newText, int resID){
+    public void updateResidentIncidentsDataDatabase(String newText, int incidentID){ //todo ids vergeben??
         try{
             String newTextEdited = newText.substring(10);
             Connection connection = DBConnect.connect();
-            String sql = "UPDATE incidents set description = ? WHERE resID = ?";
+            String sql = "UPDATE incidents set description = ? WHERE incidentID = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, newTextEdited);
-            statement.setString(2, String.valueOf(resID));
+            statement.setString(2, String.valueOf(incidentID));
             statement.execute();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateShiftIncidentsDataDatabase(String newText, int shiftID) {
+        try{
+            Connection connection = DBConnect.connect();
+            String sql = "UPDATE shift_schedule set shift_incidents = ? WHERE shiftID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, newText);
+            statement.setString(2, String.valueOf(shiftID));
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     public ResidentData getSingleResidentData(String name) {
@@ -477,6 +494,27 @@ public class DatabaseService implements Service {
             }
             e.printStackTrace();
             return null;
+        }
+    }
+
+
+    public void createNewResidentIncidentDatabase(IncidentData incidentData) {
+        try{
+            String newTextEdited = incidentData.description.substring(10);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String dateInString = formatter.format(incidentData.incidentsDate);
+            Connection connection = DBConnect.connect();
+            String sql = "INSERT into incidents (incidentID, description, resID, shiftID, incidents_date) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, String.valueOf(incidentData.incidentID));
+            statement.setString(2, newTextEdited);
+            statement.setString(3, String.valueOf(incidentData.resID));
+            statement.setString(4, String.valueOf(incidentData.shiftID));
+            statement.setString(5, dateInString);
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

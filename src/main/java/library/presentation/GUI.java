@@ -244,7 +244,7 @@ public class GUI extends JFrame {
 
         for (int i = 0; i < factory.residents.size(); i++) {
             int resID = factory.residents.get(i).getResID();
-            taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"),factory.getSingleIncident(resID).getDescription()));
+            taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"),factory.getSingleIncident(resID).getDescription())); //todo reicht es hier den ersten Incident zu nehmen oder sollte man eine Datumskontrolle machen ?
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
             taResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -514,7 +514,7 @@ public class GUI extends JFrame {
 
                             taResident[index].setEditable(false);
                             btnEditResident[index].setIcon(editicon);
-                            saveChanges(index);
+                            saveChangesResidentIncidentText(index);
                             //Sachen abspeichern Mehode
                             isSaved = true;
                             beingEdited = false;
@@ -539,7 +539,7 @@ public class GUI extends JFrame {
 
                             taAll.setEditable(false);
                             btnAll.setIcon(editicon);
-                            //Sachen abspeichern Mehode
+                            saveChangesShiftIncidentText();
                             isSaved = true;
                             beingEdited = false;
 
@@ -550,11 +550,41 @@ public class GUI extends JFrame {
         }
     }
 
-    private void saveChanges(int index) {
-        String newText = taResident[index].getText();
-        int resID = factory.residents.get(index).getResID();
-        factory.updateIncidentsDatabase(newText, factory.incidents.get(index));
+    private void saveChangesResidentIncidentText(int index) {
+        String newText = taResident[index].getText();  //Get text that has been changed
+        int resID = factory.residents.get(index).getResID(); //get resid of selected resident
+        String dateString = (String) jcbTime.getSelectedItem(); //String format
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("dd.MM.yyyy").parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
+        factory.saveResidentIncidentsDatabase(newText, factory.getSingleIncident(resID,date), resID, date);
+    }
+
+    //todo datumsabhängigkeit
+
+    public void saveChangesShiftIncidentText() {
+        String newText = taAll.getText(); //get new text
+        String dateString = (String) jcbTime.getSelectedItem(); //String format
+        int shiftCategory = (jcbShift.getSelectedIndex()) + 1; //get selected shift category
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("dd.MM.yyyy").parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int shiftID = factory.getSingleShiftSchedule(shiftCategory, date).getShiftID();
+        factory.saveShiftIncidentsDatabase(newText, shiftID);
+
+
+
+
+
+        //todo datums und shiftabhängigkeit
+        //DatabaseService.updateIncidentsDatabase(newText, DatabaseFactory.incidents.get(index));
     }
 
 }
