@@ -302,9 +302,6 @@ public class DatabaseService implements Service {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     public ResidentData getSingleResidentData(String name) {
@@ -368,7 +365,7 @@ public class DatabaseService implements Service {
             return shiftSchedule;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
-                return new ShiftScheduleData(0,0,0,null,"no shift incidents");
+                return new ShiftScheduleData(0,0,0,null,"hallo");
             }
             e.printStackTrace();
             return null;

@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 
 public class DBConnect {
-    public static final String location="jdbc:sqlite:src/database/kopie.sqlite"; //NON-NLS
+    public static final String location="jdbc:sqlite:src/database/dieNeue.sqlite"; //NON-NLS
     private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n/gui/gui"); //NON-NLS
 
     public static Connection connect() {
