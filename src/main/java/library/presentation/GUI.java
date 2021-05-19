@@ -1,6 +1,7 @@
 package library.presentation;
 
 import library.model.implementation.*;
+import library.persistence.implementation.DatabaseAdapter;
 import library.persistence.implementation.DatabaseFactory;
 
 import javax.swing.*;
@@ -69,8 +70,8 @@ public class GUI extends JFrame {
 
     private final ResourceBundle resourceBundle;
     private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
-    DatabaseFactory factory = new DatabaseFactory(); // gui does not use db types from persistence but uses methods from the factory
-
+    private DatabaseFactory factory = new DatabaseFactory(); // gui does not use db types from persistence but uses methods from the factory
+    private DatabaseAdapter adapter = new DatabaseAdapter();
 
     public GUI() {
 
@@ -145,7 +146,7 @@ public class GUI extends JFrame {
         spClosestRelative = new JScrollPane(tpClosestRelative);
         spVisits = new JScrollPane(tpVisits);
         spOther = new JScrollPane(tpOther);
-        spTextResident = new JScrollPane[factory.residents.size()];
+        spTextResident = new JScrollPane[factory.getResidents().size()];
 
         jpSpecific.add(spBaseData);
         jpSpecific.add(spMedication);
@@ -197,11 +198,11 @@ public class GUI extends JFrame {
 
     private void databaseConnectionForFilters() {
         shifts = new String[]{resourceBundle.getString("morning_shift"), resourceBundle.getString("late_shift"), resourceBundle.getString("night_shift")};
-        time = new String[(factory.shiftSchedules.size() / 3)];
+        time = new String[(factory.getShiftSchedules().size() / 3)];
         int n = 0;
         String previous = null;
-        for (int i = 0; i < factory.shiftSchedules.size(); i++) {
-            Date date = factory.shiftSchedules.get(i).getDate();
+        for (int i = 0; i < factory.getShiftSchedules().size(); i++) {
+            Date date = factory.getShiftSchedules().get(i).getDate();
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
             String dateInString = formatter.format(date);
             if (i != 0) {
@@ -297,9 +298,9 @@ public class GUI extends JFrame {
     }
 
     private void editButtonInitialization() {
-        btnEditResident = new JButton[factory.residents.size()];
+        btnEditResident = new JButton[factory.getResidents().size()];
 
-        for (int i = 0; i < factory.residents.size(); i++) {
+        for (int i = 0; i < factory.getResidents().size(); i++) {
             btnEditResident[i] = new JButton();
             btnEditResident[i].setBackground(lightgrey);
             btnEditResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -311,11 +312,11 @@ public class GUI extends JFrame {
     }
 
     private void residentTextAreaInitialization() {
-        taResident = new JTextArea[factory.residents.size()];
+        taResident = new JTextArea[factory.getResidents().size()];
 
-        for (int i = 0; i < factory.residents.size(); i++) {
-            int resID = factory.residents.get(i).getResID();
-            taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"),factory.getSingleIncident(resID).getDescription())); //todo reicht es hier den ersten Incident zu nehmen oder sollte man eine Datumskontrolle machen ?
+        for (int i = 0; i < factory.getResidents().size(); i++) {
+            int resID = factory.getResidents().get(i).getResID();
+            taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"),adapter.getSingleIncident(resID).getDescription())); //todo reicht es hier den ersten Incident zu nehmen oder sollte man eine Datumskontrolle machen ?
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
             taResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -327,10 +328,10 @@ public class GUI extends JFrame {
     }
 
     private void roomLabelInitalization() {
-        lblRoom = new JLabel[factory.residents.size()];
+        lblRoom = new JLabel[factory.getResidents().size()];
 
-        for (int i = 0; i < factory.residents.size(); i++) {
-            lblRoom[i] = new JLabel(MessageFormat.format(resourceBundle.getString("room.0"), factory.residents.get(i).getRoom()), SwingConstants.CENTER);
+        for (int i = 0; i < factory.getResidents().size(); i++) {
+            lblRoom[i] = new JLabel(MessageFormat.format(resourceBundle.getString("room.0"), factory.getResidents().get(i).getRoom()), SwingConstants.CENTER);
             lblRoom[i].setBackground(lightgrey);
             lblRoom[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             lblRoom[i].setOpaque(true);
@@ -341,10 +342,10 @@ public class GUI extends JFrame {
     }
 
     private void residentButtonInitialization() {
-        btnResident = new JButton[factory.residents.size()];
+        btnResident = new JButton[factory.getResidents().size()];
 
-        for (int i = 0; i < factory.residents.size(); i++) {
-            btnResident[i] = new JButton(factory.residents.get(i).getName() + " " + factory.residents.get(i).getSurname());
+        for (int i = 0; i < factory.getResidents().size(); i++) {
+            btnResident[i] = new JButton(factory.getResidents().get(i).getName() + " " + factory.getResidents().get(i).getSurname());
             btnResident[i].setBackground(lightgrey);
             btnResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnResident[i].setPreferredSize(new Dimension(302, 51));
@@ -355,8 +356,8 @@ public class GUI extends JFrame {
     }
 
     public void setResidentIncidentText() {
-        for (int i = 0; i < factory.residents.size(); i++) {
-            int resID = factory.residents.get(i).getResID();
+        for (int i = 0; i < factory.getResidents().size(); i++) {
+            int resID = factory.getResidents().get(i).getResID();
             String dateString = (String) jcbTime.getSelectedItem(); //String format
             Date date = null;
             try {
@@ -364,7 +365,7 @@ public class GUI extends JFrame {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            taResident[i].setText(MessageFormat.format(resourceBundle.getString("incidents.0"),  factory.getSingleIncident(resID, date).getDescription()));
+            taResident[i].setText(MessageFormat.format(resourceBundle.getString("incidents.0"),  adapter.getSingleIncident(resID, date).getDescription()));
         }
     }
 
@@ -379,14 +380,14 @@ public class GUI extends JFrame {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String shiftIncident = factory.getSingleShiftSchedule(shiftCategory, date).getShiftIncidents();
+        String shiftIncident = adapter.getSingleShiftSchedule(shiftCategory, date).getShiftIncidents();
         taAll.setText(shiftIncident);
     }
 
     public void setResidentSpecificData(int index) {
-        Resident selectedResident = factory.getSingleResident(index);
-        MedPlan medPlan =factory.getSingleMedPlan(selectedResident.getResID());
-        ICE ice = factory.getSingleICE(selectedResident.getResID());
+        Resident selectedResident = adapter.getSingleResident(index);
+        MedPlan medPlan =adapter.getSingleMedPlan(selectedResident.getResID());
+        ICE ice = adapter.getSingleICE(selectedResident.getResID());
 
         setBaseData(selectedResident);
         setMedication(selectedResident, medPlan);
@@ -433,7 +434,7 @@ public class GUI extends JFrame {
             docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medication.id"), attrSubHeader);
             docMedication.insertString(docMedication.getLength(), String.valueOf(medPlan.getMedicID()), attrText);
             docMedication.insertString(docMedication.getLength(), resourceBundle.getString("medication.name"), attrSubHeader);
-            docMedication.insertString(docMedication.getLength(),  factory.getSingleMedication(medPlan.getMedID()), attrText);
+            docMedication.insertString(docMedication.getLength(),  adapter.getSingleMedication(medPlan.getMedID()), attrText);
 
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
@@ -481,7 +482,7 @@ public class GUI extends JFrame {
         try {
             tpVisits.setText(" ");
             docVisits.insertString(docVisits.getLength(), resourceBundle.getString("visits"), attrHeader);
-            docVisits.insertString(docVisits.getLength(), "\n \n " + factory.getSingleVisitDescription(selectedResident.getResID()), attrText);
+            docVisits.insertString(docVisits.getLength(), "\n \n " + adapter.getSingleVisitDescription(selectedResident.getResID()), attrText);
 
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
@@ -501,7 +502,7 @@ public class GUI extends JFrame {
 
     private void saveChangesResidentIncidentText(int index) {
         String newText = taResident[index].getText();  //Get text that has been changed
-        int resID = factory.residents.get(index).getResID(); //get resid of selected resident
+        int resID = factory.getResidents().get(index).getResID(); //get resid of selected resident
         String dateString = (String) jcbTime.getSelectedItem(); //String format
         Date date = null;
         try {
@@ -510,7 +511,7 @@ public class GUI extends JFrame {
             e.printStackTrace();
         }
 
-        factory.saveResidentIncidentsDatabase(newText, factory.getSingleIncident(resID,date), resID, date);
+        adapter.saveResidentIncidentsDatabase(newText, adapter.getSingleIncident(resID,date), resID, date);
     }
 
     //todo datumsabhängigkeit
@@ -525,8 +526,8 @@ public class GUI extends JFrame {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        int shiftID = factory.getSingleShiftSchedule(shiftCategory, date).getShiftID();
-        factory.saveShiftIncidentsDatabase(newText, shiftID);
+        int shiftID = adapter.getSingleShiftSchedule(shiftCategory, date).getShiftID();
+        adapter.saveShiftIncidentsDatabase(newText, shiftID);
         //todo datums und shiftabhängigkeit
     }
 

@@ -1,41 +1,39 @@
 package library.persistence.implementation;
 
 import library.model.implementation.*;
-import library.persistence.*;
+import library.persistence.Factory;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-public class DatabaseFactory {
+public class DatabaseFactory implements Factory {
     DatabaseService service;
 
     //maps types from db service to types used in the model (?)
     // no direct database access/queries
 
     //Data fromD DB
-    public final ArrayList<ResidentData> residentsData;
-    public final ArrayList<IncidentData> incidentsData;
-    public final ArrayList<ShiftScheduleData> shiftSchedulesData;
-    public final ArrayList<EmployeeData> employeesData;
-    public final ArrayList<ICEData> icesData;
-    public final ArrayList<MedicationData> medicationsData;
-    public final ArrayList<MedPlanData> medPlansData;
-    public final ArrayList<StationData> stationsData;
-    public final ArrayList<VisitsData> visitsData;
+    private final ArrayList<ResidentData> residentsData;
+    private final ArrayList<IncidentData> incidentsData;
+    private final ArrayList<ShiftScheduleData> shiftSchedulesData;
+    private final ArrayList<EmployeeData> employeesData;
+    private final ArrayList<ICEData> icesData;
+    private final ArrayList<MedicationData> medicationsData;
+    private final ArrayList<MedPlanData> medPlansData;
+    private final ArrayList<StationData> stationsData;
+    private final ArrayList<VisitsData> visitsData;
 
 //Namenskonventionen! Lists to be used in gui
-    public final ArrayList<Resident> residents = new ArrayList<>();
-    public final ArrayList<Incident> incidents = new ArrayList<>();
-    public final ArrayList<ShiftSchedule> shiftSchedules = new ArrayList<>();
-    public final ArrayList<Employee> employees = new ArrayList<>();
-    public final ArrayList<ICE> ices = new ArrayList<>();
-    public final ArrayList<Medication> medications = new ArrayList<>();
-    public final ArrayList<MedPlan> medPlans = new ArrayList<>();
-    public final ArrayList<Station> stations = new ArrayList<>();
-    public final ArrayList<Visits> visits = new ArrayList<>();
+    private final ArrayList<Resident> residents = new ArrayList<>();
+    private final ArrayList<Incident> incidents = new ArrayList<>();
+    private final ArrayList<ShiftSchedule> shiftSchedules = new ArrayList<>();
+    private final ArrayList<Employee> employees = new ArrayList<>();
+    private final ArrayList<ICE> ices = new ArrayList<>();
+    private final ArrayList<Medication> medications = new ArrayList<>();
+    private final ArrayList<MedPlan> medPlans = new ArrayList<>();
+    private final ArrayList<Station> stations = new ArrayList<>();
+    private final ArrayList<Visits> visits = new ArrayList<>();
 
-
-    static int entriesAddedInSession;
+    private static int entriesAddedInSession;
 
     public DatabaseFactory(){
         service = new DatabaseService();
@@ -54,7 +52,7 @@ public class DatabaseFactory {
         entriesAddedInSession=0;
     }
 
-    private void convertToModelObjects() {
+    public void convertToModelObjects() {
         for(ResidentData entities : residentsData){
             Resident entity = new Resident(entities.resID,
                     entities.name,
@@ -132,7 +130,43 @@ public class DatabaseFactory {
 
     }
 
+    public ArrayList<Employee> getEmployees() {
+        return employees;
+    }
 
+    public ArrayList<ICE> getIces() {
+        return ices;
+    }
+
+    public ArrayList<Incident> getIncidents() {
+        return incidents;
+    }
+
+    public ArrayList<Medication> getMedications() {
+        return medications;
+    }
+
+    public ArrayList<MedPlan> getMedPlans() {
+        return medPlans;
+    }
+
+    public ArrayList<Resident> getResidents() {
+        return residents;
+    }
+
+    public ArrayList<ShiftSchedule> getShiftSchedules() {
+        return shiftSchedules;
+    }
+
+    public ArrayList<Station> getStations() {
+        return stations;
+    }
+
+    public ArrayList<Visits> getVisits() {
+        return visits;
+    }
+
+    /*
     public Resident getSingleResident(int index) {
         return residents.get(index);
     }
@@ -167,6 +201,7 @@ public class DatabaseFactory {
                 incidentData.shiftID,incidentData.description,
                 incidentData.incidentsDate);
     }
+
     public Incident getSingleIncident(int resID){
         IncidentData incidentData = service.getSingleIncidentData(resID);
         return new Incident(incidentData.incidentID,incidentData.resID,
@@ -200,5 +235,5 @@ public class DatabaseFactory {
 
     public void saveShiftIncidentsDatabase(String newText, int shiftID){
         service.updateShiftIncidentsDataDatabase(newText, shiftID);
-    }
+    }*/
 }

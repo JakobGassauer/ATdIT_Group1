@@ -1,7 +1,10 @@
 package library.persistence;
 
+import library.persistence.implementation.*;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public interface Service {
 
@@ -14,15 +17,30 @@ public interface Service {
         }
     }
 
-    ArrayList<EmployeeData> getEmployeeData();
-    ArrayList<ICEData> getICEData();
-    ArrayList<IncidentData> getIncidentData();
-    ArrayList<MedicationData> getMedicationData();
-    ArrayList<MedPlanData> getMedPlanData();
-    ArrayList<ResidentData> getResidentData();
-    ArrayList<ShiftScheduleData> getShiftScheduleData();
-    ArrayList<StationData> getStationData();
-    ArrayList<VisitsData> getVisitData();
+    List<EmployeeData> getEmployeeData();
+    List<ICEData> getICEData();
+    List<IncidentData> getIncidentData();
+    List<MedicationData> getMedicationData();
+    List<MedPlanData> getMedPlanData();
+    List<ResidentData> getResidentData();
+    List<ShiftScheduleData> getShiftScheduleData();
+    List<StationData> getStationData();
+    List<VisitsData> getVisitData();
+
+
+    void updateShiftIncidentsDataDatabase(String newText, int shiftID);
+    void updateResidentIncidentsDataDatabase(String newText, int incidentID);
+    void createNewResidentIncidentDatabase(IncidentData incidentData);
+
+    MedPlanData getSingleMedPlanData(int resID) ;
+    String getSingleMedicationData(int medicID);
+    IncidentData getSingleIncidentData(int resID) ;
+    IncidentData getSingleIncidentData(int resID, Date date) ;
+    ICEData getSingleICEData(int resID) ;
+    ShiftScheduleData getSingleShiftScheduleData(Object category, Date date) ;
+    String getSingleVisitDataDescription(int resID);
+    ResidentData getSingleResidentData(String name);
+
 
     //List<T> getEntities() throws ServiceException;
     //void postEntities(List<T> entities) throws ServiceException;

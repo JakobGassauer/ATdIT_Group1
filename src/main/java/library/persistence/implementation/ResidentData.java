@@ -1,4 +1,4 @@
-package library.persistence;
+package library.persistence.implementation;
 
 public class ResidentData {
     public final String name;

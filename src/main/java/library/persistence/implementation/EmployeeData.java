@@ -1,4 +1,4 @@
-package library.persistence;
+package library.persistence.implementation;
 
 public class EmployeeData {
     public final String name;

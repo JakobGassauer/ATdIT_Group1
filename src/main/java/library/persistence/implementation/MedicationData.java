@@ -1,4 +1,4 @@
-package library.persistence;
+package library.persistence.implementation;
 
 public class MedicationData {
     public final int medicID;

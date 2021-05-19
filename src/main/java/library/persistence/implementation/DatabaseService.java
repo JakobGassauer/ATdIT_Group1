@@ -1,6 +1,5 @@
 package library.persistence.implementation;
 
-import library.model.implementation.*;
 import library.persistence.*;
 import library.DBConnect;
 //import org.graalvm.compiler.core.common.calc.FloatConvertCategory;
@@ -10,7 +9,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @SuppressWarnings("HardCodedStringLiteral")
 public class DatabaseService implements Service {
