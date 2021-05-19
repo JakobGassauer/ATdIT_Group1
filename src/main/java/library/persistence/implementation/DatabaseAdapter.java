@@ -2,17 +2,19 @@ package library.persistence.implementation;
 
 import library.model.implementation.*;
 import library.persistence.Adapter;
+import library.persistence.Factory;
+import library.persistence.Service;
 
 import java.util.Date;
 
 public class DatabaseAdapter implements Adapter {
-    private DatabaseFactory factory;
-    private DatabaseService service;
+    private Factory factory;
+    private Service service;
     private static int entriesAddedInSession;
 
     public DatabaseAdapter(){
-        factory = new DatabaseFactory();
-        service = new DatabaseService();
+        //factory = new DatabaseFactory();
+        //service = new DatabaseService();
         entriesAddedInSession=0;
     }
 

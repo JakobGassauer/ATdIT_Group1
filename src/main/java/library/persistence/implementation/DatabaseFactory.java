@@ -2,25 +2,27 @@ package library.persistence.implementation;
 
 import library.model.implementation.*;
 import library.persistence.Factory;
+import library.persistence.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseFactory implements Factory {
-    DatabaseService service;
+    Service service;
 
     //maps types from db service to types used in the model (?)
     // no direct database access/queries
 
     //Data fromD DB
-    private final ArrayList<ResidentData> residentsData;
-    private final ArrayList<IncidentData> incidentsData;
-    private final ArrayList<ShiftScheduleData> shiftSchedulesData;
-    private final ArrayList<EmployeeData> employeesData;
-    private final ArrayList<ICEData> icesData;
-    private final ArrayList<MedicationData> medicationsData;
-    private final ArrayList<MedPlanData> medPlansData;
-    private final ArrayList<StationData> stationsData;
-    private final ArrayList<VisitsData> visitsData;
+    private final List<ResidentData> residentsData;
+    private final List<IncidentData> incidentsData;
+    private final List<ShiftScheduleData> shiftSchedulesData;
+    private final List<EmployeeData> employeesData;
+    private final List<ICEData> icesData;
+    private final List<MedicationData> medicationsData;
+    private final List<MedPlanData> medPlansData;
+    private final List<StationData> stationsData;
+    private final List<VisitsData> visitsData;
 
 //Namenskonventionen! Lists to be used in gui
     private final ArrayList<Resident> residents = new ArrayList<>();
@@ -36,7 +38,6 @@ public class DatabaseFactory implements Factory {
     private static int entriesAddedInSession;
 
     public DatabaseFactory(){
-        service = new DatabaseService();
 
         residentsData = service.getResidentData();
         incidentsData = service.getIncidentData();
@@ -130,39 +131,39 @@ public class DatabaseFactory implements Factory {
 
     }
 
-    public ArrayList<Employee> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public ArrayList<ICE> getIces() {
+    public List<ICE> getIces() {
         return ices;
     }
 
-    public ArrayList<Incident> getIncidents() {
+    public List<Incident> getIncidents() {
         return incidents;
     }
 
-    public ArrayList<Medication> getMedications() {
+    public List<Medication> getMedications() {
         return medications;
     }
 
-    public ArrayList<MedPlan> getMedPlans() {
+    public List<MedPlan> getMedPlans() {
         return medPlans;
     }
 
-    public ArrayList<Resident> getResidents() {
+    public List<Resident> getResidents() {
         return residents;
     }
 
-    public ArrayList<ShiftSchedule> getShiftSchedules() {
+    public List<ShiftSchedule> getShiftSchedules() {
         return shiftSchedules;
     }
 
-    public ArrayList<Station> getStations() {
+    public List<Station> getStations() {
         return stations;
     }
 
-    public ArrayList<Visits> getVisits() {
+    public List<Visits> getVisits() {
         return visits;
     }
 
