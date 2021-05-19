@@ -1,6 +1,8 @@
 package library.presentation;
 
 import library.model.implementation.*;
+import library.persistence.Adapter;
+import library.persistence.Factory;
 import library.persistence.implementation.DatabaseAdapter;
 import library.persistence.implementation.DatabaseFactory;
 
@@ -70,7 +72,7 @@ public class GUI extends JFrame {
 
     private final ResourceBundle resourceBundle;
     private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
-    private DatabaseFactory factory = new DatabaseFactory(); // gui does not use db types from persistence but uses methods from the factory
+    private DatabaseFactory factory  = new DatabaseFactory(); // gui does not use db types from persistence but uses methods from the factory
     private DatabaseAdapter adapter = new DatabaseAdapter();
 
     public GUI() {
