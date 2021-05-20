@@ -5,7 +5,11 @@ import library.persistence.implementation.*;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * The interface Service defines the methods needed to update the database and
+ * retrieve data from the database types into the database types.
+ *
+ */
 public interface Service {
 
     class ServiceException extends SQLException {
@@ -41,7 +45,4 @@ public interface Service {
     String getSingleVisitDataDescription(int resID);
     ResidentData getSingleResidentData(String name);
 
-
-    //List<T> getEntities() throws ServiceException;
-    //void postEntities(List<T> entities) throws ServiceException;
 }

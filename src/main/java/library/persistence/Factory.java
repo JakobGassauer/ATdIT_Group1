@@ -1,10 +1,8 @@
 package library.persistence;
 
-import library.model.implementation.*;
-import library.persistence.implementation.*;
-
-import java.util.List;
-
+/**
+ * The interface Factory defines the methods needed to instantiate an implementation of Service.
+ */
 public interface Factory {
     Service createService();
 

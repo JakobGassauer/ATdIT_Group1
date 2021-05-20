@@ -1,5 +1,7 @@
 package library.model.implementation;
-
+/**
+ * Model specific type Station
+ */
 public class Station {
     private int stationID;
     private String name;

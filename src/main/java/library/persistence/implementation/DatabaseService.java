@@ -9,13 +9,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * DatabaseService implements the interface Service. It retrieves data from the Database and returns them either in lists
+ * of the database types or directly in objects of the database types.
+ */
 @SuppressWarnings("HardCodedStringLiteral")
 public class DatabaseService implements Service {
     public DatabaseService(){
 
     }
 
-    //Residents
+    /**
+     * @return ArrayList with all resident entries in the database
+     */
     public ArrayList<ResidentData> getResidentData() {
         ArrayList<ResidentData> residentArrayList = new ArrayList<>();
         String sql = "SELECT * FROM senior_resident";
@@ -37,7 +43,9 @@ public class DatabaseService implements Service {
         return residentArrayList;
     }
 
-    // Employees
+    /**
+     * @return ArrayList with all employee entries in the database
+     */
     public ArrayList<EmployeeData> getEmployeeData() {
         ArrayList<EmployeeData> employeeArrayList = new ArrayList<>();
         String sql = "SELECT * FROM employee";
@@ -61,7 +69,10 @@ public class DatabaseService implements Service {
         return employeeArrayList;
     }
 
-    // ICE
+
+    /**
+     * @return ArrayList with all ice entries in the database
+     */
     public ArrayList<ICEData> getICEData() {
         ArrayList<ICEData> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM ICE";
@@ -85,7 +96,9 @@ public class DatabaseService implements Service {
         return arrayList;
     }
 
-    // Incidents
+    /**
+     * @return ArrayList with all incident entries in the database
+     */
     public ArrayList<IncidentData> getIncidentData() {
         ArrayList<IncidentData> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Incidents";
@@ -114,7 +127,10 @@ public class DatabaseService implements Service {
         return arrayList;
     }
 
-    // Medication
+
+    /**
+     * @return ArrayList with all medication entries in the database
+     */
     public ArrayList<MedicationData> getMedicationData() {
         ArrayList<MedicationData> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Medication";
@@ -136,7 +152,9 @@ public class DatabaseService implements Service {
         return arrayList;
     }
 
-    // MedPlan
+    /**
+     * @return ArrayList with all medPlan entries in the database
+     */
     public ArrayList<MedPlanData> getMedPlanData() {
         ArrayList<MedPlanData> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM MedPlan";
@@ -160,7 +178,9 @@ public class DatabaseService implements Service {
         return arrayList;
     }
 
-    //ShiftSchedule
+    /**
+     * @return ArrayList with all shiftSchedule entries in the database
+     */
     public ArrayList<ShiftScheduleData> getShiftScheduleData() {
         ArrayList<ShiftScheduleData> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM shift_schedule";
@@ -191,7 +211,9 @@ public class DatabaseService implements Service {
     }
 
 
-    //Station
+    /**
+     * @return ArrayList with all station entries in the database
+     */
     public ArrayList<StationData> getStationData() {
         ArrayList<StationData> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Station";
@@ -213,7 +235,9 @@ public class DatabaseService implements Service {
         return arrayList;
     }
 
-    // Visits
+    /**
+     * @return ArrayList with all visit entries in the database
+     */
     public ArrayList<VisitsData> getVisitData() {
         ArrayList<VisitsData> arrayList = new ArrayList<>();
         String sql = "SELECT * FROM Visits";
@@ -235,23 +259,19 @@ public class DatabaseService implements Service {
         }
         return arrayList;
     }
-//todo
-    public static ResultSet createNewStatement(String sql){
-        try {
-            Connection connection = DBConnect.connect();
-            Statement statement = connection.createStatement();
-            return statement.executeQuery(sql);
-        }catch(SQLException e){
-            //todo error handling
-            return null;
-        }
-    }
 
-    public static ResultSet createPreparedStatement(String sql, String name){
+    /**
+     * createPreparedStatement creates a prepared sql statement with the given String and one parameter. The statement
+     * is executed and the ResultSet is returned.
+     * @param sql
+     * @param value
+     * @return ResultSet with selected data from the database
+     */
+    public static ResultSet createPreparedStatement(String sql, String value){
         try{
             Connection connection = DBConnect.connect();
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,name);
+            statement.setString(1,value);
             return statement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -259,6 +279,14 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * createPreparedStatement creates a prepared sql statement with the given String and two parameters. The statement
+     * is executed and the ResultSet is returned.
+     * @param sql
+     * @param value1
+     * @param value2
+     * @return ResultSet
+     */
     public static ResultSet createPreparedStatement(String sql, String value1, String value2) {
         try{
             Connection connection = DBConnect.connect();
@@ -272,6 +300,12 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * updateResidentIncidentsDataDatabase updates the incident with the given ID and sets its description to the
+     * changed text provided in newText.
+     * @param newText
+     * @param incidentID
+     */
     public void updateResidentIncidentsDataDatabase(String newText, int incidentID){ //todo ids vergeben??
         try{
             String newTextEdited = newText.substring(10);
@@ -287,6 +321,12 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * updateShiftIncidentsDataDatabase updates the shift incident with the given shiftID and sets its description to the
+     * changed text provided in newText.
+     * @param newText
+     * @param shiftID
+     */
     public void updateShiftIncidentsDataDatabase(String newText, int shiftID) {
         try{
             Connection connection = DBConnect.connect();
@@ -301,6 +341,11 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * getSingleResidentData selects one Resident with the provided name.
+     * @param name
+     * @return ResidentData
+     */
     public ResidentData getSingleResidentData(String name) {
         try{
             String sql = "Select * from senior_resident where name = ?";
@@ -320,6 +365,11 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * getSingleVisitDataDescription selects the Visit of the given resident.
+     * @param resID
+     * @return Description of the Visit of the provided resident
+     */
     public String getSingleVisitDataDescription(int resID) {
         try{
             String sql = "Select description from visits where resID = ?";
@@ -337,6 +387,12 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * getSingleShiftScheduleData selects the ShiftSchedule with the provided shift category and date
+     * @param category
+     * @param date
+     * @return ShiftScheduleData
+     */
     public ShiftScheduleData getSingleShiftScheduleData(Object category, Date date) {
         try{
             String sql = "Select * from shift_schedule where date = ? and category  = ?";
@@ -370,6 +426,11 @@ public class DatabaseService implements Service {
     }
 
 
+    /**
+     * getSingleICEData selects the ICE of the provided resident.
+     * @param resID
+     * @return ICEData
+     */
     public ICEData getSingleICEData(int resID) {
         try{
             String sql = "Select * from ice where resID = ?";
@@ -395,6 +456,12 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * getSingleIncidentData selects the incident of a resident on the given date.
+     * @param resID
+     * @param date
+     * @return IncidentData
+     */
     public IncidentData getSingleIncidentData(int resID, Date date) {
         try{
             String sql = "Select * from incidents where resID = ? and incidents_date = ?";
@@ -424,6 +491,11 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * getSingleIncidentData selects the incident of a resident.
+     * @param resID
+     * @return IncidentData
+     */
     public IncidentData getSingleIncidentData(int resID) {
         try{
             String sql = "Select * from incidents where resID = ?";
@@ -451,6 +523,11 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * getSingleMedicationData selects the name of the medication with the provided medicID.
+     * @param medicID
+     * @return Name of the Medication
+     */
     public String getSingleMedicationData(int medicID) {
         try{
             String sql = "Select name from medication where medicID = ?";
@@ -468,6 +545,11 @@ public class DatabaseService implements Service {
         }
     }
 
+    /**
+     * getSingleMedPlanData selects the medPlan of a resident.
+     * @param resID
+     * @return MedPlanData
+     */
     public MedPlanData getSingleMedPlanData(int resID) {
         try{
             String sql = "Select * from medplan where resID = ?";
@@ -492,6 +574,11 @@ public class DatabaseService implements Service {
     }
 
 
+    /**
+     * createNewResidentIncidentDatabase saves the new incident description of a resident specific incident to the
+     * database.
+     * @param incidentData
+     */
     public void createNewResidentIncidentDatabase(IncidentData incidentData) {
         try{
             String newTextEdited = incidentData.description.substring(10);

@@ -9,14 +9,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The DatabaseAdapter implements the interface Adapter. The Adapter is accessed from the GUI in order to
+ * retrieve data from the database. The Adapter creates an instance of the chosen implemented Factory class,
+ * which returns the specific service. With the help of the service data from the database is retrieved
+ * and converted into the model types which are used in the gui.
+ */
 public class DatabaseAdapter implements Adapter {
-    private Factory factory = new DatabaseFactory(); //konkrete Factory muss hier gewählt werden
+    private Factory factory = new DatabaseFactory();
     private Service service;
     private static int entriesAddedInSession;
 
-
-    //maps types from db service to types used in the model (?)
-    // no direct database access/queries
 
     private final List<ResidentData> residentsData;
     private final List<IncidentData> incidentsData;
@@ -28,7 +31,7 @@ public class DatabaseAdapter implements Adapter {
     private final List<StationData> stationsData;
     private final List<VisitsData> visitsData;
 
-    //Namenskonventionen! Lists to be used in gui
+    //todo Namenskonventionen?
     private final ArrayList<Resident> residents = new ArrayList<>();
     private final ArrayList<Incident> incidents = new ArrayList<>();
     private final ArrayList<ShiftSchedule> shiftSchedules = new ArrayList<>();
@@ -40,6 +43,10 @@ public class DatabaseAdapter implements Adapter {
     private final ArrayList<Visits> visits = new ArrayList<>();
 
 
+    /**
+     * The constructor initiates the service with the help of the factory. Database lists are genereated and filled
+     * with current database entries. Then, the type
+     */
     public DatabaseAdapter(){
         service = factory.createService();
 
@@ -57,6 +64,9 @@ public class DatabaseAdapter implements Adapter {
         entriesAddedInSession=0;
     }
 
+    /**
+     * convertToModelObjects converts database types into the model types which are used in the gui
+     */
     public void convertToModelObjects() {
         for(ResidentData entities : residentsData){
             Resident entity = new Resident(entities.resID,
@@ -175,10 +185,21 @@ public class DatabaseAdapter implements Adapter {
 
 //get single entity (stored in model object)
 
+
+    /**
+     * @param index
+     * @return Resident object that is stored in the List at the index
+     */
     public Resident getSingleResident(int index) {
         return getResidents().get(index);
     }
 
+    /**
+     * getSingleResident passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the gui
+     * @param name
+     * @return Resident object with the provided name
+     */
     public Resident getSingleResident(String name) {
         ResidentData residentData = service.getSingleResidentData(name);
         return new Resident(residentData.resID,residentData.name,
@@ -186,6 +207,14 @@ public class DatabaseAdapter implements Adapter {
                 residentData.stationID,residentData.room);
     }
 
+
+    /**
+     * getSingleShiftSchedule passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the gui
+     * @param category
+     * @param date
+     * @return Shift Schedule with the provided shift category and date
+     */
     public ShiftSchedule getSingleShiftSchedule(Object category, Date date) {
         ShiftScheduleData shiftScheduleData = service.getSingleShiftScheduleData(category,date);
         return new ShiftSchedule(shiftScheduleData.shiftID,shiftScheduleData.employeeID,
@@ -193,16 +222,34 @@ public class DatabaseAdapter implements Adapter {
                 shiftScheduleData.shiftIncidents);
     }
 
+    /**
+     * getSingleVisitDescription passes the request to the service.
+     * @param resID
+     * @return Description of the Visit of the provided resident
+     */
     public String getSingleVisitDescription(int resID) {
         return service.getSingleVisitDataDescription(resID);
     }
 
 
+    /**
+     * getSingleICE passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the gui
+     * @param resID
+     * @return ICE of provided Resident
+     */
     public ICE getSingleICE(int resID){
         ICEData iceData = service.getSingleICEData(resID);
         return new ICE(iceData.iceID, iceData.resID,iceData.name,iceData.surname,iceData.telnumber,iceData.adress);
     }
 
+    /**
+     * getSingleIncident passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the gui
+     * @param resID
+     * @param date
+     * @return Incident of provided resident on the date
+     */
     public Incident getSingleIncident(int resID, Date date){
         IncidentData incidentData = service.getSingleIncidentData(resID,date);
         return new Incident(incidentData.incidentID,incidentData.resID,
@@ -210,6 +257,12 @@ public class DatabaseAdapter implements Adapter {
                 incidentData.incidentsDate);
     }
 
+    /**
+     * getSingleIncident passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the gui
+     * @param resID
+     * @return Incident of the provided Resident
+     */
     public Incident getSingleIncident(int resID){
         IncidentData incidentData = service.getSingleIncidentData(resID);
         return new Incident(incidentData.incidentID,incidentData.resID,
@@ -217,10 +270,23 @@ public class DatabaseAdapter implements Adapter {
                 incidentData.incidentsDate);
     }
 
+    /**
+     * getSingleMedication passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the gui
+     * @param medicID
+     * @return Name of the Medication with the provided medicID
+     */
     public String getSingleMedication(int medicID){
         return service.getSingleMedicationData(medicID);
     }
 
+
+    /**
+     * getSinlgeMedPlan passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the gui
+     * @param resID
+     * @return MedPlan of the provided resident
+     */
     public MedPlan getSingleMedPlan(int resID){
         MedPlanData medPlanData = service.getSingleMedPlanData(resID);
         return new MedPlan(medPlanData.medID,medPlanData.resID,
@@ -229,6 +295,13 @@ public class DatabaseAdapter implements Adapter {
     }
 
 
+    /**
+     * saveResidentIncidentsDatabase saves the new or changed incident description of resident specific incidents
+     * @param newText
+     * @param incident
+     * @param resID
+     * @param date
+     */
     public void saveResidentIncidentsDatabase(String newText, Incident incident, int resID, Date date){
         if (incident.getIncidentID()==0){
             int newIncidentID = getIncidents().size()+(entriesAddedInSession+2);
@@ -241,6 +314,11 @@ public class DatabaseAdapter implements Adapter {
         service.updateResidentIncidentsDataDatabase(newText, incident.getIncidentID());
     }
 
+    /**
+     * saveShiftIncidentsDatabase saves the new or changed incident description of shift specific incidents
+     * @param newText
+     * @param shiftID
+     */
     public void saveShiftIncidentsDatabase(String newText, int shiftID){
         service.updateShiftIncidentsDataDatabase(newText, shiftID);
     }

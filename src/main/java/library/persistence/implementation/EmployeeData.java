@@ -1,5 +1,8 @@
 package library.persistence.implementation;
 
+/**
+ * Database specific type EmployeeData
+ */
 public class EmployeeData {
     public final String name;
     public final String surname;

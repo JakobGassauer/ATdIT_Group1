@@ -6,7 +6,9 @@ import library.persistence.implementation.DatabaseService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**
+ * Model specific type Visits
+ */
 public class Visits implements Edit<Visits> {
     private int visitID;
     private String description;
@@ -45,10 +47,6 @@ public class Visits implements Edit<Visits> {
         return null;
     }
 
-
-    //public static String get(int resID) {
-     //   return null;//DatabaseService.getSingleVisitDescription(resID);
-    // }
 
     @Override
     public String toString() {

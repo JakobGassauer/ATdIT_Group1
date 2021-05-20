@@ -1,5 +1,8 @@
 package library.persistence.implementation;
 
+/**
+ * Database specific type ICEData
+ */
 public class ICEData {
     public String name;
     public String surname;

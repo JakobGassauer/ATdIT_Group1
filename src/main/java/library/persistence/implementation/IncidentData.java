@@ -2,6 +2,9 @@ package library.persistence.implementation;
 
 import java.util.Date;
 
+/**
+ * Database specific type IncidentData
+ */
 public class IncidentData {
     public final int incidentID;
     public final String description;

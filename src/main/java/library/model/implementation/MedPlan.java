@@ -5,7 +5,9 @@ import library.persistence.implementation.DatabaseService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**
+ * Model specific type MedPlan
+ */
 public class MedPlan implements Edit<MedPlan> {
     private int medID;
     private int resID;

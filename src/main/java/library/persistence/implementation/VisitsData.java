@@ -1,5 +1,8 @@
 package library.persistence.implementation;
 
+/**
+ * Database specific type VisitsData
+ */
 public class VisitsData {
     public final int visitID;
     public final String description;

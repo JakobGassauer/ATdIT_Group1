@@ -1,5 +1,8 @@
 package library.persistence.implementation;
 
+/**
+ * Database specific type MedPlanData
+ */
 public class MedPlanData {
     public final int medID;
     public final int resID;

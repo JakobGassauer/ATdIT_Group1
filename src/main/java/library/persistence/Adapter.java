@@ -5,6 +5,9 @@ import library.model.implementation.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The interface Adapter defines the methods needed to convert the database types into the model types
+ */
 public interface Adapter {
     void convertToModelObjects();
 

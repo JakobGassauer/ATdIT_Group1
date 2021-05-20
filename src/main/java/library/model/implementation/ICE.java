@@ -5,7 +5,9 @@ import library.persistence.implementation.DatabaseService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**
+ * Model specific type ICE which inherits from the abstract class People
+ */
 public class ICE extends People {
     private int iceID;
     private int resID;

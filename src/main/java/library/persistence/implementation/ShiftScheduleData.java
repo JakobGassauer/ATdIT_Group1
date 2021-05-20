@@ -2,6 +2,9 @@ package library.persistence.implementation;
 
 import java.util.Date;
 
+/**
+ * Database specific type ShiftScheduleData
+ */
 public class ShiftScheduleData {
     public final int shiftID;
     public final int employeeID;
