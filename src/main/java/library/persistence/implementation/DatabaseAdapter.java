@@ -45,7 +45,7 @@ public class DatabaseAdapter implements Adapter {
 
     /**
      * The constructor initiates the service with the help of the factory. Database lists are generated and filled
-     * with current database entries. Then, the type
+     * with current database entries. Then the database objects are converted into the model objects.
      */
     public DatabaseAdapter(){
         service = factory.createService();
