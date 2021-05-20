@@ -1,4 +1,18 @@
-# ATdIT_Group1
+Group 1 
+(Kerstin Beckersjürgen, Simona Aich, Arkin Cip, Mauritz Brand, Jakob Gassauer)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //master branch when merged
 //develop branch before merged with current changes and commits
@@ -8,12 +22,4 @@
 //
 //
 //in *Projects* we opened a Kanban Board for our SCRUM based work on the program
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
