@@ -7,7 +7,7 @@ import library.persistence.implementation.DatabaseService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
- * Model specific type Visits
+ * Model specific type Visits which implements the interface Edit
  */
 public class Visits implements Edit<Visits> {
     private int visitID;

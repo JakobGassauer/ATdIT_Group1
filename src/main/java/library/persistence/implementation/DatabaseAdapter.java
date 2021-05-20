@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * The DatabaseAdapter implements the interface Adapter. The Adapter is accessed from the GUI in order to
  * retrieve data from the database. The Adapter creates an instance of the chosen implemented Factory class,
- * which returns the specific service. With the help of the service data from the database is retrieved
- * and converted into the model types which are used in the gui.
+ * which returns the specific service. With the help of the service, data from the database is retrieved
+ * and converted into the model types which are used in the GUI.
  */
 public class DatabaseAdapter implements Adapter {
     private Factory factory = new DatabaseFactory();
@@ -44,7 +44,7 @@ public class DatabaseAdapter implements Adapter {
 
 
     /**
-     * The constructor initiates the service with the help of the factory. Database lists are genereated and filled
+     * The constructor initiates the service with the help of the factory. Database lists are generated and filled
      * with current database entries. Then, the type
      */
     public DatabaseAdapter(){
@@ -65,7 +65,7 @@ public class DatabaseAdapter implements Adapter {
     }
 
     /**
-     * convertToModelObjects converts database types into the model types which are used in the gui
+     *  Converts database types into the model types, which are used in the GUI.
      */
     public void convertToModelObjects() {
         for(ResidentData entities : residentsData){
@@ -188,17 +188,17 @@ public class DatabaseAdapter implements Adapter {
 
     /**
      * @param index
-     * @return Resident object that is stored in the List at the index
+     * @return Resident object that is stored in the List at the index.
      */
     public Resident getSingleResident(int index) {
         return getResidents().get(index);
     }
 
     /**
-     * getSingleResident passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the gui
+     * Passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the GUI.
      * @param name
-     * @return Resident object with the provided name
+     * @return Resident object with the provided name.
      */
     public Resident getSingleResident(String name) {
         ResidentData residentData = service.getSingleResidentData(name);
@@ -209,11 +209,11 @@ public class DatabaseAdapter implements Adapter {
 
 
     /**
-     * getSingleShiftSchedule passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the gui
+     * Passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the GUI.
      * @param category
      * @param date
-     * @return Shift Schedule with the provided shift category and date
+     * @return Shift Schedule with the provided shift category and date.
      */
     public ShiftSchedule getSingleShiftSchedule(Object category, Date date) {
         ShiftScheduleData shiftScheduleData = service.getSingleShiftScheduleData(category,date);
@@ -223,9 +223,9 @@ public class DatabaseAdapter implements Adapter {
     }
 
     /**
-     * getSingleVisitDescription passes the request to the service.
+     * Passes the request to the service.
      * @param resID
-     * @return Description of the Visit of the provided resident
+     * @return Description of the Visit of the provided resident.
      */
     public String getSingleVisitDescription(int resID) {
         return service.getSingleVisitDataDescription(resID);
@@ -233,8 +233,8 @@ public class DatabaseAdapter implements Adapter {
 
 
     /**
-     * getSingleICE passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the gui
+     * Passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the GUI.
      * @param resID
      * @return ICE of provided Resident
      */
@@ -244,8 +244,8 @@ public class DatabaseAdapter implements Adapter {
     }
 
     /**
-     * getSingleIncident passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the gui
+     * Passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the GUI.
      * @param resID
      * @param date
      * @return Incident of provided resident on the date
@@ -258,8 +258,8 @@ public class DatabaseAdapter implements Adapter {
     }
 
     /**
-     * getSingleIncident passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the gui
+     * Passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the GUI.
      * @param resID
      * @return Incident of the provided Resident
      */
@@ -271,8 +271,8 @@ public class DatabaseAdapter implements Adapter {
     }
 
     /**
-     * getSingleMedication passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the gui
+     * Passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the GUI.
      * @param medicID
      * @return Name of the Medication with the provided medicID
      */
@@ -282,8 +282,8 @@ public class DatabaseAdapter implements Adapter {
 
 
     /**
-     * getSinlgeMedPlan passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the gui
+     * Passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the GUI.
      * @param resID
      * @return MedPlan of the provided resident
      */
@@ -296,7 +296,7 @@ public class DatabaseAdapter implements Adapter {
 
 
     /**
-     * saveResidentIncidentsDatabase saves the new or changed incident description of resident specific incidents
+     * Saves the new or changed incident description of resident specific incidents.
      * @param newText
      * @param incident
      * @param resID
@@ -315,7 +315,7 @@ public class DatabaseAdapter implements Adapter {
     }
 
     /**
-     * saveShiftIncidentsDatabase saves the new or changed incident description of shift specific incidents
+     * Saves the new or changed incident description of shift specific incidents.
      * @param newText
      * @param shiftID
      */

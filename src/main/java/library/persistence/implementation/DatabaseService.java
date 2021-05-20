@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * DatabaseService implements the interface Service. It retrieves data from the Database and returns them either in lists
+ * DatabaseService implements the interface Service. It retrieves data from the Database and returns them either in Lists
  * of the database types or directly in objects of the database types.
  */
 @SuppressWarnings("HardCodedStringLiteral")
@@ -20,7 +20,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * @return ArrayList with all resident entries in the database
+     * @return ArrayList with all resident entries in the database.
      */
     public ArrayList<ResidentData> getResidentData() {
         ArrayList<ResidentData> residentArrayList = new ArrayList<>();
@@ -44,7 +44,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * @return ArrayList with all employee entries in the database
+     * @return ArrayList with all employee entries in the database.
      */
     public ArrayList<EmployeeData> getEmployeeData() {
         ArrayList<EmployeeData> employeeArrayList = new ArrayList<>();
@@ -71,7 +71,7 @@ public class DatabaseService implements Service {
 
 
     /**
-     * @return ArrayList with all ice entries in the database
+     * @return ArrayList with all ice entries in the database.
      */
     public ArrayList<ICEData> getICEData() {
         ArrayList<ICEData> arrayList = new ArrayList<>();
@@ -97,7 +97,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * @return ArrayList with all incident entries in the database
+     * @return ArrayList with all incident entries in the database.
      */
     public ArrayList<IncidentData> getIncidentData() {
         ArrayList<IncidentData> arrayList = new ArrayList<>();
@@ -129,7 +129,7 @@ public class DatabaseService implements Service {
 
 
     /**
-     * @return ArrayList with all medication entries in the database
+     * @return ArrayList with all medication entries in the database.
      */
     public ArrayList<MedicationData> getMedicationData() {
         ArrayList<MedicationData> arrayList = new ArrayList<>();
@@ -153,7 +153,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * @return ArrayList with all medPlan entries in the database
+     * @return ArrayList with all medPlan entries in the database.
      */
     public ArrayList<MedPlanData> getMedPlanData() {
         ArrayList<MedPlanData> arrayList = new ArrayList<>();
@@ -179,7 +179,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * @return ArrayList with all shiftSchedule entries in the database
+     * @return ArrayList with all shiftSchedule entries in the database.
      */
     public ArrayList<ShiftScheduleData> getShiftScheduleData() {
         ArrayList<ShiftScheduleData> arrayList = new ArrayList<>();
@@ -212,7 +212,7 @@ public class DatabaseService implements Service {
 
 
     /**
-     * @return ArrayList with all station entries in the database
+     * @return ArrayList with all station entries in the database.
      */
     public ArrayList<StationData> getStationData() {
         ArrayList<StationData> arrayList = new ArrayList<>();
@@ -236,7 +236,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * @return ArrayList with all visit entries in the database
+     * @return ArrayList with all visit entries in the database.
      */
     public ArrayList<VisitsData> getVisitData() {
         ArrayList<VisitsData> arrayList = new ArrayList<>();
@@ -261,11 +261,11 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * createPreparedStatement creates a prepared sql statement with the given String and one parameter. The statement
+     * Creates a prepared sql-statement with the given String and one parameter. The statement
      * is executed and the ResultSet is returned.
      * @param sql
      * @param value
-     * @return ResultSet with selected data from the database
+     * @return ResultSet with selected data from the database.
      */
     public static ResultSet createPreparedStatement(String sql, String value){
         try{
@@ -280,7 +280,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * createPreparedStatement creates a prepared sql statement with the given String and two parameters. The statement
+     * Creates a prepared sql-statement with the given String and two parameters. The statement
      * is executed and the ResultSet is returned.
      * @param sql
      * @param value1
@@ -301,7 +301,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * updateResidentIncidentsDataDatabase updates the incident with the given ID and sets its description to the
+     * Updates the incident with the given ID and sets its description to the
      * changed text provided in newText.
      * @param newText
      * @param incidentID
@@ -322,7 +322,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * updateShiftIncidentsDataDatabase updates the shift incident with the given shiftID and sets its description to the
+     * Updates the shift incident with the given shiftID and sets its description to the
      * changed text provided in newText.
      * @param newText
      * @param shiftID
@@ -342,7 +342,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * getSingleResidentData selects one Resident with the provided name.
+     * Selects one Resident with the provided name.
      * @param name
      * @return ResidentData
      */
@@ -366,9 +366,9 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * getSingleVisitDataDescription selects the Visit of the given resident.
+     * Selects the Visit of the given resident.
      * @param resID
-     * @return Description of the Visit of the provided resident
+     * @return Description of the Visit of the provided resident.
      */
     public String getSingleVisitDataDescription(int resID) {
         try{
@@ -388,7 +388,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * getSingleShiftScheduleData selects the ShiftSchedule with the provided shift category and date
+     * Selects the ShiftSchedule with the provided shift category and date.
      * @param category
      * @param date
      * @return ShiftScheduleData
@@ -427,7 +427,7 @@ public class DatabaseService implements Service {
 
 
     /**
-     * getSingleICEData selects the ICE of the provided resident.
+     * Selects the ICE of the provided resident.
      * @param resID
      * @return ICEData
      */
@@ -457,7 +457,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * getSingleIncidentData selects the incident of a resident on the given date.
+     * Selects the incident of a resident on the given date.
      * @param resID
      * @param date
      * @return IncidentData
@@ -492,7 +492,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * getSingleIncidentData selects the incident of a resident.
+     * Selects the incident of a resident.
      * @param resID
      * @return IncidentData
      */
@@ -524,9 +524,9 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * getSingleMedicationData selects the name of the medication with the provided medicID.
+     * Selects the name of the medication with the provided medicID.
      * @param medicID
-     * @return Name of the Medication
+     * @return Name of the Medication.
      */
     public String getSingleMedicationData(int medicID) {
         try{
@@ -546,7 +546,7 @@ public class DatabaseService implements Service {
     }
 
     /**
-     * getSingleMedPlanData selects the medPlan of a resident.
+     * Selects the medPlan of a resident.
      * @param resID
      * @return MedPlanData
      */
@@ -575,8 +575,8 @@ public class DatabaseService implements Service {
 
 
     /**
-     * createNewResidentIncidentDatabase saves the new incident description of a resident specific incident to the
-     * database.
+     * Saves the new incident description of a resident specific incident to the database.
+     *
      * @param incidentData
      */
     public void createNewResidentIncidentDatabase(IncidentData incidentData) {

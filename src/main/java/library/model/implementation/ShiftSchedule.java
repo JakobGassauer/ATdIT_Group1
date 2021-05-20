@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 /**
- * Model specific type ShiftSchedule
+ * Model specific type ShiftSchedule which implements the interface Edit
  */
 public class ShiftSchedule implements Edit<ShiftSchedule> {
     private int shiftID;
