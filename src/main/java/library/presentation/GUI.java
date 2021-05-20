@@ -76,8 +76,8 @@ public class GUI extends JFrame {
     public GUI() {
 
         this.resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE);
-        saveicon = new ImageIcon("Saveicon.png");
-        editicon = new ImageIcon("Editicon.png");
+        saveicon = new ImageIcon("src/main/java/library/presentation/icons/Saveicon.png");
+        editicon = new ImageIcon("src/main/java/library/presentation/icons/Editicon.png");
         listenerChangeCardsForResidentSpecificData = new ButtonListenerChangeCardsForResidentSpecificData();
         listenerEnableEditing = new ButtonListenerEnableEditing();
 
@@ -254,8 +254,8 @@ public class GUI extends JFrame {
     private void filterAndJComboboxInitialization() {
 
         Object [] items = {
-                new ImageIcon("Germanyicon.png"),
-                new ImageIcon("UnitedKingdomicon.png")
+                new ImageIcon("src/main/java/library/presentation/icons/Germanyicon.png"),
+                new ImageIcon("src/main/java/library/presentation/icons/UnitedKingdomicon.png")
         };
 
         language = new String[]{"German","English"};
