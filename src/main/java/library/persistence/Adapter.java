@@ -3,8 +3,21 @@ package library.persistence;
 import library.model.implementation.*;
 
 import java.util.Date;
+import java.util.List;
 
 public interface Adapter {
+    void convertToModelObjects();
+
+    List<Employee> getEmployees();
+    List<Resident> getResidents();
+    List<ICE> getIces();
+    List<Incident> getIncidents();
+    List<Medication> getMedications();
+    List<MedPlan> getMedPlans();
+    List<ShiftSchedule> getShiftSchedules();
+    List<Station> getStations();
+    List<Visits> getVisits();
+
     Resident getSingleResident(int index);
     Resident getSingleResident(String name);
     ShiftSchedule getSingleShiftSchedule(Object category, Date date);

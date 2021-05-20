@@ -2,9 +2,7 @@ package library.presentation;
 
 import library.model.implementation.*;
 import library.persistence.Adapter;
-import library.persistence.Factory;
 import library.persistence.implementation.DatabaseAdapter;
-import library.persistence.implementation.DatabaseFactory;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -72,8 +70,8 @@ public class GUI extends JFrame {
 
     private final ResourceBundle resourceBundle;
     private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
-    private DatabaseFactory factory  = new DatabaseFactory(); // gui does not use db types from persistence but uses methods from the factory
-    private DatabaseAdapter adapter = new DatabaseAdapter();
+  // gui does not use db types from persistence but uses methods from the adapter
+    private Adapter adapter = new DatabaseAdapter();
 
     public GUI() {
 
@@ -148,7 +146,7 @@ public class GUI extends JFrame {
         spClosestRelative = new JScrollPane(tpClosestRelative);
         spVisits = new JScrollPane(tpVisits);
         spOther = new JScrollPane(tpOther);
-        spTextResident = new JScrollPane[factory.getResidents().size()];
+        spTextResident = new JScrollPane[adapter.getResidents().size()];
 
         jpSpecific.add(spBaseData);
         jpSpecific.add(spMedication);
@@ -200,11 +198,11 @@ public class GUI extends JFrame {
 
     private void databaseConnectionForFilters() {
         shifts = new String[]{resourceBundle.getString("morning_shift"), resourceBundle.getString("late_shift"), resourceBundle.getString("night_shift")};
-        time = new String[(factory.getShiftSchedules().size() / 3)];
+        time = new String[(adapter.getShiftSchedules().size() / 3)];
         int n = 0;
         String previous = null;
-        for (int i = 0; i < factory.getShiftSchedules().size(); i++) {
-            Date date = factory.getShiftSchedules().get(i).getDate();
+        for (int i = 0; i < adapter.getShiftSchedules().size(); i++) {
+            Date date = adapter.getShiftSchedules().get(i).getDate();
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
             String dateInString = formatter.format(date);
             if (i != 0) {
@@ -300,9 +298,9 @@ public class GUI extends JFrame {
     }
 
     private void editButtonInitialization() {
-        btnEditResident = new JButton[factory.getResidents().size()];
+        btnEditResident = new JButton[adapter.getResidents().size()];
 
-        for (int i = 0; i < factory.getResidents().size(); i++) {
+        for (int i = 0; i < adapter.getResidents().size(); i++) {
             btnEditResident[i] = new JButton();
             btnEditResident[i].setBackground(lightgrey);
             btnEditResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -314,10 +312,10 @@ public class GUI extends JFrame {
     }
 
     private void residentTextAreaInitialization() {
-        taResident = new JTextArea[factory.getResidents().size()];
+        taResident = new JTextArea[adapter.getResidents().size()];
 
-        for (int i = 0; i < factory.getResidents().size(); i++) {
-            int resID = factory.getResidents().get(i).getResID();
+        for (int i = 0; i < adapter.getResidents().size(); i++) {
+            int resID = adapter.getResidents().get(i).getResID();
             taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"),adapter.getSingleIncident(resID).getDescription())); //todo reicht es hier den ersten Incident zu nehmen oder sollte man eine Datumskontrolle machen ?
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
@@ -330,10 +328,10 @@ public class GUI extends JFrame {
     }
 
     private void roomLabelInitalization() {
-        lblRoom = new JLabel[factory.getResidents().size()];
+        lblRoom = new JLabel[adapter.getResidents().size()];
 
-        for (int i = 0; i < factory.getResidents().size(); i++) {
-            lblRoom[i] = new JLabel(MessageFormat.format(resourceBundle.getString("room.0"), factory.getResidents().get(i).getRoom()), SwingConstants.CENTER);
+        for (int i = 0; i < adapter.getResidents().size(); i++) {
+            lblRoom[i] = new JLabel(MessageFormat.format(resourceBundle.getString("room.0"), adapter.getResidents().get(i).getRoom()), SwingConstants.CENTER);
             lblRoom[i].setBackground(lightgrey);
             lblRoom[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             lblRoom[i].setOpaque(true);
@@ -344,10 +342,10 @@ public class GUI extends JFrame {
     }
 
     private void residentButtonInitialization() {
-        btnResident = new JButton[factory.getResidents().size()];
+        btnResident = new JButton[adapter.getResidents().size()];
 
-        for (int i = 0; i < factory.getResidents().size(); i++) {
-            btnResident[i] = new JButton(factory.getResidents().get(i).getName() + " " + factory.getResidents().get(i).getSurname());
+        for (int i = 0; i < adapter.getResidents().size(); i++) {
+            btnResident[i] = new JButton(adapter.getResidents().get(i).getName() + " " + adapter.getResidents().get(i).getSurname());
             btnResident[i].setBackground(lightgrey);
             btnResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             btnResident[i].setPreferredSize(new Dimension(302, 51));
@@ -358,8 +356,8 @@ public class GUI extends JFrame {
     }
 
     public void setResidentIncidentText() {
-        for (int i = 0; i < factory.getResidents().size(); i++) {
-            int resID = factory.getResidents().get(i).getResID();
+        for (int i = 0; i < adapter.getResidents().size(); i++) {
+            int resID = adapter.getResidents().get(i).getResID();
             String dateString = (String) jcbTime.getSelectedItem(); //String format
             Date date = null;
             try {
@@ -504,7 +502,7 @@ public class GUI extends JFrame {
 
     private void saveChangesResidentIncidentText(int index) {
         String newText = taResident[index].getText();  //Get text that has been changed
-        int resID = factory.getResidents().get(index).getResID(); //get resid of selected resident
+        int resID = adapter.getResidents().get(index).getResID(); //get resid of selected resident
         String dateString = (String) jcbTime.getSelectedItem(); //String format
         Date date = null;
         try {
