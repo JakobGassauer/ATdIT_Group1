@@ -3,7 +3,9 @@ package library;
 import java.sql.*;
 import java.util.ResourceBundle;
 
-
+/**
+ * DBConnect establishes a connection to the local sqlite database
+ */
 public class DBConnect {
     public static final String location="jdbc:sqlite:src/database/database.sqlite"; //NON-NLS
     private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n/gui/gui"); //NON-NLS
@@ -18,5 +20,4 @@ public class DBConnect {
         }
         return conn;
     }
-
 }
