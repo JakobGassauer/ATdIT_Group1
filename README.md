@@ -5,9 +5,9 @@
 With our program we want to solve the urgent need of digitalization in the healthcare-industry. Our focus is to connect the shifts of caregivers efficiently, to make their hard work easier and the life of the eldery more livable.
 
 ### Technologies used
-*Java
-*Maven
-*SQLite
+-Java
+-Maven
+-SQLite
 
 
 
