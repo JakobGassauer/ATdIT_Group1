@@ -6,7 +6,9 @@ With our program we want to solve the urgent need of digitalization in the healt
 
 ### Technologies used
 -Java
+
 -Maven
+
 -SQLite
 
 
