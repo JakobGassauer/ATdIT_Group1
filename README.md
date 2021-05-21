@@ -24,9 +24,12 @@ During our project, we worked with an agile SCRUM-method. Therefore we used the 
 
 
 ### Links to further documents
-* [Prototype1](documentation/Prototyp/prototyp.jpg)
-* [Prototype2](documentation/Prototyp/prototyp2.jpg)
-* [final Prototype](documentation/Prototyp/finalprototyp.jpg)
+* [Prototype1](documentation/prototyp/prototyp1.png)
+* [Prototype2](documentation/prototyp/prototyp2.png)
+* [Combined Prototype](documentation/prototyp/prototyp_combined.png)
+
+* [Mockup Phone](documentation/mockup/mockup_computer&tablet.jpg)
+* [Mockup Computer & Tablet](documentation/mockup/mockup_phone.jpg)
 
 * [Entity-Relationship-Diagramm](documentation/Entity-Relationship.pptx)
 * [UML-Inheritance-Diagram](Vererbungsdiagramm.png)
