@@ -1,7 +1,7 @@
-#Group 1 
-(Kerstin Beckersjürgen, Simona Aich, Arkin Cip, Mauritz Brand, Jakob Gassauer)
+# Group 1 - digital shift book
+## (Kerstin Beckersjürgen, Simona Aich, Arkin Cip, Mauritz Brand, Jakob Gassauer)
 
-sdfsdf
+
 
 
 
