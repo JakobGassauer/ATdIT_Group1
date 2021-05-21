@@ -13,7 +13,7 @@ With our program we want to solve the urgent need of digitalization in the healt
 
 
 ### Work method
-During our project, we worked in a agile SCRUM-method. Therefore we used the [Kanban-Board](https://github.com/JakobGassauer/ATdIT_Group1/projects/1) of GitHub.
+During our project, we worked with an agile SCRUM-method. Therefore we used the [Kanban-Board](https://github.com/JakobGassauer/ATdIT_Group1/projects/1) of GitHub.
 
 
 
