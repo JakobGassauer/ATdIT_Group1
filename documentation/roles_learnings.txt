@@ -1,7 +1,7 @@
 LEARNINGS:
 
 Mauritz Brand: Aufbau eines Programmier-Projektes, PowerPoint-Kenntnisse 
-Simona Aich: Wissenschaftliches Arbeiten, Design Mock Ups, 
+Simona Aich: Wissenschaftliches Arbeiten, Design
 Arkin Cip: Java Swing Vertiefung
 Kerstin Beckersjürgen: Aufbau/ Struktur eines Programmes, Maven, Einbindung/Abfragen einer DB in Java
 Jakob Gassauer: Umgang mit Datenbanken in Java, verschiedene DBMS kennengelernt, Aufbau des Grundgerüsts eines Programms
@@ -9,7 +9,7 @@ Jakob Gassauer: Umgang mit Datenbanken in Java, verschiedene DBMS kennengelernt,
 ROLES:
 
 Mauritz Brand: Präsentation, Themenbeschreibung 
-Simona Aich: Thema Erörterung, Quellen und Statistiken, GUI Prototypen
+Simona Aich: Thema Erörterung, Quellen und Statistiken, GUI Prototypen, GUI Mockups
 Arkin Cip: GUI Implementierung 
 Kerstin Beckersjürgen: Backend Development, Einbindung des Backends auf der GUI
 Jakob Gassauer: Database, Backend Development
