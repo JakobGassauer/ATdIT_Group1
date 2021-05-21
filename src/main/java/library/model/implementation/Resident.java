@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Model specific type Residents which inherits from the abstract class People
+ */
 public class Resident extends People {
     private int resID;
     private int room;

@@ -1,8 +1,15 @@
 package library.persistence;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
+import library.persistence.implementation.*;
 
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+/**
+ * The interface Service defines the methods needed to update the database and
+ * retrieve data from the database types into the database types.
+ *
+ */
 public interface Service {
 
     class ServiceException extends SQLException {
@@ -14,16 +21,28 @@ public interface Service {
         }
     }
 
-    ArrayList<EmployeeData> getEmployeeData();
-    ArrayList<ICEData> getICEData();
-    ArrayList<IncidentData> getIncidentData();
-    ArrayList<MedicationData> getMedicationData();
-    ArrayList<MedPlanData> getMedPlanData();
-    ArrayList<ResidentData> getResidentData();
-    ArrayList<ShiftScheduleData> getShiftScheduleData();
-    ArrayList<StationData> getStationData();
-    ArrayList<VisitsData> getVisitData();
+    List<EmployeeData> getEmployeeData();
+    List<ICEData> getICEData();
+    List<IncidentData> getIncidentData();
+    List<MedicationData> getMedicationData();
+    List<MedPlanData> getMedPlanData();
+    List<ResidentData> getResidentData();
+    List<ShiftScheduleData> getShiftScheduleData();
+    List<StationData> getStationData();
+    List<VisitsData> getVisitData();
 
-    //List<T> getEntities() throws ServiceException;
-    //void postEntities(List<T> entities) throws ServiceException;
+
+    void updateShiftIncidentsDataDatabase(String newText, int shiftID);
+    void updateResidentIncidentsDataDatabase(String newText, int incidentID);
+    void createNewResidentIncidentDatabase(IncidentData incidentData);
+
+    MedPlanData getSingleMedPlanData(int resID) ;
+    String getSingleMedicationData(int medicID);
+    IncidentData getSingleIncidentData(int resID) ;
+    IncidentData getSingleIncidentData(int resID, Date date) ;
+    ICEData getSingleICEData(int resID) ;
+    ShiftScheduleData getSingleShiftScheduleData(Object category, Date date) ;
+    String getSingleVisitDataDescription(int resID);
+    ResidentData getSingleResidentData(String name);
+
 }

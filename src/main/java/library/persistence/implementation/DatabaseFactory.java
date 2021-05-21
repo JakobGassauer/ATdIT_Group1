@@ -1,204 +1,25 @@
 package library.persistence.implementation;
 
-import library.model.implementation.*;
-import library.persistence.*;
-
-import java.util.ArrayList;
-import java.util.Date;
-
-public class DatabaseFactory {
-    DatabaseService service;
-
-    //maps types from db service to types used in the model (?)
-    // no direct database access/queries
-
-    //Data fromD DB
-    public final ArrayList<ResidentData> residentsData;
-    public final ArrayList<IncidentData> incidentsData;
-    public final ArrayList<ShiftScheduleData> shiftSchedulesData;
-    public final ArrayList<EmployeeData> employeesData;
-    public final ArrayList<ICEData> icesData;
-    public final ArrayList<MedicationData> medicationsData;
-    public final ArrayList<MedPlanData> medPlansData;
-    public final ArrayList<StationData> stationsData;
-    public final ArrayList<VisitsData> visitsData;
-
-//Namenskonventionen! Lists to be used in gui
-    public final ArrayList<Resident> residents = new ArrayList<>();
-    public final ArrayList<Incident> incidents = new ArrayList<>();
-    public final ArrayList<ShiftSchedule> shiftSchedules = new ArrayList<>();
-    public final ArrayList<Employee> employees = new ArrayList<>();
-    public final ArrayList<ICE> ices = new ArrayList<>();
-    public final ArrayList<Medication> medications = new ArrayList<>();
-    public final ArrayList<MedPlan> medPlans = new ArrayList<>();
-    public final ArrayList<Station> stations = new ArrayList<>();
-    public final ArrayList<Visits> visits = new ArrayList<>();
+import library.persistence.Factory;
+import library.persistence.Service;
 
 
-    static int entriesAddedInSession;
+/**
+ * The Factory is called to instantiate an implemented Service that is used in the Adapter.
+ */
+public class DatabaseFactory implements Factory {
+    Service service;
 
-    public DatabaseFactory(){
-        service = new DatabaseService();
-
-        residentsData = service.getResidentData();
-        incidentsData = service.getIncidentData();
-        shiftSchedulesData = service.getShiftScheduleData();
-        employeesData = service.getEmployeeData();
-        icesData = service.getICEData();
-        medicationsData = service.getMedicationData();
-        medPlansData = service.getMedPlanData();
-        stationsData = service.getStationData();
-        visitsData = service.getVisitData();
-
-        convertToModelObjects();
-        entriesAddedInSession=0;
+    public DatabaseFactory() {
+        createService();
     }
 
-    private void convertToModelObjects() {
-        for(ResidentData entities : residentsData){
-            Resident entity = new Resident(entities.resID,
-                    entities.name,
-                    entities.surname,
-                    entities.age,
-                    entities.stationID,
-                    entities.room) ;
-            residents.add(entity);
-        }
+    /**
+     * @return Service of chosen Implementation.
+     */
+    @Override
+    public Service createService() {
 
-        for(IncidentData entities : incidentsData){
-            Incident entity = new Incident(entities.incidentID,
-                    entities.resID,
-                    entities.shiftID,
-                    entities.description,
-                    entities.incidentsDate) ;
-            incidents.add(entity);
-        }
-
-        for(ShiftScheduleData entities : shiftSchedulesData){
-            ShiftSchedule entity = new ShiftSchedule(entities.shiftID,
-                    entities.employeeID,
-                    entities.category,
-                    entities.date,
-                    entities.shiftIncidents) ;
-            shiftSchedules.add(entity);
-        }
-
-        for(EmployeeData entities : employeesData){
-            Employee entity = new Employee(entities.employeeID,
-                    entities.name,
-                    entities.surname,
-                    entities.age,
-                    entities.stationID) ;
-            employees.add(entity);
-        }
-
-        for(ICEData entities : icesData){
-            ICE entity = new ICE(entities.iceID,
-                    entities.resID,
-                    entities.name,
-                    entities.surname,
-                    entities.telnumber,
-                    entities.adress) ;
-            ices.add(entity);
-        }
-
-        for(MedicationData entities : medicationsData){
-            Medication entity = new Medication(entities.medicID,
-                    entities.name) ;
-            medications.add(entity);
-        }
-
-        for(MedPlanData entities : medPlansData){
-            MedPlan entity = new MedPlan(entities.medID,
-                    entities.resID,
-                    entities.concentration,
-                    entities.intakeFrequency,
-                    entities.medicID) ;
-            medPlans.add(entity);
-        }
-
-        for(StationData entities : stationsData){
-            Station entity = new Station(entities.stationID,
-                    entities.name) ;
-            stations.add(entity);
-        }
-
-        for(VisitsData entities : visitsData){
-            Visits entity = new Visits(entities.visitID,
-                    entities.description,
-                    entities.resID) ;
-            visits.add(entity);
-        }
-
-    }
-
-
-    public Resident getSingleResident(int index) {
-        return residents.get(index);
-    }
-
-    public Resident getSingleResident(String name) {
-       ResidentData residentData = service.getSingleResidentData(name);
-       return new Resident(residentData.resID,residentData.name,
-               residentData.surname,residentData.age,
-               residentData.stationID,residentData.room);
-    }
-
-    public ShiftSchedule getSingleShiftSchedule(Object category, Date date) {
-        ShiftScheduleData shiftScheduleData = service.getSingleShiftScheduleData(category,date);
-        return new ShiftSchedule(shiftScheduleData.shiftID,shiftScheduleData.employeeID,
-                shiftScheduleData.category,shiftScheduleData.date,
-                shiftScheduleData.shiftIncidents);
-    }
-
-    public String getSingleVisitDescription(int resID) {
-        return service.getSingleVisitDataDescription(resID);
-    }
-
-
-    public ICE getSingleICE(int resID){
-        ICEData iceData = service.getSingleICEData(resID);
-        return new ICE(iceData.iceID, iceData.resID,iceData.name,iceData.surname,iceData.telnumber,iceData.adress);
-    }
-
-    public Incident getSingleIncident(int resID, Date date){
-        IncidentData incidentData = service.getSingleIncidentData(resID,date);
-        return new Incident(incidentData.incidentID,incidentData.resID,
-                incidentData.shiftID,incidentData.description,
-                incidentData.incidentsDate);
-    }
-    public Incident getSingleIncident(int resID){
-        IncidentData incidentData = service.getSingleIncidentData(resID);
-        return new Incident(incidentData.incidentID,incidentData.resID,
-                incidentData.shiftID,incidentData.description,
-                incidentData.incidentsDate);
-    }
-
-    public String getSingleMedication(int medicID){
-        return service.getSingleMedicationData(medicID);
-    }
-
-    public MedPlan getSingleMedPlan(int resID){
-        MedPlanData medPlanData = service.getSingleMedPlanData(resID);
-        return new MedPlan(medPlanData.medID,medPlanData.resID,
-                medPlanData.concentration,medPlanData.intakeFrequency,
-                medPlanData.medicID);
-    }
-
-
-    public void saveResidentIncidentsDatabase(String newText, Incident incident, int resID, Date date){
-        if (incident.getIncidentID()==0){
-            int newIncidentID = incidents.size()+(entriesAddedInSession+2);
-            int shiftID = 0;
-            String description = newText;
-            IncidentData incidentData = new IncidentData(newIncidentID, resID, shiftID, description, date);
-            service.createNewResidentIncidentDatabase(incidentData);
-            entriesAddedInSession++;
-        }
-        service.updateResidentIncidentsDataDatabase(newText, incident.getIncidentID());
-    }
-
-    public void saveShiftIncidentsDatabase(String newText, int shiftID){
-        service.updateShiftIncidentsDataDatabase(newText, shiftID);
+        return service = new DatabaseService();  //konkreter Service muss hier gesetzt werden
     }
 }

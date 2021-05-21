@@ -1,7 +1,9 @@
 package library.model.implementation;
 
 import library.model.People;
-
+/**
+ * Model specific type Employee which inherits from the abstract class People
+ */
 public class Employee extends People {
     private int employeeID;
     private int stationID;

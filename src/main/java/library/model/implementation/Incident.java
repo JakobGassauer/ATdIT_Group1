@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+/**
+ * Model specific type Incident which implements the interface Edit
+ */
 public class Incident implements Edit<Incident> {
     private int incidentID;
     private String description;

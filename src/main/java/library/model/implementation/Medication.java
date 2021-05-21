@@ -5,7 +5,9 @@ import library.persistence.implementation.DatabaseService;
 import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**
+ * Model specific type Medication
+ */
 public class Medication {
     private int medicID;
     private String name;
