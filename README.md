@@ -23,6 +23,16 @@ During our project, we worked with an agile SCRUM-method. Therefore we used the 
 [Goals for the intermediate review, first thoughts of the program.](documentation/procedure.txt)
 
 
+### Links to further documents
+* [Prototype1](documentation/Prototyp/prototyp.jpg)
+* [Prototype2](documentation/Prototyp/prototyp2.jpg)
+* [final Prototype](documentation/Prototyp/finalprototyp.jpg)
+
+* [Entity-Relationship-Diagramm](documentation/Entity-Relationship.pptx)
+* [UML-Inheritance-Diagram](Vererbungsdiagramm.png)
+
+
+
 
 
 
