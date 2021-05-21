@@ -19,54 +19,46 @@ import java.util.*;
 
 public class GUI extends JFrame {
 
-    static boolean beingEdited = false;
-    static boolean isSaved = true;
-    static boolean hasSwitched = false;
-    static int buttonIdentification = -1;
-    static int indexComparison = -1;
-    static int lastButton = -1;
-    static int selectedLanguage = 0;
+    private static boolean beingEdited = false;
+    private static boolean isSaved = true;
+    private static boolean hasSwitched = false;
+    private static int buttonIdentification = -1;
+    private static int indexComparison = -1;
+    private static int lastButton = -1;
+    private static int selectedLanguage = 0;
 
-    ImageIcon saveicon;
-    ImageIcon editicon;
+    private ImageIcon saveicon;
+    private ImageIcon editicon;
 
-    Container c;
+    private CardLayout cl = new CardLayout();
 
-    CardLayout cl = new CardLayout();
+    private JPanel jpResidentRoom, jpFilterTextAll, jpFilter, jpTextResident, jpResident, jpRoom, jpSpecific, jpEditResident, jpTextResidentAndEdit, cards;
 
-    JPanel jpResidentRoom, jpFilterTextAll, jpFilter, jpTextResident, jpResident, jpRoom, jpSpecific, jpEditResident, jpTextResidentAndEdit, cards;
+    private JTextPane tpBaseData, tpMedication, tpDiagnosisSheet, tpClosestRelative, tpVisits, tpOther;
+    private Document docBaseData, docMedication, docDiagnosisSheet, docClosestRelative, docVisits, docOther;
 
-    JScrollPane spBaseData, spMedication, spDiagnosisSheet, spClosestRelative, spVisits, spOther;
-    JTextPane tpBaseData, tpMedication, tpDiagnosisSheet, tpClosestRelative, tpVisits, tpOther;
-    Document docBaseData, docMedication, docDiagnosisSheet, docClosestRelative, docVisits, docOther;
-    JLabel lblspace;
+    private SimpleAttributeSet attrHeader;
+    private SimpleAttributeSet attrSubHeader;
+    private SimpleAttributeSet attrText;
 
-    SimpleAttributeSet attrHeader;
-    SimpleAttributeSet attrSubHeader;
-    SimpleAttributeSet attrText;
+    private JButton[] btnResident;
+    private JButton[] btnEditResident;
+    private JButton btnAll;
+    private JLabel[] lblRoom;
+    private String[] shifts;
+    private String[] time;
+    private JComboBox<String> jcbShift;
+    private JComboBox<String> jcbTime;
 
-    JButton[] btnResident;
-    JButton[] btnEditResident;
-    JButton btnAll;
-    JLabel[] lblRoom;
-    String[] shifts;
-    String[] time;
-    String[] language;
-    JComboBox<String> jcbShift;
-    JComboBox<String> jcbTime;
-    JComboBox<String> jcbLanguage;
+    private JTextArea[] taResident;
+    private JScrollPane[] spTextResident;
+    private JTextArea taAll;
 
-    JTextArea[] taResident;
-    JScrollPane[] spTextResident;
-    JTextArea taAll;
+    private Color lightgrey = new Color(245, 245, 245);
+    private Color lightyellow = new Color(255, 255, 202);
 
-    GridBagConstraints gbc = new GridBagConstraints();
-
-    Color lightgrey = new Color(245, 245, 245);
-    Color lightyellow = new Color(255, 255, 202);
-
-    ButtonListenerChangeCardsForResidentSpecificData listenerChangeCardsForResidentSpecificData;
-    ButtonListenerEnableEditing listenerEnableEditing;
+    private ButtonListenerChangeCardsForResidentSpecificData listenerChangeCardsForResidentSpecificData;
+    private ButtonListenerEnableEditing listenerEnableEditing;
 
     private final ResourceBundle resourceBundle;
     private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
@@ -108,6 +100,7 @@ public class GUI extends JFrame {
     }
 
     private void residentTextAreaGridBagLayoutInitialization() {
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.gridx = 0;
@@ -129,6 +122,7 @@ public class GUI extends JFrame {
     }
 
     private void contentPaneInitialisation(){
+        Container c;
         c = getContentPane();
         c.add(jpResidentRoom, BorderLayout.WEST);
         c.add(jpFilterTextAll, BorderLayout.NORTH);
@@ -138,14 +132,14 @@ public class GUI extends JFrame {
         cards.add(jpSpecific, "Spezifisch");
         cl.show(cards, "Bewohner");
     }
-
+    
     private void residentOverviewPanelInitialization() {
-        spBaseData = new JScrollPane(tpBaseData);
-        spMedication = new JScrollPane(tpMedication);
-        spDiagnosisSheet = new JScrollPane(tpDiagnosisSheet);
-        spClosestRelative = new JScrollPane(tpClosestRelative);
-        spVisits = new JScrollPane(tpVisits);
-        spOther = new JScrollPane(tpOther);
+        JScrollPane spBaseData = new JScrollPane(tpBaseData);
+        JScrollPane spMedication = new JScrollPane(tpMedication);
+        JScrollPane spDiagnosisSheet = new JScrollPane(tpDiagnosisSheet);
+        JScrollPane spClosestRelative = new JScrollPane(tpClosestRelative);
+        JScrollPane spVisits = new JScrollPane(tpVisits);
+        JScrollPane spOther = new JScrollPane(tpOther);
         spTextResident = new JScrollPane[adapter.getResidents().size()];
 
         jpSpecific.add(spBaseData);
@@ -252,20 +246,20 @@ public class GUI extends JFrame {
     }
 
     private void filterAndJComboboxInitialization() {
-
+        JLabel lblspace;
         Object [] items = {
                 new ImageIcon("src/main/java/library/presentation/icons/Germanyicon.png"),
                 new ImageIcon("src/main/java/library/presentation/icons/UnitedKingdomicon.png")
         };
 
-        language = new String[]{"German","English"};
+        String[] language = new String[]{"German","English"};
         jcbShift = new JComboBox<>(shifts);
         jpFilter.add(jcbShift);
         jcbTime = new JComboBox<>(time);
         lblspace = new JLabel("");
         lblspace.setBackground(lightyellow);
         lblspace.setOpaque(true);
-        jcbLanguage = new JComboBox(items);
+        JComboBox<String> jcbLanguage = new JComboBox(items);
         jpFilter.add(jcbLanguage);
         jpFilter.add(jcbTime);
         jpFilter.add(lblspace);
