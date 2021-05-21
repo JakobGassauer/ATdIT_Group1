@@ -24,7 +24,7 @@ During our project, we worked with an agile SCRUM-method. Therefore we used the 
 
 
 ### Links to further documents
-* [Prototype1](documentation/prototyp/prototyp1.png
+* [Prototype1](documentation/prototyp/prototyp1.png)
 * [Prototype2](documentation/prototyp/prototyp2.png)
 * [Combined Prototype](documentation/prototyp/prototyp_combined.png)
 
