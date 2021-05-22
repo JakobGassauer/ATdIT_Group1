@@ -1,14 +1,9 @@
 package library.model.implementation;
 
-import library.model.Edit;
-import library.persistence.implementation.DatabaseService;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 /**
  * Model specific type MedPlan which implements the interface Edit
  */
-public class MedPlan implements Edit<MedPlan> {
+public class MedPlan {
     private int medID;
     private int resID;
     private double intakeFrequency;
@@ -74,23 +69,5 @@ public class MedPlan implements Edit<MedPlan> {
         this.medicID = medicID;
     }
 
-    @Override
-    public void add(MedPlan object) {
-        //TODO implement add logic
-    }
 
-    //public static MedPlan get(int resID) {
-     //  return DatabaseService.getSingleMedPlan(resID);
-   // }
-
-    @Override
-    public void remove(MedPlan object) {
-        //TODO implement remove logic
-    }
-
-    @Override
-    public MedPlan get() {
-        return null;
-        //TODO implement get logic
-    }
 }
