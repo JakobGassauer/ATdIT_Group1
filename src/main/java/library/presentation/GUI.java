@@ -27,10 +27,10 @@ public class GUI extends JFrame {
     private static int lastButton = -1;
     private static int selectedLanguage = 0;
 
-    private ImageIcon saveicon;
-    private ImageIcon editicon;
+    private final ImageIcon saveicon;
+    private final ImageIcon editicon;
 
-    private CardLayout cl = new CardLayout();
+    private final CardLayout cl = new CardLayout();
 
     private JPanel jpResidentRoom, jpFilterTextAll, jpFilter, jpTextResident, jpResident, jpRoom, jpSpecific, jpEditResident, jpTextResidentAndEdit, cards;
 
@@ -54,22 +54,21 @@ public class GUI extends JFrame {
     private JScrollPane[] spTextResident;
     private JTextArea taAll;
 
-    private Color lightgrey = new Color(245, 245, 245);
-    private Color lightyellow = new Color(255, 255, 202);
+    private final Color lightgrey = new Color(245, 245, 245);
+    private final Color lightyellow = new Color(255, 255, 202);
 
-    private ButtonListenerChangeCardsForResidentSpecificData listenerChangeCardsForResidentSpecificData;
-    private ButtonListenerEnableEditing listenerEnableEditing;
+    private final ButtonListenerChangeCardsForResidentSpecificData listenerChangeCardsForResidentSpecificData;
+    private final ButtonListenerEnableEditing listenerEnableEditing;
 
     private final ResourceBundle resourceBundle;
     private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
-  // gui does not use db types from persistence but uses methods from the adapter
-    private Adapter adapter = new DatabaseAdapter();
+    private final Adapter adapter = new DatabaseAdapter();
 
     public GUI() {
 
         this.resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE);
-        saveicon = new ImageIcon("src/main/java/library/presentation/icons/Saveicon.png");
-        editicon = new ImageIcon("src/main/java/library/presentation/icons/Editicon.png");
+        saveicon = new ImageIcon("src/main/resources/icons/Saveicon.png");
+        editicon = new ImageIcon("src/main/resources/icons/Editicon.png");
         listenerChangeCardsForResidentSpecificData = new ButtonListenerChangeCardsForResidentSpecificData();
         listenerEnableEditing = new ButtonListenerEnableEditing();
 
@@ -89,7 +88,7 @@ public class GUI extends JFrame {
 
         residentButtonInitialization();
 
-        roomLabelInitalization();
+        roomLabelInitialization();
 
         residentTextAreaInitialization();
 
@@ -128,7 +127,7 @@ public class GUI extends JFrame {
         c.add(jpFilterTextAll, BorderLayout.NORTH);
         c.add(cards, BorderLayout.CENTER);
         jpFilterTextAll.add(jpFilter, BorderLayout.WEST);
-        cards.add(jpTextResidentAndEdit, "Bewohner");
+        cards.add(jpTextResidentAndEdit, "Bewohner"); //todo warning
         cards.add(jpSpecific, "Spezifisch");
         cl.show(cards, "Bewohner");
     }
@@ -248,11 +247,11 @@ public class GUI extends JFrame {
     private void filterAndJComboboxInitialization() {
         JLabel lblspace;
         Object [] items = {
-                new ImageIcon("src/main/java/library/presentation/icons/Germanyicon.png"),
-                new ImageIcon("src/main/java/library/presentation/icons/UnitedKingdomicon.png")
+                new ImageIcon("src/main/resources/icons/Germanyicon.png"),
+                new ImageIcon("src/main/resources/icons/UnitedKingdomicon.png")
         };
 
-        String[] language = new String[]{"German","English"};
+        String[] language = new String[]{"German","English"}; // todo löschen?
         jcbShift = new JComboBox<>(shifts);
         jpFilter.add(jcbShift);
         jcbTime = new JComboBox<>(time);
@@ -321,7 +320,7 @@ public class GUI extends JFrame {
     }
     }
 
-    private void roomLabelInitalization() {
+    private void roomLabelInitialization() {
         lblRoom = new JLabel[adapter.getResidents().size()];
 
         for (int i = 0; i < adapter.getResidents().size(); i++) {
@@ -445,7 +444,6 @@ public class GUI extends JFrame {
         } catch (BadLocationException be) {
         }
 
-        // todo was soll hier drauf?
     }
 
     private void setClosestRelative(ICE ice) {
@@ -508,7 +506,6 @@ public class GUI extends JFrame {
         adapter.saveResidentIncidentsDatabase(newText, adapter.getSingleIncident(resID,date), resID, date);
     }
 
-    //todo datumsabhängigkeit
 
     public void saveChangesShiftIncidentText() {
         String newText = taAll.getText(); //get new text
@@ -599,7 +596,6 @@ public class GUI extends JFrame {
                             taResident[index].setEditable(false);
                             btnEditResident[index].setIcon(editicon);
                             saveChangesResidentIncidentText(index);
-                            //Sachen abspeichern Mehode
                             isSaved = true;
                             beingEdited = false;
                         }

@@ -1,12 +1,8 @@
 package library.persistence.implementation;
 
 import library.model.implementation.*;
-import library.persistence.Adapter;
-import library.persistence.Factory;
-import library.persistence.Service;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +14,6 @@ class DatabaseAdapterTest {
     void convertToModelObjects() {
 
         DatabaseAdapter adapter = new DatabaseAdapter();
-        Factory factory = new DatabaseFactory();
         DatabaseService service = new DatabaseService();
 
         ArrayList<ResidentData> residentDataList = service.getResidentData();
@@ -116,10 +111,4 @@ class DatabaseAdapterTest {
             assertEquals(visitsDataList.get(i).description, visitList.get(i).getDescription());
         }
     }
-
-
-    @Test
-    void saveResidentIncidentsDatabase() {
-    }
-
 }

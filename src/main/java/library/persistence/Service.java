@@ -2,24 +2,13 @@ package library.persistence;
 
 import library.persistence.implementation.*;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 /**
  * The interface Service defines the methods needed to update the database and
  * retrieve data from the database types into the database types.
- *
  */
 public interface Service {
-
-    class ServiceException extends SQLException {
-        public ServiceException(String message){
-            super(message);
-        }
-        public  ServiceException(String message, Throwable cause){
-            super(message, cause);
-        }
-    }
 
     List<EmployeeData> getEmployeeData();
     List<ICEData> getICEData();
@@ -44,5 +33,7 @@ public interface Service {
     ShiftScheduleData getSingleShiftScheduleData(Object category, Date date) ;
     String getSingleVisitDataDescription(int resID);
     ResidentData getSingleResidentData(String name);
+    EmployeeData getSingleEmployeeData(int employeeID);
+    String getSingleStationData(int stationID);
 
 }

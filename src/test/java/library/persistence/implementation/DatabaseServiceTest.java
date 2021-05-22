@@ -11,6 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+@SuppressWarnings("HardCodedStringLiteral")
 class DatabaseServiceTest {
     static DatabaseService service;
     static Connection connect;
@@ -29,15 +30,15 @@ class DatabaseServiceTest {
         DBConnect.setLocation(oldLocation);
         try {
             connect.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 
     @Test
     void getResidentDataTest() {
         ArrayList<ResidentData> residentDataArrayList = service.getResidentData();
-        assertTrue(residentDataArrayList.size()==10);
+        assertEquals(10, residentDataArrayList.size());
         ResidentData resident1 = residentDataArrayList.get(0);
         assertEquals(resident1.resID, 1);
         assertEquals(resident1.room, 10);
@@ -51,14 +52,15 @@ class DatabaseServiceTest {
     void createPreparedStatementTestOneParameter() {
         ResultSet result = DatabaseService.createPreparedStatement(
                 "select name from senior_resident where resID = ?", "1");
-        Statement statement = null;
+        Statement statement;
         try {
+            assert result != null;
             statement = result.getStatement();
-            assertTrue(!statement.isClosed());
+            assertFalse(statement.isClosed());
             statement.close();
             result.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 
@@ -66,14 +68,15 @@ class DatabaseServiceTest {
     void createPreparedStatementTestTwoParameters() {
         ResultSet result = DatabaseService.createPreparedStatement(
                 "select name from senior_resident where resID = ? and stationID = ?", "1", "1");
-        Statement statement = null;
+        Statement statement;
         try {
+            assert result != null;
             statement = result.getStatement();
-            assertTrue(!statement.isClosed());
+            assertFalse(statement.isClosed());
             statement.close();
             result.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 
@@ -87,10 +90,10 @@ class DatabaseServiceTest {
             newText = result.getString("description");
             statement.close();
             result.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
-        assertTrue(newText.equals("test"));
+        assertEquals("test", newText);
     }
 
     @Test
@@ -103,16 +106,16 @@ class DatabaseServiceTest {
             newText = result.getString("shift_incidents");
             statement.close();
             result.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
-        assertTrue(newText.equals("test"));
+        assertEquals("test", newText);
     }
 
     @Test
     void getSingleResidentData() {
         ResidentData residentData = service.getSingleResidentData("Robert");
-        assertTrue(residentData.resID==1);
+        assertEquals(1, residentData.resID);
         assertEquals(residentData.room, 10);
         assertEquals(residentData.age, 85);
         assertEquals(residentData.name, "Robert");
@@ -140,8 +143,8 @@ class DatabaseServiceTest {
             assertEquals(incident.incidentID, newIncident.incidentID);
             assertEquals(incident.resID, newIncident.resID);
             assertEquals(incident.shiftID, newIncident.shiftID);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
 
     }
