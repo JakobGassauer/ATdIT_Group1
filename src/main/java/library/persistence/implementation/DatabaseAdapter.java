@@ -146,39 +146,39 @@ public class DatabaseAdapter implements Adapter {
     }
 //get all entries of one entity stored in lists
 
-    public List<Employee> getEmployees() {
+    public ArrayList<Employee> getEmployees() {
         return employees;
     }
 
-    public List<ICE> getIces() {
+    public ArrayList<ICE> getIces() {
         return ices;
     }
 
-    public List<Incident> getIncidents() {
+    public ArrayList<Incident> getIncidents() {
         return incidents;
     }
 
-    public List<Medication> getMedications() {
+    public ArrayList<Medication> getMedications() {
         return medications;
     }
 
-    public List<MedPlan> getMedPlans() {
+    public ArrayList<MedPlan> getMedPlans() {
         return medPlans;
     }
 
-    public List<Resident> getResidents() {
+    public ArrayList<Resident> getResidents() {
         return residents;
     }
 
-    public List<ShiftSchedule> getShiftSchedules() {
+    public ArrayList<ShiftSchedule> getShiftSchedules() {
         return shiftSchedules;
     }
 
-    public List<Station> getStations() {
+    public ArrayList<Station> getStations() {
         return stations;
     }
 
-    public List<Visits> getVisits() {
+    public ArrayList<Visits> getVisits() {
         return visits;
     }
 
