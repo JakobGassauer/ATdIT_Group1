@@ -270,8 +270,7 @@ public class DatabaseAdapter implements Adapter {
     }
 
     /**
-     * Passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the GUI.
+     * Passes the request to the service so it can be used in the GUI.
      * @param medicID for select statement
      * @return Name of the Medication with the provided medicID
      */
@@ -280,11 +279,12 @@ public class DatabaseAdapter implements Adapter {
     }
 
     /**
-     * Passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the GUI.
+     * Passes the request to the service so it can be used in the GUI.
+     * The method is not used yet and solely for expansion purposes.
      * @param stationID for select statement
      * @return Name of the station with the provided stationID
      */
+    @SuppressWarnings("unused")
     public String getSingleStation(int stationID){
         return service.getSingleStationData(stationID);
     }
@@ -292,9 +292,11 @@ public class DatabaseAdapter implements Adapter {
     /**
      * Passes the request to the service and converts the returned database type
      * into the model type, so it can be used in the GUI.
+     * The method is not used yet and solely for expansion purposes.
      * @param employeeID for select statement
      * @return EmployeeData of the provided employeeID
      */
+    @SuppressWarnings("unused")
     public Employee getSingleEmployee(int employeeID){
         EmployeeData employeeData = service.getSingleEmployeeData(employeeID);
         return new Employee(employeeData.employeeID,

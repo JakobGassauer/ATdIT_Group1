@@ -350,14 +350,18 @@ public class DatabaseService implements Service {
         try{
             String sql = "Select * from senior_resident where name = ?";
             ResultSet result = DatabaseService.createPreparedStatement(sql, name);
-            ResidentData resident = new ResidentData(result.getInt("resID"),
-                    result.getString("name"),
-                    result.getString("surname"),
-                    result.getInt("age"),
-                    result.getInt("stationID"),
-                    result.getInt("room"));
-            result.getStatement().close();
-            result.close();
+            ResidentData resident = null;
+            if (result != null) {
+                result.getStatement().close();
+                resident = new ResidentData(result.getInt("resID"),
+                        result.getString("name"),
+                        result.getString("surname"),
+                        result.getInt("age"),
+                        result.getInt("stationID"),
+                        result.getInt("room"));
+                result.close();
+            }
+
             return resident;
         }catch (SQLException e){
             e.printStackTrace();
@@ -374,9 +378,14 @@ public class DatabaseService implements Service {
         try{
             String sql = "Select description from visits where resID = ?";
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
-            String description = rs.getString("description");
-            rs.getStatement().close();
-            rs.close();
+            String description = null;
+            if (rs != null) {
+                description = rs.getString("description");
+                rs.getStatement().close();
+                rs.close();
+            }
+
+
             return description;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
@@ -402,23 +411,30 @@ public class DatabaseService implements Service {
             System.out.println(rs);
             Date date1 =null;
             try{
-                date1 = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("date"));
+                if (rs != null) {
+                    date1 = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("date"));
+                }
             }catch (ParseException pe) {
                 pe.printStackTrace();
                 //  return null;
             }
-            ShiftScheduleData shiftSchedule = new ShiftScheduleData(
-                    rs.getInt("shiftID"),
-                    rs.getInt("employeeID"),
-                    rs.getInt("category"),
-                    date1,
-                    rs.getString("shift_incidents"));
-            rs.getStatement().close();
-            rs.close();
-            return shiftSchedule;
+
+            ShiftScheduleData shiftSchedule;
+            if (rs != null) {
+                shiftSchedule = new ShiftScheduleData(
+                        rs.getInt("shiftID"),
+                        rs.getInt("employeeID"),
+                        rs.getInt("category"),
+                        date1,
+                        rs.getString("shift_incidents"));
+                rs.getStatement().close();
+                rs.close();
+                return shiftSchedule;
+            }
+            return new ShiftScheduleData(0,0,0,null,"no incidents");
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) {
-                return new ShiftScheduleData(0,0,0,null,"hallo");
+                return new ShiftScheduleData(0,0,0,null,"no incidents");
             }
             e.printStackTrace();
             return null;
@@ -436,16 +452,17 @@ public class DatabaseService implements Service {
             String sql = "Select * from ice where resID = ?";
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
             if(rs != null) {
-                return new ICEData(
+                rs.getStatement().close();
+                ICEData iceData =  new ICEData(
                         rs.getInt("iceID"),
                         rs.getInt("resID"),
                         rs.getString("name"),
                         rs.getString("surname"),
                         rs.getInt("tel_number"),
                         rs.getString("adress"));
+                rs.close();
+                return iceData;
             }
-            rs.getStatement().close();
-            rs.close();
             return new ICEData(0,0,null,null,0,null);
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) {
@@ -470,18 +487,24 @@ public class DatabaseService implements Service {
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID), dateInString);
             Date incidentsDate = null;
             try{
-                incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("incidents_date"));
+                if (rs != null) {
+                    incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("incidents_date"));
+                }
             }catch (ParseException e) {
                 e.printStackTrace();
             }
-            IncidentData incident = new IncidentData(
-                    rs.getInt("incidentID"),
-                    rs.getInt("resID"),
-                    rs.getInt("shiftID"),
-                    rs.getString("description"), incidentsDate);
-            rs.getStatement().close();
-            rs.close();
-            return incident;
+            IncidentData incident;
+            if (rs != null) {
+                incident = new IncidentData(
+                        rs.getInt("incidentID"),
+                        rs.getInt("resID"),
+                        rs.getInt("shiftID"),
+                        rs.getString("description"), incidentsDate);
+                rs.getStatement().close();
+                rs.close();
+                return incident;
+            }
+            return new IncidentData(0,0,0,"no incident", null);
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) {
                 return new IncidentData(0,0,0,"no incident", null);
@@ -502,18 +525,23 @@ public class DatabaseService implements Service {
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
             Date incidentsDate = null;
             try{
-                incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("incidents_date"));
+                if (rs != null) {
+                    incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("incidents_date"));
+                }
             }catch (ParseException e) {
                 e.printStackTrace();
             }
-            IncidentData incident = new IncidentData(
-                    rs.getInt("incidentID"),
-                    rs.getInt("resID"),
-                    rs.getInt("shiftID"),
-                    rs.getString("description"), incidentsDate);
-            rs.getStatement().close();
-            rs.close();
-            return incident;
+            if (rs != null) {
+                IncidentData incident = new IncidentData(
+                        rs.getInt("incidentID"),
+                        rs.getInt("resID"),
+                        rs.getInt("shiftID"),
+                        rs.getString("description"), incidentsDate);
+                rs.getStatement().close();
+                rs.close();
+                return incident;
+            }
+            return new IncidentData(0,0,0,"no incident", null);
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) {
                 return new IncidentData(0,0,0,"no incident", null);
@@ -532,9 +560,12 @@ public class DatabaseService implements Service {
         try{
             String sql = "Select name from medication where medicID = ?";
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(medicID));
-            String name = rs.getString("name");
-            rs.getStatement().close();
-            rs.close();
+            String name = null;
+            if (rs != null) {
+                name = rs.getString("name");
+                rs.getStatement().close();
+                rs.close();
+            }
             return name;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) {
@@ -544,7 +575,7 @@ public class DatabaseService implements Service {
             return null;
         }
     }
-    //todo station und employee db structure
+
     /**
      * Selects the employee with the provided employeeID.
      * @param employeeID for select statement
@@ -555,15 +586,16 @@ public class DatabaseService implements Service {
             String sql = "Select * from employee where employeeID = ?";
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(employeeID));
             if(rs != null) {
-                return new EmployeeData(
+                EmployeeData employeeData = new EmployeeData(
                         rs.getInt("employeeID"),
                         rs.getString("name"),
                         rs.getString("surname"),
                         rs.getInt("age"),
                         rs.getInt("stationID"));
+                rs.getStatement().close();
+                rs.close();
+                return  employeeData;
             }
-            rs.getStatement().close();
-            rs.close();
             return new EmployeeData(0,null,null,0,0);
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) {
@@ -583,10 +615,11 @@ public class DatabaseService implements Service {
             String sql = "Select name from station where stationID = ?";
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(stationID));
             if(rs != null) {
-                return  rs.getString("name");
+                String name =  rs.getString("name");
+                rs.getStatement().close();
+                rs.close();
+                return  name;
             }
-            rs.getStatement().close();
-            rs.close();
             return null;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) {
@@ -609,15 +642,18 @@ public class DatabaseService implements Service {
             String sql = "Select * from medplan where resID = ?";
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
             System.out.println(rs);
-            MedPlanData medPlan = new MedPlanData(
-                    rs.getInt("medID"),
-                    rs.getInt("resID"),
-                    rs.getDouble("intake_frequency"),
-                    rs.getDouble("concentration"),
-                    rs.getInt("medicID"));
-            rs.getStatement().close();
-            rs.close();
-            return medPlan;
+            if(rs != null){
+                MedPlanData medPlan = new MedPlanData(
+                        rs.getInt("medID"),
+                        rs.getInt("resID"),
+                        rs.getDouble("intake_frequency"),
+                        rs.getDouble("concentration"),
+                        rs.getInt("medicID"));
+                rs.getStatement().close();
+                rs.close();
+                return medPlan;
+            }
+            return new MedPlanData(0,0,0,0,0);
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) {
                 return new MedPlanData(0, 0,0,0,0);
