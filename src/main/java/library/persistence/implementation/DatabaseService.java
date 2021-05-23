@@ -352,16 +352,15 @@ public class DatabaseService implements Service {
             ResultSet result = DatabaseService.createPreparedStatement(sql, name);
             ResidentData resident = null;
             if (result != null) {
-                result.getStatement().close();
                 resident = new ResidentData(result.getInt("resID"),
                         result.getString("name"),
                         result.getString("surname"),
                         result.getInt("age"),
                         result.getInt("stationID"),
                         result.getInt("room"));
+                result.getStatement().close();
                 result.close();
             }
-
             return resident;
         }catch (SQLException e){
             e.printStackTrace();
@@ -384,8 +383,6 @@ public class DatabaseService implements Service {
                 rs.getStatement().close();
                 rs.close();
             }
-
-
             return description;
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
@@ -452,7 +449,6 @@ public class DatabaseService implements Service {
             String sql = "Select * from ice where resID = ?";
             ResultSet rs = DatabaseService.createPreparedStatement(sql, String.valueOf(resID));
             if(rs != null) {
-                rs.getStatement().close();
                 ICEData iceData =  new ICEData(
                         rs.getInt("iceID"),
                         rs.getInt("resID"),
@@ -460,6 +456,7 @@ public class DatabaseService implements Service {
                         rs.getString("surname"),
                         rs.getInt("tel_number"),
                         rs.getString("adress"));
+                rs.getStatement().close();
                 rs.close();
                 return iceData;
             }
