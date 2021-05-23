@@ -6,8 +6,15 @@ import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Locale;
-
+/**
+ * ItemListener for the combo box Language on the top left corner of the GUI.
+ */
 public class ComboBoxListenerLanguage implements ItemListener {
+
+    /**
+     * Changes the language of the GUI according to the selected item of the combo box.
+     * @param e
+     */
     @Override
     public void itemStateChanged(ItemEvent e) {
         JComboBox cb = (JComboBox) e.getSource();

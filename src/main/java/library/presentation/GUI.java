@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
+/**
+ * The Class creates the graphical user interface and uses the Adapter to fill itself with the data out of the database.
+ */
 public class GUI extends JFrame {
 
     private static boolean beingEdited = false;
@@ -64,6 +67,10 @@ public class GUI extends JFrame {
     private static final String RESOURCE_BUNDLE = "i18n/gui/gui"; //NON-NLS
     private final Adapter adapter = new DatabaseAdapter();
 
+    /**
+     *The constructor invokes methods which initialize the different components of the GUI.
+     * It also invokes methods which use the DatabaseAdapter in order to fill the components with the data of the database.
+     */
     public GUI() {
 
         this.resourceBundle = ResourceBundle.getBundle(RESOURCE_BUNDLE);
@@ -98,6 +105,10 @@ public class GUI extends JFrame {
 
     }
 
+    /**
+     * Uses GridBagConstraints to add the JPanel jpResident and jpRoom to jpText and Room as well as adding jpTextResident and jpEditResident
+     * to jpTextResidentandEdit.
+     */
     private void residentTextAreaGridBagLayoutInitialization() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
@@ -120,6 +131,9 @@ public class GUI extends JFrame {
         jpTextResidentAndEdit.add(jpEditResident, gbc);
     }
 
+    /**
+     * Initializes the content pane and adds the different Panels.
+     */
     private void contentPaneInitialisation(){
         Container c;
         c = getContentPane();
@@ -131,7 +145,10 @@ public class GUI extends JFrame {
         cards.add(jpSpecific, "Spezifisch");
         cl.show(cards, "Bewohner");
     }
-    
+
+    /**
+     * Initializes the scroll panels for the resident overview and adds them to the JPanel jpSpecific.
+     */
     private void residentOverviewPanelInitialization() {
         JScrollPane spBaseData = new JScrollPane(tpBaseData);
         JScrollPane spMedication = new JScrollPane(tpMedication);
@@ -156,6 +173,9 @@ public class GUI extends JFrame {
         spOther.setBorder(BorderFactory.createMatteBorder(6, 6, 12, 12, lightgrey));
     }
 
+    /**
+     * Initializes the TextArea and editing button on the Top of the Gui.
+     */
     private void unspecificButtonAndTextareaInitialization() {
         taAll = new JTextArea();
         setShiftIncidentText();
@@ -176,6 +196,9 @@ public class GUI extends JFrame {
         btnAll.addActionListener(listenerEnableEditing);
     }
 
+    /**
+     * Initializes the main JPanels of the Gui.
+     */
     private void jpanelInitialization() {
         jpResidentRoom = new JPanel(new GridBagLayout());
         jpFilterTextAll = new JPanel(new BorderLayout());
@@ -189,6 +212,9 @@ public class GUI extends JFrame {
         cards = new JPanel(cl);
     }
 
+    /**
+     * Connects the JComboBoxes for the filters of shift and time and connects them via the Adapter to the Database.
+     */
     private void databaseConnectionForFilters() {
         shifts = new String[]{resourceBundle.getString("morning_shift"), resourceBundle.getString("late_shift"), resourceBundle.getString("night_shift")};
         time = new String[(adapter.getShiftSchedules().size() / 3)];
@@ -210,6 +236,10 @@ public class GUI extends JFrame {
         }
     }
 
+    /**
+     * Initializes the TextPanes and Documents for the specific resident overview.
+     * Initializes 3 SimpleAttributeSets in order to later on format the individual parts of the overview differently.
+     */
     private void residentOverviewInitialization() {
         tpBaseData = new JTextPane();
         tpMedication = new JTextPane();
@@ -244,6 +274,10 @@ public class GUI extends JFrame {
         tpOther.setEditable(false);
     }
 
+    /**
+     * Initializes all of the combo boxes and changes the appearance and size of them depending on the selected language.
+     * Initializes Itemlisteners for the combo boxes.
+     */
     private void filterAndJComboboxInitialization() {
         JLabel lblspace;
         Object [] items = {
@@ -290,6 +324,9 @@ public class GUI extends JFrame {
         jcbLanguage.addItemListener(new ComboBoxListenerLanguage());
     }
 
+    /**
+     * Initializes the edit buttons for the individual resident incidents.
+     */
     private void editButtonInitialization() {
         btnEditResident = new JButton[adapter.getResidents().size()];
 
@@ -304,6 +341,9 @@ public class GUI extends JFrame {
         }
     }
 
+    /**
+     * Initializes the text areas for the individual resident incidents.
+     */
     private void residentTextAreaInitialization() {
         taResident = new JTextArea[adapter.getResidents().size()];
 
@@ -320,6 +360,9 @@ public class GUI extends JFrame {
     }
     }
 
+    /**
+     * Initializes the room labels for the individual residents and uses the adapter to set the number out of the database.
+     */
     private void roomLabelInitialization() {
         lblRoom = new JLabel[adapter.getResidents().size()];
 
@@ -334,6 +377,9 @@ public class GUI extends JFrame {
         }
     }
 
+    /**
+     * Initializes the Buttons for the individual resident overview and uses the adapter to set the name out of the database.
+     */
     private void residentButtonInitialization() {
         btnResident = new JButton[adapter.getResidents().size()];
 
@@ -348,6 +394,9 @@ public class GUI extends JFrame {
         }
     }
 
+    /**
+     * Uses the adapter to set the text of the TextAres of the individual residents, depending on the selected item of the combo box jcbTime.
+     */
     public void setResidentIncidentText() {
         for (int i = 0; i < adapter.getResidents().size(); i++) {
             int resID = adapter.getResidents().get(i).getResID();
@@ -362,6 +411,9 @@ public class GUI extends JFrame {
         }
     }
 
+    /**
+     *  Uses the adapter to set the text of the TextArea for the resident unspecific incidents, depending on the selected item of the combo boxes jcbTime and jcbShift.
+     */
     public void setShiftIncidentText() {
         int shiftCategory;
         shiftCategory = (jcbShift.getSelectedIndex()) + 1;
@@ -377,6 +429,10 @@ public class GUI extends JFrame {
         taAll.setText(shiftIncident);
     }
 
+    /**
+     * Invokes methods which fill out the individual resident overview with the data of the database.
+     * @param index
+     */
     public void setResidentSpecificData(int index) {
         Resident selectedResident = adapter.getSingleResident(index);
         MedPlan medPlan =adapter.getSingleMedPlan(selectedResident.getResID());
@@ -391,6 +447,10 @@ public class GUI extends JFrame {
 
     }
 
+    /**
+     * Fills the textpane BaseData of the individual resident overview with data out of the database.
+     * @param selectedResident
+     */
     private void setBaseData(Resident selectedResident) {
         try {
             tpBaseData.setText("");
@@ -409,9 +469,16 @@ public class GUI extends JFrame {
             docBaseData.insertString(docBaseData.getLength(), String.valueOf(selectedResident.getStationID()), attrText);
 
         } catch (BadLocationException e) {
+            System.out.println("BadLocationException");
         }
     }
 
+
+    /**
+     * Fills the textpane Medication of the individual resident overview with data out of the database.
+     * @param selectedResident
+     * @param medPlan
+     */
     private void setMedication(Resident selectedResident, MedPlan medPlan) {
         try {
             tpMedication.setText("");
@@ -432,9 +499,13 @@ public class GUI extends JFrame {
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
         } catch (BadLocationException be) {
+            System.out.println("BadLocationException");
         }
     }
 
+    /**
+     * Fills the textpane DiagnosisSheet of the individual resident overview with data out of the database.
+     */
     private void setDiagnosisSheet() {
         try {
             tpDiagnosisSheet.setText("");
@@ -442,10 +513,15 @@ public class GUI extends JFrame {
             docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), resourceBundle.getString("currently.no.information.given"), attrText);
 
         } catch (BadLocationException be) {
+            System.out.println("BadLocationException");
         }
 
     }
 
+    /**
+     * Fills the textpane ClosestRelative of the individual resident overview with data out of the database.
+     * @param ice
+     */
     private void setClosestRelative(ICE ice) {
         try {
             tpClosestRelative.setText(" ");
@@ -467,9 +543,14 @@ public class GUI extends JFrame {
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
         } catch (BadLocationException be) {
+            System.out.println("BadLocationException");
         }
     }
 
+    /**
+     * Fills the textpane Visits of the individual resident overview with data out of the database.
+     * @param selectedResident
+     */
     private void setVisits(Resident selectedResident) {
         try {
             tpVisits.setText(" ");
@@ -479,9 +560,13 @@ public class GUI extends JFrame {
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
         } catch (BadLocationException be) {
+            System.out.println("BadLocationException");
         }
     }
 
+    /**
+     * Fills the textpane Other of the individual resident overview with data out of the database.
+     */
     private void setOther() {
         try {
             tpOther.setText(" ");
@@ -489,9 +574,14 @@ public class GUI extends JFrame {
 
             //todo was soll hier drauf?
         } catch (BadLocationException be) {
+            System.out.println("BadLocationException");
         }
     }
 
+    /**
+     * Uses the adapter to update the database after a change was made in the resident specific textarea for incidents, by using the edit and save buttons.
+     * @param index
+     */
     private void saveChangesResidentIncidentText(int index) {
         String newText = taResident[index].getText();  //Get text that has been changed
         int resID = adapter.getResidents().get(index).getResID(); //get resid of selected resident
@@ -506,7 +596,9 @@ public class GUI extends JFrame {
         adapter.saveResidentIncidentsDatabase(newText, adapter.getSingleIncident(resID,date), resID, date);
     }
 
-
+    /**
+     * Uses the adapter to update the database after a change was made in the resident unspecific textarea for incidents, by using the edit and save buttons.
+     */
     public void saveChangesShiftIncidentText() {
         String newText = taAll.getText(); //get new text
         String dateString = (String) jcbTime.getSelectedItem(); //String format
@@ -522,8 +614,16 @@ public class GUI extends JFrame {
         //todo datums und shiftabhängigkeit
     }
 
-
+    /**
+     * ButtonListener for the resident buttons on the left side of the GUI.
+     *
+     */
     class ButtonListenerChangeCardsForResidentSpecificData implements ActionListener {
+        /**
+         * Manages that only one button can be activated at the same time.
+         * Changes the appearance of the selected button and opens the corresponding overview of the resident. Invokes the method setResidentSpecificData to fill the Overview with data.
+         * @param e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -570,7 +670,16 @@ public class GUI extends JFrame {
         }
     }
 
+    /**
+     * ButtonListener for the edit and save buttons on the right side of the GUI.
+     */
     class ButtonListenerEnableEditing implements ActionListener {
+        /**
+         * Manages that only one edit button can be activated at the same time.
+         * Sets the chosen textarea for the resident incidents on editable, so that new incidents can be added.
+         * Invokes the method saveChangesResidentIncidentText.
+         * @param e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
 
