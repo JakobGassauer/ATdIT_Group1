@@ -31,7 +31,7 @@ During our project, we worked with an agile SCRUM-method. Therefore we used the 
 * [Mockup Phone](documentation/mockup/mockup_computer&tablet.jpg)
 * [Mockup Computer & Tablet](documentation/mockup/mockup_phone.jpg)
 
-* [Entity-Relationship-Diagramm](documentation/ERD.png)
+* [Entity-Relationship-Diagram](documentation/ERD.png)
 * [UML-Inheritance-Diagram](documentation/Vererbungsdiagramm.png)
 
 
