@@ -1,0 +1,4 @@
+For the database we used SQLite.
+Due to the formation of SQLite you might not see the database shown to you the right way in IntelliJ.
+For that problem and for the editing of the database we used "SQLite Reader", an addon for the browser you are using.
+ 
