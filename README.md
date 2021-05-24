@@ -32,7 +32,7 @@ During our project, we worked with an agile SCRUM-method. Therefore we used the 
 * [Mockup Computer & Tablet](documentation/mockup/mockup_phone.jpg)
 
 * [Entity-Relationship-Diagramm](documentation/Entity-Relationship.pptx)
-* [UML-Inheritance-Diagram](Vererbungsdiagramm.png)
+* [UML-Inheritance-Diagram](documentation/Vererbungsdiagramm.png)
 
 
 
