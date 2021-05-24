@@ -1,15 +1,9 @@
 package library.model.implementation;
 
-import library.model.Edit;
-import library.model.People;
-import library.persistence.implementation.DatabaseService;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 /**
  * Model specific type Visits which implements the interface Edit
  */
-public class Visits implements Edit<Visits> {
+public class Visits  {
     private int visitID;
     private String description;
     private int resID;
@@ -32,20 +26,10 @@ public class Visits implements Edit<Visits> {
         return resID;
     }
 
-    @Override
-    public void add(Visits object) {
 
-    }
 
-    @Override
-    public void remove(Visits object) {
 
-    }
 
-    @Override
-    public Visits get() {
-        return null;
-    }
 
 
     @Override

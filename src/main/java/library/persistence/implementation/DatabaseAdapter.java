@@ -16,8 +16,7 @@ import java.util.List;
  * and converted into the model types which are used in the GUI.
  */
 public class DatabaseAdapter implements Adapter {
-    private Factory factory = new DatabaseFactory();
-    private Service service;
+    private final Service service;
     private static int entriesAddedInSession;
 
 
@@ -48,6 +47,7 @@ public class DatabaseAdapter implements Adapter {
      * with current database entries. Then the database objects are converted into the model objects.
      */
     public DatabaseAdapter(){
+        Factory factory = new DatabaseFactory();
         service = factory.createService();
 
         residentsData = service.getResidentData();
@@ -144,50 +144,49 @@ public class DatabaseAdapter implements Adapter {
         }
 
     }
-//get all entries of one entity stored in lists
 
-    public List<Employee> getEmployees() {
+
+    public ArrayList<Employee> getEmployees() {
         return employees;
     }
 
-    public List<ICE> getIces() {
+    public ArrayList<ICE> getIces() {
         return ices;
     }
 
-    public List<Incident> getIncidents() {
+    public ArrayList<Incident> getIncidents() {
         return incidents;
     }
 
-    public List<Medication> getMedications() {
+    public ArrayList<Medication> getMedications() {
         return medications;
     }
 
-    public List<MedPlan> getMedPlans() {
+    public ArrayList<MedPlan> getMedPlans() {
         return medPlans;
     }
 
-    public List<Resident> getResidents() {
+    public ArrayList<Resident> getResidents() {
         return residents;
     }
 
-    public List<ShiftSchedule> getShiftSchedules() {
+    public ArrayList<ShiftSchedule> getShiftSchedules() {
         return shiftSchedules;
     }
 
-    public List<Station> getStations() {
+    public ArrayList<Station> getStations() {
         return stations;
     }
 
-    public List<Visits> getVisits() {
+    public ArrayList<Visits> getVisits() {
         return visits;
     }
 
 
-//get single entity (stored in model object)
 
 
     /**
-     * @param index
+     * @param index position
      * @return Resident object that is stored in the List at the index.
      */
     public Resident getSingleResident(int index) {
@@ -197,7 +196,7 @@ public class DatabaseAdapter implements Adapter {
     /**
      * Passes the request to the service and converts the returned database type
      * into the model type, so it can be used in the GUI.
-     * @param name
+     * @param name for select statement
      * @return Resident object with the provided name.
      */
     public Resident getSingleResident(String name) {
@@ -211,8 +210,8 @@ public class DatabaseAdapter implements Adapter {
     /**
      * Passes the request to the service and converts the returned database type
      * into the model type, so it can be used in the GUI.
-     * @param category
-     * @param date
+     * @param category for select statement
+     * @param date for select statement
      * @return Shift Schedule with the provided shift category and date.
      */
     public ShiftSchedule getSingleShiftSchedule(Object category, Date date) {
@@ -224,7 +223,7 @@ public class DatabaseAdapter implements Adapter {
 
     /**
      * Passes the request to the service.
-     * @param resID
+     * @param resID for select statement
      * @return Description of the Visit of the provided resident.
      */
     public String getSingleVisitDescription(int resID) {
@@ -235,7 +234,7 @@ public class DatabaseAdapter implements Adapter {
     /**
      * Passes the request to the service and converts the returned database type
      * into the model type, so it can be used in the GUI.
-     * @param resID
+     * @param resID for select statement
      * @return ICE of provided Resident
      */
     public ICE getSingleICE(int resID){
@@ -246,8 +245,8 @@ public class DatabaseAdapter implements Adapter {
     /**
      * Passes the request to the service and converts the returned database type
      * into the model type, so it can be used in the GUI.
-     * @param resID
-     * @param date
+     * @param resID for select statement
+     * @param date for select statement
      * @return Incident of provided resident on the date
      */
     public Incident getSingleIncident(int resID, Date date){
@@ -260,7 +259,7 @@ public class DatabaseAdapter implements Adapter {
     /**
      * Passes the request to the service and converts the returned database type
      * into the model type, so it can be used in the GUI.
-     * @param resID
+     * @param resID for select statement
      * @return Incident of the provided Resident
      */
     public Incident getSingleIncident(int resID){
@@ -271,20 +270,46 @@ public class DatabaseAdapter implements Adapter {
     }
 
     /**
-     * Passes the request to the service and converts the returned database type
-     * into the model type, so it can be used in the GUI.
-     * @param medicID
+     * Passes the request to the service so it can be used in the GUI.
+     * @param medicID for select statement
      * @return Name of the Medication with the provided medicID
      */
     public String getSingleMedication(int medicID){
         return service.getSingleMedicationData(medicID);
     }
 
+    /**
+     * Passes the request to the service so it can be used in the GUI.
+     * The method is not used yet and solely for expansion purposes.
+     * @param stationID for select statement
+     * @return Name of the station with the provided stationID
+     */
+    @SuppressWarnings("unused")
+    public String getSingleStation(int stationID){
+        return service.getSingleStationData(stationID);
+    }
 
     /**
      * Passes the request to the service and converts the returned database type
      * into the model type, so it can be used in the GUI.
-     * @param resID
+     * The method is not used yet and solely for expansion purposes.
+     * @param employeeID for select statement
+     * @return EmployeeData of the provided employeeID
+     */
+    @SuppressWarnings("unused")
+    public Employee getSingleEmployee(int employeeID){
+        EmployeeData employeeData = service.getSingleEmployeeData(employeeID);
+        return new Employee(employeeData.employeeID,
+                employeeData.name,
+                employeeData.surname,
+                employeeData.age,
+                employeeData.stationID);
+    }
+
+    /**
+     * Passes the request to the service and converts the returned database type
+     * into the model type, so it can be used in the GUI.
+     * @param resID for select statement
      * @return MedPlan of the provided resident
      */
     public MedPlan getSingleMedPlan(int resID){
@@ -297,17 +322,16 @@ public class DatabaseAdapter implements Adapter {
 
     /**
      * Saves the new or changed incident description of resident specific incidents.
-     * @param newText
-     * @param incident
-     * @param resID
-     * @param date
+     * @param newText for update statement
+     * @param incident for update statement
+     * @param resID for update statement
+     * @param date for update statement
      */
     public void saveResidentIncidentsDatabase(String newText, Incident incident, int resID, Date date){
         if (incident.getIncidentID()==0){
             int newIncidentID = getIncidents().size()+(entriesAddedInSession+2);
             int shiftID = 0;
-            String description = newText;
-            IncidentData incidentData = new IncidentData(newIncidentID, resID, shiftID, description, date);
+            IncidentData incidentData = new IncidentData(newIncidentID, resID, shiftID, newText, date);
             service.createNewResidentIncidentDatabase(incidentData);
             entriesAddedInSession++;
         }
@@ -316,8 +340,8 @@ public class DatabaseAdapter implements Adapter {
 
     /**
      * Saves the new or changed incident description of shift specific incidents.
-     * @param newText
-     * @param shiftID
+     * @param newText for update statement
+     * @param shiftID for update statement
      */
     public void saveShiftIncidentsDatabase(String newText, int shiftID){
         service.updateShiftIncidentsDataDatabase(newText, shiftID);

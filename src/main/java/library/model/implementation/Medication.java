@@ -1,10 +1,5 @@
 package library.model.implementation;
 
-import library.persistence.implementation.DatabaseService;
-
-import javax.xml.crypto.Data;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 /**
  * Model specific type Medication
  */
@@ -39,9 +34,4 @@ public class Medication {
                 ", name='" + name + '\'' +
                 '}';
     }
-
-   // public static String get(int medicID) {
-    //    return DatabaseService.getSingleMedication(medicID);
-    //}
-
 }

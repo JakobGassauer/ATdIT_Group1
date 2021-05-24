@@ -1,12 +1,7 @@
 package library.model.implementation;
 
 import library.model.People;
-import library.persistence.implementation.DatabaseService;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 /**
  * Model specific type Residents which inherits from the abstract class People
  */

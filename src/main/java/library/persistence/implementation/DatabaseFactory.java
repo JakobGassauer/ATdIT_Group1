@@ -19,7 +19,6 @@ public class DatabaseFactory implements Factory {
      */
     @Override
     public Service createService() {
-
-        return service = new DatabaseService();  //konkreter Service muss hier gesetzt werden
+        return service = new DatabaseService();
     }
 }

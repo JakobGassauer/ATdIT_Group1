@@ -1,19 +1,10 @@
 package library.model.implementation;
 
-import library.model.Edit;
-import library.persistence.implementation.DatabaseService;
-
-import javax.swing.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 /**
  * Model specific type ShiftSchedule which implements the interface Edit
  */
-public class ShiftSchedule implements Edit<ShiftSchedule> {
+public class ShiftSchedule  {
     private int shiftID;
     private int employeeID;
     private int category;
@@ -51,21 +42,7 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
         this.shiftIncidents = shiftIncidents;
     }
 
-    @Override
-    public void add(ShiftSchedule object) {
-        // todo implement add logic
-    }
 
-    @Override
-    public void remove(ShiftSchedule object) {
-        // todo implement remove logic
-    }
-
-    @Override
-    public ShiftSchedule get() {
-        // todo implement get logic
-        return null;
-    }
 
     @Override
     public String toString() {
@@ -79,9 +56,5 @@ public class ShiftSchedule implements Edit<ShiftSchedule> {
     public static ShiftSchedule get(Object category, Date date) {
         return null;// DatabaseService.getSingleShiftSchedule(category, date);
     }
-    /*
-     date can be asked through GregorianCalendar() in main,
-     calculations for timeschedule can be done in here
-     //http://tutorials.jenkov.com/java-date-time/java-util-calendar.html
-    */
+
 }

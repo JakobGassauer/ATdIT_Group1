@@ -1,10 +1,7 @@
 package library.model.implementation;
 
 import library.model.People;
-import library.persistence.implementation.DatabaseService;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 /**
  * Model specific type ICE which inherits from the abstract class People
  */
@@ -73,7 +70,4 @@ public class ICE extends People {
                 '}';
     }
 
-   // public static ICE get(int resID) {
-    //    return DatabaseService.getSingleICE(resID);
-    //}
 }
