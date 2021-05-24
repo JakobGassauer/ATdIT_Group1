@@ -11,10 +11,10 @@
 //05.05.2021 - team call, planned tasks till friday and review on 12.05, discussed about methods, database and gui, as well as PowerPoint and Textdocuments
 //07.05.2021 - team call, working call, nearly finished methods to get data out of database, worked on PowerPoint, mockup of UX, rewieved GUI in terms of clean code
 //10.05.2021 - team call, working call, preparation for mid-term report and review of finished tasks
-//
-//
-//
-//
+//14.05.2021 - team call, working call, coding, PowerPoint, further documents
+//19.05.2021 - team call, planned for the week, set goals for the weeks till the end of the project
+//21.05.2021 - team call, working call, refined DatabaseService, DatabaseAdapter, DatabaseFactory, worked on MockUp of whole project
+//22.05.2021 - coding call, finished javadoc as well as testing
 //
 //
 //
