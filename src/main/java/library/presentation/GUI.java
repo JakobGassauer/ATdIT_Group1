@@ -510,7 +510,7 @@ public class GUI extends JFrame {
         try {
             tpDiagnosisSheet.setText("");
             docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), resourceBundle.getString("diagnosis"), attrHeader);
-            docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), resourceBundle.getString("currently.no.information.given"), attrText);
+            docDiagnosisSheet.insertString(docDiagnosisSheet.getLength(), "\n \n Currently no information given", attrText);
 
         } catch (BadLocationException be) {
             System.out.println("BadLocationException");
