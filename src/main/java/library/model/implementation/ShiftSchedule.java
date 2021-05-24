@@ -56,9 +56,5 @@ public class ShiftSchedule  {
     public static ShiftSchedule get(Object category, Date date) {
         return null;// DatabaseService.getSingleShiftSchedule(category, date);
     }
-    /*
-     date can be asked through GregorianCalendar() in main,
-     calculations for timeschedule can be done in here
-     //http://tutorials.jenkov.com/java-date-time/java-util-calendar.html
-    */
+
 }
