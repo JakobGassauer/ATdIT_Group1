@@ -43,11 +43,4 @@ public class Resident extends People {
                 '}';
     }
 
-    public static Resident get(int index) {
-        return null;//DatabaseService.getSingleResident(index);
-    }
-
-    public static Resident get(String name) {
-       return null;// DatabaseService.getSingleResident(name);
-    }
 }
