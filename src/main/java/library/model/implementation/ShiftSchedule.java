@@ -53,8 +53,5 @@ public class ShiftSchedule  {
                 '}';
     }
 
-    public static ShiftSchedule get(Object category, Date date) {
-        return null;// DatabaseService.getSingleShiftSchedule(category, date);
-    }
 
 }

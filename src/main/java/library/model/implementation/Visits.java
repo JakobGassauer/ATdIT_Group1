@@ -26,11 +26,17 @@ public class Visits  {
         return resID;
     }
 
+    public void setVisitID(int visitID) {
+        this.visitID = visitID;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-
-
-
+    public void setResID(int resID) {
+        this.resID = resID;
+    }
 
     @Override
     public String toString() {
