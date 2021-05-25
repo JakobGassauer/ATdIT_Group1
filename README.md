@@ -34,8 +34,8 @@ During our project, we worked with an agile SCRUM-method. Therefore we used the 
 * [Entity-Relationship-Diagram](documentation/ERD.png)
 * [UML-Inheritance-Diagram](documentation/Vererbungsdiagramm.png)
 
-* [scope of the project](documentation/Abgrenzung-Vorteile-Zielorientierung_des_Projekts.pdf)
-* [information about the profession of caregivers](documentation/BerufPflegekraft.pdf)
+* [scope of the project](documentation/Abgrenzung-Vorteile-Zielorientierung_des_Projekts.pdf) 
+* [information about the profession of caregivers](documentation/BerufPflegefachkraft.pdf)
 * [roles and learnings of the team](documentation/roles_learnings.txt)
 * [database](documentation/Database)
 
