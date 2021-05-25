@@ -1,0 +1,4 @@
+library\DBConnectTest.class
+library\persistence\implementation\DatabaseAdapterTest.class
+library\persistence\implementation\DatabaseFactoryTest.class
+library\persistence\implementation\DatabaseServiceTest.class
