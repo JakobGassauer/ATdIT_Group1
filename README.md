@@ -28,8 +28,8 @@ During our project, we worked with an agile SCRUM-method. Therefore we used the 
 * [Prototype2](documentation/prototyp/prototyp2.png)
 * [Combined Prototype](documentation/prototyp/prototyp_combined.jpg)
 
-* [Mockup Phone](documentation/mockup/mockup_computer&tablet.jpg)
-* [Mockup Computer & Tablet](documentation/mockup/mockup_phone.jpg)
+* [Mockup Computer & Tablet](documentation/mockup/mockup_computer&tablet.jpg)
+* [Mockup Phone](documentation/mockup/mockup_phone.jpg)
 
 * [Entity-Relationship-Diagram](documentation/ERD.png)
 * [UML-Inheritance-Diagram](documentation/Vererbungsdiagramm.png)
