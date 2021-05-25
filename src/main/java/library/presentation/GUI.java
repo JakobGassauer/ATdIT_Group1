@@ -534,7 +534,7 @@ public class GUI extends JFrame {
             docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("address"), attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), ice.getAdress(), attrText);
             docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("phone.number"), attrSubHeader);
-            docClosestRelative.insertString(docClosestRelative.getLength(), String.valueOf(ice.getTelnumber()), attrText);
+            docClosestRelative.insertString(docClosestRelative.getLength(), ice.getTelnumber(), attrText);
 
 
         } catch (NullPointerException e) {

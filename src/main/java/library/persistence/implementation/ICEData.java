@@ -9,10 +9,10 @@ public class ICEData {
     public int age;
     public final int iceID;
     public final int resID;
-    public final int telnumber;
+    public final String telnumber;
     public final String adress;
 
-    public ICEData( int iceID,int resID, String name, String surname,  int telnumber, String adress) {
+    public ICEData( int iceID,int resID, String name, String surname,  String telnumber, String adress) {
         this.name = name;
         this.surname = surname;
         this.iceID = iceID;

@@ -85,7 +85,7 @@ public class DatabaseService implements Service {
                     ICEData ice = new ICEData(
                             result.getInt("iceID"),result.getInt("resID"),
                             result.getString("name"),result.getString("surname"),
-                            result.getInt("tel_number"),result.getString("adress"));
+                            result.getString("tel_number"),result.getString("adress"));
                     arrayList.add(ice);
                 }
             }
@@ -453,16 +453,16 @@ public class DatabaseService implements Service {
                         rs.getInt("resID"),
                         rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getInt("tel_number"),
+                        rs.getString("tel_number"),
                         rs.getString("adress"));
                 rs.getStatement().close();
                 rs.close();
                 return iceData;
             }
-            return new ICEData(0,0,null,null,0,null);
+            return new ICEData(0,0,null,null,null,null);
         }catch (SQLException e){
             if(e.getMessage().equals("ResultSet closed")) {
-                return new ICEData(0,0,null,null,0,null);
+                return new ICEData(0,0,null,null,null,null);
             }
             System.out.println(e.getMessage());
             return null;

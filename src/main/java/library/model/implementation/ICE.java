@@ -8,17 +8,17 @@ import library.model.People;
 public class ICE extends People {
     private int iceID;
     private int resID;
-    private int telnumber;
+    private String telnumber;
     private String adress;
 
-    public ICE(int iceID, int resID, int telnumber, String adress){
+    public ICE(int iceID, int resID, String telnumber, String adress){
         this.iceID=iceID;
         this.resID=resID;
         this.telnumber=telnumber;
         this.adress=adress;
     }
 
-    public ICE(int iceID, int resID, String name, String surname, int telnumber, String adress) {
+    public ICE(int iceID, int resID, String name, String surname, String telnumber, String adress) {
         //super();
         this.iceID=iceID;
         this.resID=resID;
@@ -36,7 +36,7 @@ public class ICE extends People {
         return resID;
     }
 
-    public int getTelnumber() {
+    public String getTelnumber() {
         return telnumber;
     }
 
@@ -52,7 +52,7 @@ public class ICE extends People {
         this.resID = resID;
     }
 
-    public void setTelnumber(int telnumber) {
+    public void setTelnumber(String telnumber) {
         this.telnumber = telnumber;
     }
 
