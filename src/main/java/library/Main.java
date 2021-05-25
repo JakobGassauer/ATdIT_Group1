@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 /**
  * The Main class launches the GUI.
  * Error hanlding:
- * Error Messages are written directly into the console, thus the user does not need to interact with errors. //todo catch blöcke
+ * Error Messages are written directly into the console, thus the user does not need to interact with errors.
  */
 public class Main {
     static GUI frame;

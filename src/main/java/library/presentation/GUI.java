@@ -141,7 +141,7 @@ public class GUI extends JFrame {
         c.add(jpFilterTextAll, BorderLayout.NORTH);
         c.add(cards, BorderLayout.CENTER);
         jpFilterTextAll.add(jpFilter, BorderLayout.WEST);
-        cards.add(jpTextResidentAndEdit, "Bewohner"); //todo warning
+        cards.add(jpTextResidentAndEdit, "Bewohner");
         cards.add(jpSpecific, "Spezifisch");
         cl.show(cards, "Bewohner");
     }
@@ -348,7 +348,7 @@ public class GUI extends JFrame {
 
         for (int i = 0; i < adapter.getResidents().size(); i++) {
             int resID = adapter.getResidents().get(i).getResID();
-            taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"),adapter.getSingleIncident(resID).getDescription())); //todo reicht es hier den ersten Incident zu nehmen oder sollte man eine Datumskontrolle machen ?
+            taResident[i] = new JTextArea(MessageFormat.format(resourceBundle.getString("incidents.0"),adapter.getSingleIncident(resID).getDescription()));
             taResident[i].setLineWrap(true);
             taResident[i].setWrapStyleWord(true);
             taResident[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -536,8 +536,6 @@ public class GUI extends JFrame {
             docClosestRelative.insertString(docClosestRelative.getLength(), resourceBundle.getString("phone.number"), attrSubHeader);
             docClosestRelative.insertString(docClosestRelative.getLength(), String.valueOf(ice.getTelnumber()), attrText);
 
-//                + "\n" + "Telefonnummer: " + MessageFormat.format("{0,number,#}", ice.getTelnumber()));
-//                       integer wird falsch angezeigt ?!   todo format
 
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
@@ -571,7 +569,6 @@ public class GUI extends JFrame {
             tpOther.setText(" ");
             docOther.insertString(docOther.getLength(), resourceBundle.getString("other"), attrHeader);
 
-            //todo was soll hier drauf?
         } catch (BadLocationException be) {
             System.out.println("BadLocationException");
         }
@@ -610,7 +607,6 @@ public class GUI extends JFrame {
         }
         int shiftID = adapter.getSingleShiftSchedule(shiftCategory, date).getShiftID();
         adapter.saveShiftIncidentsDatabase(newText, shiftID);
-        //todo datums und shiftabhängigkeit
     }
 
     /**

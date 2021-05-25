@@ -111,7 +111,7 @@ public class DatabaseService implements Service {
                 try{
                     incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(result.getString("incidents_date"));
                 }catch (ParseException e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
                 while(result.next()){
                     IncidentData incident = new IncidentData(
@@ -194,7 +194,7 @@ public class DatabaseService implements Service {
                     try{
                        date1 = new SimpleDateFormat("yyyy-MM-dd").parse(result.getString("date"));
                     }catch (ParseException e) {
-                        e.printStackTrace();
+                        System.out.println(e.getMessage());
                     }
                     ShiftScheduleData shiftSchedule = new ShiftScheduleData(
                             result.getInt("shiftID"),result.getInt("employeeID"),
@@ -274,7 +274,7 @@ public class DatabaseService implements Service {
             statement.setString(1,value);
             return statement.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -295,7 +295,7 @@ public class DatabaseService implements Service {
             statement.setString(2,value2);
             return statement.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -317,7 +317,7 @@ public class DatabaseService implements Service {
             statement.execute();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -337,7 +337,7 @@ public class DatabaseService implements Service {
             statement.execute();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -363,7 +363,7 @@ public class DatabaseService implements Service {
             }
             return resident;
         }catch (SQLException e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -388,7 +388,7 @@ public class DatabaseService implements Service {
             if(e.getMessage().equals("ResultSet closed")) { //result set is closed if there are no entries in db
                 return "no visits";
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -412,8 +412,7 @@ public class DatabaseService implements Service {
                     date1 = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("date"));
                 }
             }catch (ParseException pe) {
-                pe.printStackTrace();
-                //  return null;
+                System.out.println(pe.getMessage());
             }
 
             ShiftScheduleData shiftSchedule;
@@ -433,7 +432,7 @@ public class DatabaseService implements Service {
             if(e.getMessage().equals("ResultSet closed")) {
                 return new ShiftScheduleData(0,0,0,null,"no incidents");
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -465,7 +464,7 @@ public class DatabaseService implements Service {
             if(e.getMessage().equals("ResultSet closed")) {
                 return new ICEData(0,0,null,null,0,null);
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -488,7 +487,7 @@ public class DatabaseService implements Service {
                     incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("incidents_date"));
                 }
             }catch (ParseException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
             IncidentData incident;
             if (rs != null) {
@@ -506,7 +505,7 @@ public class DatabaseService implements Service {
             if(e.getMessage().equals("ResultSet closed")) {
                 return new IncidentData(0,0,0,"no incident", null);
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -526,7 +525,7 @@ public class DatabaseService implements Service {
                     incidentsDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("incidents_date"));
                 }
             }catch (ParseException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
             if (rs != null) {
                 IncidentData incident = new IncidentData(
@@ -543,7 +542,7 @@ public class DatabaseService implements Service {
             if(e.getMessage().equals("ResultSet closed")) {
                 return new IncidentData(0,0,0,"no incident", null);
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -568,7 +567,7 @@ public class DatabaseService implements Service {
             if(e.getMessage().equals("ResultSet closed")) {
                 return "no medication";
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -598,7 +597,7 @@ public class DatabaseService implements Service {
             if(e.getMessage().equals("ResultSet closed")) {
                 return new EmployeeData(0,null,null,0,0);
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -622,7 +621,7 @@ public class DatabaseService implements Service {
             if(e.getMessage().equals("ResultSet closed")) {
                 return null;
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -655,7 +654,7 @@ public class DatabaseService implements Service {
             if(e.getMessage().equals("ResultSet closed")) {
                 return new MedPlanData(0, 0,0,0,0);
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -682,7 +681,7 @@ public class DatabaseService implements Service {
             statement.execute();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

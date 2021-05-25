@@ -30,7 +30,6 @@ public class DatabaseAdapter implements Adapter {
     private final List<StationData> stationsData;
     private final List<VisitsData> visitsData;
 
-    //todo Namenskonventionen?
     private final ArrayList<Resident> residents = new ArrayList<>();
     private final ArrayList<Incident> incidents = new ArrayList<>();
     private final ArrayList<ShiftSchedule> shiftSchedules = new ArrayList<>();
