@@ -285,14 +285,13 @@ public class GUI extends JFrame {
                 new ImageIcon("src/main/resources/icons/UnitedKingdomicon.png")
         };
 
-        String[] language = new String[]{"German","English"}; // todo löschen?
         jcbShift = new JComboBox<>(shifts);
         jpFilter.add(jcbShift);
         jcbTime = new JComboBox<>(time);
         lblspace = new JLabel("");
         lblspace.setBackground(lightyellow);
         lblspace.setOpaque(true);
-        JComboBox<String> jcbLanguage = new JComboBox(items);
+        JComboBox jcbLanguage = new JComboBox(items);
         jpFilter.add(jcbLanguage);
         jpFilter.add(jcbTime);
         jpFilter.add(lblspace);
@@ -431,7 +430,7 @@ public class GUI extends JFrame {
 
     /**
      * Invokes methods which fill out the individual resident overview with the data of the database.
-     * @param index
+     * @param index Index of the selected residents button.
      */
     public void setResidentSpecificData(int index) {
         Resident selectedResident = adapter.getSingleResident(index);
@@ -449,7 +448,7 @@ public class GUI extends JFrame {
 
     /**
      * Fills the textpane BaseData of the individual resident overview with data out of the database.
-     * @param selectedResident
+     * @param selectedResident Resident whose data will be displayed on the specific resident overview.
      */
     private void setBaseData(Resident selectedResident) {
         try {
@@ -476,8 +475,8 @@ public class GUI extends JFrame {
 
     /**
      * Fills the textpane Medication of the individual resident overview with data out of the database.
-     * @param selectedResident
-     * @param medPlan
+     * @param selectedResident Resident whose medication will be displayed on the specific Overview.
+     * @param medPlan Medication of the Resident.
      */
     private void setMedication(Resident selectedResident, MedPlan medPlan) {
         try {
@@ -520,7 +519,7 @@ public class GUI extends JFrame {
 
     /**
      * Fills the textpane ClosestRelative of the individual resident overview with data out of the database.
-     * @param ice
+     * @param ice InCaseofEmergency contact of the selected resident, which will be displayed on the specific resident overview.
      */
     private void setClosestRelative(ICE ice) {
         try {
@@ -549,7 +548,7 @@ public class GUI extends JFrame {
 
     /**
      * Fills the textpane Visits of the individual resident overview with data out of the database.
-     * @param selectedResident
+     * @param selectedResident Resident whose data will be displayed on the specific resident overview.
      */
     private void setVisits(Resident selectedResident) {
         try {
@@ -580,7 +579,7 @@ public class GUI extends JFrame {
 
     /**
      * Uses the adapter to update the database after a change was made in the resident specific textarea for incidents, by using the edit and save buttons.
-     * @param index
+     * @param index Index of the selected residents button.
      */
     private void saveChangesResidentIncidentText(int index) {
         String newText = taResident[index].getText();  //Get text that has been changed
@@ -622,7 +621,7 @@ public class GUI extends JFrame {
         /**
          * Manages that only one button can be activated at the same time.
          * Changes the appearance of the selected button and opens the corresponding overview of the resident. Invokes the method setResidentSpecificData to fill the Overview with data.
-         * @param e
+         * @param e Actionevent of the selected edit or save button.
          */
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -678,7 +677,7 @@ public class GUI extends JFrame {
          * Manages that only one edit button can be activated at the same time.
          * Sets the chosen textarea for the resident incidents on editable, so that new incidents can be added.
          * Invokes the method saveChangesResidentIncidentText.
-         * @param e
+         * @param e Actionevent of the selected resident button.
          */
         @Override
         public void actionPerformed(ActionEvent e) {
