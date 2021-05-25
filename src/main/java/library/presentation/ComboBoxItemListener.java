@@ -11,7 +11,7 @@ public class ComboBoxItemListener implements ItemListener {
 
     /**
      * Creates a connection to the class GUI.
-     * @param gui
+     * @param gui Object of the class GUI.
      */
     public ComboBoxItemListener(GUI gui){
         this.gui = gui;
@@ -19,7 +19,7 @@ public class ComboBoxItemListener implements ItemListener {
 
     /**
      * invokes the methods setShiftIncidentText and setResidentIncidentText to update the data shown on the GUI according to the selected time and shift.
-     * @param e
+     * @param e ItemEvent of the selected item of the combo box.
      */
     @Override
     public void itemStateChanged(ItemEvent e) {

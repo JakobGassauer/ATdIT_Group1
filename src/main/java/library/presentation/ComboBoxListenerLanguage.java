@@ -13,7 +13,7 @@ public class ComboBoxListenerLanguage implements ItemListener {
 
     /**
      * Changes the language of the GUI according to the selected item of the combo box.
-     * @param e
+     * @param e ItemEvent of the selected item of the combo box.
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
